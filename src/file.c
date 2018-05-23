@@ -37,3 +37,16 @@ file_extname(char* file_name)
     return last_dot;
   }
 }
+
+char*
+file_basename(char* file_name)
+{
+  char* last_sep = strrchr(file_name, FILE_SEPARATOR);
+
+  if (last_sep == NULL) {
+    return file_name;
+  }
+  else {
+    return last_sep + 1;
+  }
+}
