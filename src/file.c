@@ -11,26 +11,17 @@
 char*
 file_extname(char* file_name)
 {
-  char* last_dot = strrchr(file_name, '.');
-  char* last_sep = strrchr(file_name, FILE_SEPARATOR);
-
+  char* basename = file_basename(file_name);
+  char* last_dot = strrchr(basename, '.');
 
   if (/* No '.' was found */
       (last_dot == NULL) ||
 
       /* The last dot was the first char: ".profile" */
-      (last_dot == file_name) ||
+      (last_dot == basename) ||
 
       /* If the dot was the last thing in the file_name: "foo." */
-      (*last_dot == file_name[strlen(file_name) - 1]) ||
-
-      /* The last dot is somewhere in the directory: ".apple/pie" */
-      (last_sep && strlen(last_sep) < strlen(last_dot)) ||
-
-      /* Last dot is directly after /: /.foo */
-      (*(last_dot - 1) == '/')
-
-      ) {
+      (*last_dot == basename[strlen(basename) - 1])) {
     return "";
   }
   else {
