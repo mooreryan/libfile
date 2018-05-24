@@ -117,6 +117,23 @@ test___file_basename___should_ReturnTheBaseName(void)
   TEST_ASSERT_EQUAL_STRING(" .apple",
                            file_basename("/ .apple"));
 
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("/apple/pie/"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("//apple/pie/"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("/apple//pie/"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("/apple/pie//"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("//apple//pie/"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("/apple//pie//"));
+  TEST_ASSERT_EQUAL_STRING("pie",
+                           file_basename("//apple//pie//"));
+
+
+
 
   TEST_ASSERT_EQUAL_STRING("", file_basename(""));
 
