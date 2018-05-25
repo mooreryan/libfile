@@ -5,3 +5,7 @@ cmake-build-debug
 
 html
 latex
+
+bin
+
+src/*.o
