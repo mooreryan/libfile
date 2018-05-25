@@ -36,6 +36,8 @@ test___file_is_directory___should_TellIfPathIsDirectory(void)
     exit(1);
   }
   TEST_ASSERT_FALSE(file_is_directory(dirname));
+
+  TEST_ASSERT_FALSE(file_is_directory(__FILE__));
 }
 
 void
@@ -57,6 +59,8 @@ test___file_is_file___should_TellIfFileNameIsAFile(void)
   remove(fname);
 
   TEST_ASSERT_FALSE(file_is_file(fname));
+
+  TEST_ASSERT_TRUE(file_is_file(__FILE__));
 }
 
 
