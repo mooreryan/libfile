@@ -4,6 +4,7 @@
 #include <bstring.h>
 
 #include "file.h"
+#include "err_codes.h"
 
 #if defined(_WIN32)
 #define FILE_SEPARATOR	'\\'
@@ -44,41 +45,42 @@ file_basename(char* file_name)
 {
   int i = 0;
 
-  size_t len = strlen(file_name);
+  size_t slen = strlen(file_name);
 
-  char* new_name = NULL;
+  char* new_file_name = NULL;
 
   /* First strip trailing separators. */
-  for (i = len - 1; i >= 0; --i) {
+  for (i = slen - 1; i >= 0; --i) {
     if (file_name[i] != FILE_SEPARATOR) {
-
       break;
     }
   }
+  slen = i + 1;
+
   /* The current index points to the char just before the first of
-     trailing FILE_SEPARATOR chars if there are any, so move it
-     forward by 1.*/
-  ++i;
+     trailing FILE_SEPARATOR chars if there are any, so the trailing
+     FILE_SEPARATORs begin at i + 1.
 
-  if (i < len) { /* Then we trimmed off some stuff */
-    new_name = malloc(sizeof(char) * (i + 1));
-    memcpy(new_name, file_name, i);
-    new_name[i] = '\0';
-  }
-  else {
-    new_name = malloc(sizeof(char) * (len + 1));
-    strcpy(new_name, file_name);
+     We want to copy all bytes up until that first separator.
+ */
+  new_file_name = malloc(sizeof(char) * (slen + 1));
+  PANIC_MEM(stderr, new_file_name);
+  memcpy(new_file_name, file_name, slen);
+  new_file_name[slen] = '\0';
 
-    /* Make sure the null char gets on there. */
-    new_name[i] = '\0';
-  }
-
-  char* last_sep = strrchr(new_name, FILE_SEPARATOR);
+  char* last_sep = strrchr(new_file_name, FILE_SEPARATOR);
 
   if (last_sep == NULL) {
-    return new_name;
+    return new_file_name;
   }
   else {
-    return last_sep + 1;
+    size_t basename_len = strlen(last_sep);
+    char* basename = malloc(sizeof(char) * basename_len);
+    PANIC_MEM(stderr, basename);
+    strcpy(basename, last_sep+1);
+    basename[basename_len] = '\0';
+    free(new_file_name);
+
+    return basename;
   }
 }
