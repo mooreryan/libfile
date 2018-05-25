@@ -3,3 +3,6 @@ CMakeLists.txt
 build
 cmake-build-debug
 vendor/ceedling
+
+html
+latex

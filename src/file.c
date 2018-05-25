@@ -1,3 +1,10 @@
+/**
+ * @file
+ * @author Ryan Moore
+ * @brief File containing functions like those found in Ruby's File class.
+ * @see https://ruby-doc.org/core-2.5.0/File.html
+ */
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,8 +20,19 @@
 #define FILE_SEPARATOR	'/'
 #endif
 
+/**
+ *
+ * @brief Return the extension of a file.
+ *
+ * @code
+ * char* extname = file_extname("/apple/pie");
+ * @endcode
+ *
+ * @param filename The file name or the path
+ * @return extname The extension of the file or path
+ */
 char*
-file_extname(char* file_name)
+file_extname(char* filename)
 {
   size_t basename_len = 0;
 
@@ -22,7 +40,7 @@ file_extname(char* file_name)
   char* extname = NULL;
   char* last_dot = NULL;
 
-  basename = file_basename(file_name);
+  basename = file_basename(filename);
   basename_len = strlen(basename);
 
   last_dot = strrchr(basename, '.');
@@ -33,7 +51,7 @@ file_extname(char* file_name)
       /* The last dot was the first char: ".profile" */
       (last_dot == basename) ||
 
-      /* If the dot was the last thing in the file_name: "foo." */
+      /* If the dot was the last thing in the filename: "foo." */
       (*last_dot == basename[basename_len - 1])) {
 
     extname = malloc(sizeof(char) * 2);
@@ -47,16 +65,28 @@ file_extname(char* file_name)
   return extname;
 }
 
+/**
+ *
+ * @brief Return the basename of a file.
+ *
+ * @code
+ * char* extname = file_extname("/apple/pie");
+ * @endcode
+ *
+ * @param filename The file name or the path
+ * @return extname The basename of the file or path
+ */
+
 char*
-file_basename(char* file_name)
+file_basename(char* filename)
 {
-  PANIC_MEM(stderr, file_name);
+  PANIC_MEM(stderr, filename);
 
   int i = 0;
   int i_last_fs = 0;
   int i_basename_start = 0;
 
-  size_t slen = strlen(file_name);
+  size_t slen = strlen(filename);
   size_t basename_len = 0;
 
   char* basename = NULL;
@@ -72,14 +102,14 @@ file_basename(char* file_name)
 
   /* First find index of last trailing file separator. */
   for (i = slen - 1; i >= 0; --i) {
-    if (file_name[i] != FILE_SEPARATOR) {
+    if (filename[i] != FILE_SEPARATOR) {
       break;
     }
   }
 
   if (i < 0) {
     /* This can only happen for names like "////" */
-    assert(file_name[0] == FILE_SEPARATOR);
+    assert(filename[0] == FILE_SEPARATOR);
 
     basename = malloc(sizeof(char) * 2);
     PANIC_MEM(stderr, basename);
@@ -93,7 +123,7 @@ file_basename(char* file_name)
     i_last_fs = i + 1;
 
     for (i = i_last_fs - 1; i >= 0; --i) {
-      if (file_name[i] == FILE_SEPARATOR) {
+      if (filename[i] == FILE_SEPARATOR) {
         break;
       }
     }
@@ -104,7 +134,7 @@ file_basename(char* file_name)
     PANIC_MEM(stderr, basename);
 
     for (i = 0; i < basename_len; ++i) {
-      basename[i] = file_name[i + i_basename_start];
+      basename[i] = filename[i + i_basename_start];
     }
     basename[basename_len] = '\0';
   }
