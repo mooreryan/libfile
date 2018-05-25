@@ -31,9 +31,10 @@ prefixes.each do |prefix|
   end
 end
 
-FUNCTION = "void\ntest___file_%s(void)\n{\n%s\n}\n\n"
+FUNCTION = "void\ntest___file_%s(void)\n{\nchar* actual = NULL;\n\n%s\n}\n\n"
 
 File.open(File.join(TEST_CODE_DIR, "test_file_autogen.c"), "w") do |f|
+  f.puts '#include <stdlib.h>'
   f.puts '#include "unity.h"'
   f.puts '#include "file.h"'
   f.puts
@@ -43,7 +44,7 @@ File.open(File.join(TEST_CODE_DIR, "test_file_autogen.c"), "w") do |f|
     results.each do |(path, expected)|
       msg = "Path: '#{path}'"
 
-      code = %Q[TEST_ASSERT_EQUAL_STRING_MESSAGE("#{expected}", file_#{method}("#{path}"), "#{msg}");]
+      code = %Q[actual = file_#{method}("#{path}");\nTEST_ASSERT_EQUAL_STRING_MESSAGE("#{expected}", actual, "#{msg}");\nfree(actual);]
 
       assertions << code
     end

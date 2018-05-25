@@ -135,5 +135,7 @@ file_extname(char* filename)
     strcpy(extname, last_dot);
   }
 
+  free(basename);
+
   return extname;
 }
