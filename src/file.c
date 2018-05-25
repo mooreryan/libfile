@@ -16,10 +16,16 @@
 char*
 file_extname(char* file_name)
 {
-  char* basename = file_basename(file_name);
-  size_t basename_len = strlen(basename);
-  char* last_dot = strrchr(basename, '.');
+  size_t basename_len = 0;
+
+  char* basename = NULL;
   char* extname = NULL;
+  char* last_dot = NULL;
+
+  basename = file_basename(file_name);
+  basename_len = strlen(basename);
+
+  last_dot = strrchr(basename, '.');
 
   if (/* No '.' was found */
       (last_dot == NULL) ||
@@ -30,7 +36,7 @@ file_extname(char* file_name)
       /* If the dot was the last thing in the file_name: "foo." */
       (*last_dot == basename[basename_len - 1])) {
 
-    extname = malloc(sizeof(char));
+    extname = malloc(sizeof(char) * 2);
     strcpy(extname, "");
   }
   else {
@@ -56,7 +62,6 @@ file_basename(char* file_name)
   char* basename = NULL;
 
 
-
   /* If we are passed an empty string.... */
   if (slen == 0) {
     basename = strdup("");
@@ -65,7 +70,7 @@ file_basename(char* file_name)
     return basename;
   }
 
-  /* First strip trailing separators. */
+  /* First find index of last trailing file separator. */
   for (i = slen - 1; i >= 0; --i) {
     if (file_name[i] != FILE_SEPARATOR) {
       break;
