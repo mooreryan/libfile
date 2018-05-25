@@ -132,11 +132,12 @@ file_extname(char* fname)
       (*last_dot == basename[basename_len - 1])) {
 
     extname = malloc(sizeof(char) * 2);
-    strcpy(extname, "");
+    strncpy(extname, "", 2);
   }
   else {
     extname = malloc(sizeof(char) * (basename_len + 1));
-    strcpy(extname, last_dot);
+    strncpy(extname, last_dot, basename_len + 1);
+    extname[basename_len] = '\0';
   }
 
   free(basename);
