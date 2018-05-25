@@ -16,11 +16,11 @@
 
 
 
-char* file_basename(char* fname);
+char* file_basename(const char* fname);
 
-char* file_dirname(char* fname);
+char* file_dirname(const char* fname);
 
-char* file_extname(char* fname);
+char* file_extname(const char* fname);
 
-int file_is_directory(char* fname);
-int file_is_file(char* fname);
+int file_is_directory(const char* fname);
+int file_is_file(const char* fname);

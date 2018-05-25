@@ -15,6 +15,20 @@
 #include "file.h"
 #include "err_codes.h"
 
+int
+index_of_last_file_separator(const char* fname)
+{
+  int i = 0;
+
+  for (i = strlen(fname) - 1; i >= 0; --i) {
+    if (fname[i] != FILE_SEPARATOR) {
+      break;
+    }
+  }
+
+  return i;
+}
+
 /**
  *
  * @brief Return the basename of a file.
@@ -31,7 +45,7 @@
  * @todo Ruby's also takes an optional second param for extname to strip.
  */
 char*
-file_basename(char* fname)
+file_basename(const char* fname)
 {
   PANIC_MEM(stderr, fname);
 
@@ -53,12 +67,7 @@ file_basename(char* fname)
     return basename;
   }
 
-  /* First find index of last trailing file separator. */
-  for (i = slen - 1; i >= 0; --i) {
-    if (fname[i] != FILE_SEPARATOR) {
-      break;
-    }
-  }
+  i = index_of_last_file_separator(fname);
 
   if (i < 0) {
     /* This can only happen for names like "////" */
@@ -109,7 +118,7 @@ file_basename(char* fname)
  * @note The caller must free the return value.
  */
 char*
-file_extname(char* fname)
+file_extname(const char* fname)
 {
   size_t basename_len = 0;
 
@@ -163,7 +172,7 @@ file_extname(char* fname)
  * @todo Ruby also returns true if fname is a symlink that points at a directory.
  */
 int
-file_is_directory(char* fname)
+file_is_directory(const char* fname)
 {
   struct stat st;
 
@@ -192,7 +201,7 @@ file_is_directory(char* fname)
  * @todo Ruby also returns true if fname is a symlink that points at a file.
  */
 int
-file_is_file(char* fname)
+file_is_file(const char* fname)
 {
   struct stat st;
 
