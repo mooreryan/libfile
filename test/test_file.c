@@ -4,9 +4,6 @@
 #include "unity.h"
 #include "file.h"
 
-#define FILE_EXTNAME_TXT "test_files/file_extname.txt"
-#define FILE_BASENAME_TXT "test_files/file_basename.txt"
-
 void
 test___file_extname___should_ReturnTheExtension(void)
 {

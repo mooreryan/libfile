@@ -4,7 +4,7 @@
 #include "file.h"
 #include "err_codes.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   char* filename = "/apple/pie.txt";
 
