@@ -29,6 +29,10 @@ test___file_extname___should_ReturnTheExtension(void)
 void
 test___file_basename___should_ReturnTheBaseName(void)
 {
+  TEST_ASSERT_EQUAL_STRING("/",
+                           file_basename("/"));
+  TEST_ASSERT_EQUAL_STRING("/",
+                           file_basename("//"));
   TEST_ASSERT_EQUAL_STRING("apple.c",
                            file_basename("/home/mooreryan/apple.c"));
   TEST_ASSERT_EQUAL_STRING("apple",
