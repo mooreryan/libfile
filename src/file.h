@@ -1,11 +1,26 @@
 #if defined(_WIN32)
-#define FILE_SEPARATOR	'\\'
+#  define FILE_SEPARATOR '\\'
 #else
-#define FILE_SEPARATOR  '/'
+#  define FILE_SEPARATOR '/'
 #endif
 
-char* file_basename(char* file_name);
+/* Ruby source defines this macro.  This is how it is defined on the
+   Mac as well. */
+#if !defined(S_ISDIR)
+#  define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+#endif
 
-char* file_dirname(char* file_name);
+#if !defined(S_ISREG)
+#  define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
+#endif
 
-char* file_extname(char* file_name);
+
+
+char* file_basename(char* fname);
+
+char* file_dirname(char* fname);
+
+char* file_extname(char* fname);
+
+int file_is_directory(char* fname);
+int file_is_file(char* fname);
