@@ -18,6 +18,8 @@
 int
 index_before_first_trailing_file_separator(const char* fname)
 {
+  assert(fname != NULL);
+
   int i = 0;
 
   for (i = strlen(fname) - 1; i >= 0; --i) {
@@ -32,6 +34,8 @@ index_before_first_trailing_file_separator(const char* fname)
 int
 index_of_last_file_separator(const char* fname)
 {
+  assert(fname != NULL);
+
   int i = 0;
 
   for (i = strlen(fname) - 1; i >= 0; --i) {
@@ -46,9 +50,10 @@ index_of_last_file_separator(const char* fname)
 int
 index_of_last_file_separator_from_pos(const char* fname, int pos)
 {
-  int i = 0;
-
+  assert(fname != NULL);
   assert(pos <= strlen(fname) - 1);
+
+  int i = 0;
 
   for (i = pos; i >= 0; --i) {
     if (fname[i] == FILE_SEPARATOR) {
@@ -63,7 +68,7 @@ char*
 make_simple_string(char c)
 {
   char* str = malloc(sizeof(char) * 2);
-  PANIC_MEM(stderr, str);
+  if (str == NULL) { return NULL; }
 
   str[0] = c;
   str[1] = '\0';
@@ -75,9 +80,76 @@ char*
 make_empty_string(void)
 {
   char* str = strdup("");
-  PANIC_MEM(stderr, str);
+  if (str == NULL) { return NULL; }
 
   return str;
+}
+
+/**
+ *
+ * @brief Returns true if the named file is a directory, and false otherwise.
+ *
+ * @code
+ * mkdir("apple", S_IRUSR | S_IWUSR | S_IXUSR);
+ * TEST_ASSERT_TRUE(file_is_directory("apple"));
+ *
+ * rmdir("apple");
+ * TEST_ASSERT_FALSE(file_is_directory("apple"));
+ *
+ * TEST_ASSERT_FALSE(file_is_directory(NULL));
+ * @endcode
+ *
+ * @param fname The file name or the path.
+ * @return 1 if fname is a directory, 0 otherwise.  If the fname was NULL, 0 is returned.
+ *
+ * @todo Ruby also returns true if fname is a symlink that points at a directory.
+ */
+int
+file_is_directory(const char* fname)
+{
+  if (fname == NULL) { return 0; }
+
+  struct stat st;
+
+  if (stat(fname, &st) < 0) {
+    return 0;
+  }
+  else {
+    return S_ISDIR(st.st_mode);
+  }
+}
+
+/**
+ *
+ * @brief Returns true if the named file exists and is a regular file, and false otherwise.
+ *
+ * @code
+ * TEST_ASSERT_TRUE(file_is_file("file.h"));
+ *
+ * remove("file.h");
+ * TEST_ASSERT_FALSE(file_is_file("file.h"));
+ *
+ * TEST_ASSERT_FALSE(file_is_file(NULL));
+ * @endcode
+ *
+ * @param fname The file name or the path.
+ * @return True if file exists and is regular file.  If the fname was NULL, 0 is returned.
+ *
+ * @todo Ruby also returns true if fname is a symlink that points at a file.
+ */
+int
+file_is_file(const char* fname)
+{
+  if (fname == NULL) { return 0; }
+
+  struct stat st;
+
+  if (stat(fname, &st) < 0) {
+    return 0;
+  }
+  else {
+    return S_ISREG(st.st_mode);
+  }
 }
 
 /**
@@ -90,15 +162,16 @@ make_empty_string(void)
  * TEST_ASSERT_EQUAL_STRING("/apple", file_dirname("/apple/pie.txt"));
  * @endcode
  *
- * @param fname The file name or the path
- * @return The dirname of the file or path
+ * @param fname The file name or the path.  NULL is returned if param is NULL.
+ * @return The dirname of the file or path or NULL if there were errors.
  *
  * @note The caller must free the return value.
+ * @warning The caller must check the return value for NULL.
  */
 char*
 file_dirname(const char* fname)
 {
-  PANIC_MEM(stderr, fname);
+  if (fname == NULL) { return NULL; }
 
   int i = 0;
   size_t slen = strlen(fname);
@@ -134,7 +207,7 @@ file_dirname(const char* fname)
       int i_before_last_fs = i - 1;
 
       dirname = malloc(sizeof(char) * (i_before_last_fs + 2));
-      PANIC_MEM(stderr, dirname);
+      if (dirname == NULL) { return NULL; }
 
       strncpy(dirname, fname, i_before_last_fs + 1);
       dirname[i_before_last_fs + 1] = '\0';
@@ -153,17 +226,18 @@ file_dirname(const char* fname)
  * char* extname = file_extname("/apple/pie");
  * @endcode
  *
- * @param fname The file name or the path
- * @return The basename of the file or path
+ * @param fname The file name or the path.  NULL is returned if param is NULL.
+ * @return The basename of the file or path or NULL if there were errors.
  *
  * @note The caller must free the return value.
+ * @warning The caller must check the return value for NULL.
  *
  * @todo Ruby's also takes an optional second param for extname to strip.
  */
 char*
 file_basename(const char* fname)
 {
-  PANIC_MEM(stderr, fname);
+  if (fname == NULL) { return NULL; }
 
   int i                = 0;
   int i_last_fs        = 0;
@@ -204,7 +278,7 @@ file_basename(const char* fname)
     basename_len     = i_last_fs - i_basename_start;
 
     basename = malloc(sizeof(char) * (basename_len + 1));
-    PANIC_MEM(stderr, basename);
+    if (basename == NULL) { return NULL; }
 
     for (i = 0; i < basename_len; ++i) {
       basename[i] = fname[i + i_basename_start];
@@ -223,14 +297,17 @@ file_basename(const char* fname)
  * char* extname = file_extname("/apple/pie");
  * @endcode
  *
- * @param fname The file name or the path
- * @return The extension of the file or path
+ * @param fname The file name or the path.  NULL is returned if param is NULL.
+ * @return The extension of the file or path or NULL if there were errors.
  *
  * @note The caller must free the return value.
+ * @warning The caller must check the return value for NULL.
  */
 char*
 file_extname(const char* fname)
 {
+  if (fname == NULL) { return NULL; }
+
   size_t basename_len = 0;
 
   char* basename = NULL;
@@ -238,6 +315,8 @@ file_extname(const char* fname)
   char* last_dot = NULL;
 
   basename     = file_basename(fname);
+  if (basename == NULL) { return NULL; }
+
   basename_len = strlen(basename);
 
   last_dot = strrchr(basename, '.');
@@ -252,11 +331,15 @@ file_extname(const char* fname)
       (*last_dot == basename[basename_len - 1])) {
 
     extname = malloc(sizeof(char) * 2);
+    if (extname == NULL) { return NULL; }
+
     strncpy(extname, "", 1);
     extname[1] = '\0';
   }
   else {
     extname = malloc(sizeof(char) * (basename_len + 1));
+    if (extname == NULL) { return NULL; }
+
     strncpy(extname, last_dot, basename_len);
     extname[basename_len] = '\0';
   }
@@ -264,63 +347,4 @@ file_extname(const char* fname)
   free(basename);
 
   return extname;
-}
-
-/**
- *
- * @brief Returns true if the named file is a directory, and false otherwise.
- *
- * @code
- * mkdir("apple", S_IRUSR | S_IWUSR | S_IXUSR);
- * TEST_ASSERT_TRUE(file_is_directory("apple"));
- *
- * rmdir("apple");
- * TEST_ASSERT_FALSE(file_is_directory("apple"));
- * @endcode
- *
- * @param fname The file name or the path
- * @return 1 if fname is a directory, 0 otherwise.
- *
- * @todo Ruby also returns true if fname is a symlink that points at a directory.
- */
-int
-file_is_directory(const char* fname)
-{
-  struct stat st;
-
-  if (stat(fname, &st) < 0) {
-    return 0;
-  }
-  else {
-    return S_ISDIR(st.st_mode);
-  }
-}
-
-/**
- *
- * @brief Returns true if the named file exists and is a regular file, and false otherwise.
- *
- * @code
- * TEST_ASSERT_TRUE(file_is_file("file.h"));
- *
- * remove("file.h");
- * TEST_ASSERT_FALSE(file_is_file("file.h"));
- * @endcode
- *
- * @param fname The file name or the path
- * @return True if file exists and is regular file.
- *
- * @todo Ruby also returns true if fname is a symlink that points at a file.
- */
-int
-file_is_file(const char* fname)
-{
-  struct stat st;
-
-  if (stat(fname, &st) < 0) {
-    return 0;
-  }
-  else {
-    return S_ISREG(st.st_mode);
-  }
 }

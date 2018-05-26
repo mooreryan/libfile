@@ -17,6 +17,7 @@
 void
 test___file_is_directory___should_TellIfPathIsDirectory(void)
 {
+  TEST_ASSERT_FALSE(file_is_directory(NULL));
 
   int rval = 0;
   char* dirname = "ryan_lala";
@@ -38,11 +39,15 @@ test___file_is_directory___should_TellIfPathIsDirectory(void)
   TEST_ASSERT_FALSE(file_is_directory(dirname));
 
   TEST_ASSERT_FALSE(file_is_directory(__FILE__));
+
 }
 
 void
 test___file_is_file___should_TellIfFileNameIsAFile(void)
 {
+
+  TEST_ASSERT_FALSE(file_is_file(NULL));
+
   char* fname = "ryan_lala.txt";
   remove(fname);
 
@@ -69,6 +74,9 @@ test___file_is_file___should_TellIfFileNameIsAFile(void)
 void
 test___file_basename___should_ReturnTheBaseName(void)
 {
+
+  TEST_ASSERT_NULL(file_basename(NULL));
+
   char* actual = NULL;
 
   TEST_ASSERT_EQUAL_STRING("/", (actual = file_basename("/")));
@@ -133,6 +141,8 @@ test___file_basename___should_ReturnTheBaseName(void)
 void
 test___file_dirname___should_ReturnTheDirName(void)
 {
+  TEST_ASSERT_NULL(file_dirname(NULL));
+
   char* actual = NULL;
 
   TEST_ASSERT_EQUAL_STRING("/apple", (actual = file_dirname("/apple/pie.txt")));
@@ -145,6 +155,8 @@ test___file_dirname___should_ReturnTheDirName(void)
 void
 test___file_extname___should_ReturnTheExtension(void)
 {
+  TEST_ASSERT_NULL(file_extname(NULL));
+
   char* actual = NULL;
 
   TEST_ASSERT_EQUAL_STRING(".c", (actual = file_extname("test.c")));
