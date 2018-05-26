@@ -91,32 +91,28 @@ file_dirname(const char* fname)
   i = index_of_last_file_separator(fname);
   if (i < 0 && fname[0] == FILE_SEPARATOR) {
     /* Filenames like: "/////" */
-
     dirname = make_simple_string(FILE_SEPARATOR);
   }
   else if (i < 0) {
     /* Filenames like: "apple" */
-
     dirname = make_simple_string('.');
   }
   else {
-    /* Need to make sure that there aren't a bunch of fs chars right
-       in a row. */
-    i = index_of_last_file_separator_from_pos(fname, i);
-    if (i < 0) {
-      /* This could happen for filenames like: "/////apple" */
-      assert(fname[0] == FILE_SEPARATOR);
 
-      dirname = make_simple_string(FILE_SEPARATOR);
-    }
-    else if (i == 0) {
-      /* For fnames like: "/apple" */
+    /* There was a basename.  Now we need to make sure that there
+       aren't a bunch of fs chars right in a row. */
+    i = index_of_last_file_separator_from_pos(fname, i);
+
+    if (i <= 0) {
+      /* This could happen for filenames like: "/////apple" or "/apple" */
       dirname = make_simple_string(FILE_SEPARATOR);
     }
     else {
       int i_before_last_fs = i - 1;
+
       dirname = malloc(sizeof(char) * (i_before_last_fs + 2));
       PANIC_MEM(stderr, dirname);
+
       strncpy(dirname, fname, i_before_last_fs + 1);
       dirname[i_before_last_fs + 1] = '\0';
     }
