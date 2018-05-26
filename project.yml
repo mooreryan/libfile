@@ -33,6 +33,8 @@
     - src/**
   :support:
     - test/support
+  :include:
+    - vendor/bstrlib/**
 
 :defines:
   # in order to add common defines:
