@@ -373,6 +373,7 @@ free(actual);
  * @warning The caller must check the return value for NULL.
  *
  * @todo the no_doubles path will use a bit more memory than it actually needs if some of the double // are removed.
+ * @todo Clean this up...
  */
 char*
 file_join(const char** strings, int num_strings)
