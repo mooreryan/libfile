@@ -114,3 +114,86 @@ test___rstring_chomp___should_RemoveRecordSeparators(void)
   rstring_free(rstr);
   rstring_free(actual);
 }
+
+void
+test___rstring_slice1___should_ReturnSubstringOfOneCharacter(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  rstr = rstring_new("apple");
+
+  TEST_ASSERT_EQUAL_RSTRING("a", (actual = rstring_slice1(rstr, 0)));
+  rstring_free(actual);
+
+  /* Returns NULL if you try and access beyond the length. */
+  TEST_ASSERT_NULL(rstring_slice1(rstr, 5));
+
+  /* Also returns NULL if you try and get a negative index. */
+  TEST_ASSERT_NULL(rstring_slice1(rstr, -1));
+
+  rstring_free(rstr);
+}
+
+void
+test___rstring_slice___should_ReturnSubstringOfGivenLength(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+  int len = 5;
+
+  rstr = rstring_new("apple");
+
+  /* Zero for the length gives an empty string. */
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_slice(rstr, 0, 0)));
+  rstring_free(actual);
+
+  TEST_ASSERT_EQUAL_RSTRING("a", (actual = rstring_slice(rstr, 0, 1)));
+  rstring_free(actual);
+
+  TEST_ASSERT_EQUAL_RSTRING("ap", (actual = rstring_slice(rstr, 0, 2)));
+  rstring_free(actual);
+
+  /* A length > the actual length of the string won't cause any
+     problems. */
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_slice(rstr, 0, 10)));
+  rstring_free(actual);
+
+  /* This one is just weird Ruby behavior.  Note how this is different
+     from rstring_slice1(rstr, rstring_length(rstr)). */
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_slice(rstr, len, 0)));
+  rstring_free(actual);
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_slice(rstr, len, 10)));
+  rstring_free(actual);
+
+  /* Returns NULL if you try and access just beyond the string.. */
+  TEST_ASSERT_NULL(rstring_slice(rstr, len + 1, 0));
+  TEST_ASSERT_NULL(rstring_slice(rstr, len + 1, 10));
+
+  /* Also returns NULL if you pass a negative length. */
+  TEST_ASSERT_NULL(rstring_slice(rstr, 0, -1));
+
+  /* Negative indices count backwards from the end. */
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_slice(rstr, -2, 0)));
+  rstring_free(actual);
+  TEST_ASSERT_EQUAL_RSTRING("le", (actual = rstring_slice(rstr, -2, 2)));
+  rstring_free(actual);
+  TEST_ASSERT_EQUAL_RSTRING("app", (actual = rstring_slice(rstr, -len, 3)));
+  rstring_free(actual);
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_slice(rstr, -len, len)));
+  rstring_free(actual);
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_slice(rstr, -len, len + 10)));
+  rstring_free(actual);
+
+
+  /* Negative 0 is still just 0. */
+  TEST_ASSERT_EQUAL_RSTRING("a", (actual = rstring_slice(rstr, -0, 1)));
+  rstring_free(actual);
+
+
+  /* Negative indices > the length of the string return NULL */
+  TEST_ASSERT_NULL(rstring_slice(rstr, -len - 1, 1));
+
+  rstring_free(rstr);
+
+}
