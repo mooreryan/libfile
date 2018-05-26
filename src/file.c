@@ -60,6 +60,18 @@ index_of_last_file_separator_from_pos(const char* fname, int pos)
 }
 
 char*
+make_simple_string(char c)
+{
+  char* str = malloc(sizeof(char) * 2);
+  PANIC_MEM(stderr, str);
+
+  str[0] = c;
+  str[1] = '\0';
+
+  return str;
+}
+
+char*
 file_dirname(const char* fname)
 {
   PANIC_MEM(stderr, fname);
@@ -80,18 +92,12 @@ file_dirname(const char* fname)
   if (i < 0 && fname[0] == FILE_SEPARATOR) {
     /* Filenames like: "/////" */
 
-    dirname = malloc(sizeof(char) * 2);
-    PANIC_MEM(stderr, dirname);
-    dirname[0] = FILE_SEPARATOR;
-    dirname[1] = '\0';
+    dirname = make_simple_string(FILE_SEPARATOR);
   }
   else if (i < 0) {
     /* Filenames like: "apple" */
 
-    dirname = malloc(sizeof(char) * 2);
-    PANIC_MEM(stderr, dirname);
-    dirname[0] = '.';
-    dirname[1] = '\0';
+    dirname = make_simple_string('.');
   }
   else {
     /* Need to make sure that there aren't a bunch of fs chars right
@@ -101,17 +107,11 @@ file_dirname(const char* fname)
       /* This could happen for filenames like: "/////apple" */
       assert(fname[0] == FILE_SEPARATOR);
 
-      dirname = malloc(sizeof(char) * 2);
-      PANIC_MEM(stderr, dirname);
-      dirname[0] = FILE_SEPARATOR;
-      dirname[1] = '\0';
+      dirname = make_simple_string(FILE_SEPARATOR);
     }
     else if (i == 0) {
       /* For fnames like: "/apple" */
-      dirname = malloc(sizeof(char) * 2);
-      PANIC_MEM(stderr, dirname);
-      dirname[0] = FILE_SEPARATOR;
-      dirname[1] = '\0';
+      dirname = make_simple_string(FILE_SEPARATOR);
     }
     else {
       int i_before_last_fs = i - 1;
