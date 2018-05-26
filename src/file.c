@@ -369,6 +369,9 @@ free(actual);
  *
  * @note Ruby has some weird behavior here where it sometimes keeps double // and sometimes it doesn't.  It doesn't in cases where there is more than one slash in a single one of the input strings.  Regardless, the function is for building paths so in that spirit, we don't want those double separators anyways. Soooo, it differs from Ruby in these cases.
  *
+ * @note The caller must free the return value.
+ * @warning The caller must check the return value for NULL.
+ *
  * @todo the no_doubles path will use a bit more memory than it actually needs if some of the double // are removed.
  */
 char*
