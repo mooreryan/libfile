@@ -20,3 +20,4 @@ int file_is_file(const char* fname);
 char* file_basename(const char* fname);
 char* file_dirname(const char* fname);
 char* file_extname(const char* fname);
+char* file_join(const char** strings, int num_strings);

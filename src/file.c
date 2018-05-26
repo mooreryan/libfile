@@ -348,3 +348,79 @@ file_extname(const char* fname)
 
   return extname;
 }
+
+/**
+ *
+ * @brief Returns a new path by joining the strings using the FILE_SEPARATOR.
+ *
+ * @code
+char* actual = NULL;
+const char* strings1[3] = { "apple", "pie", "good" };
+
+TEST_ASSERT_EQUAL_STRING("apple/pie/good", (actual = file_join(strings1, 3)));
+
+free(actual);
+ * @endcode
+ *
+ * @param strings Array of char arrays
+ * @param num_strings The number of elems in the strings array
+ *
+ * @return The path or NULL if there are errors or any of the strings are NULL or the strings array itself is null.
+ *
+ * @note Ruby has some weird behavior here where it sometimes keeps double // and sometimes it doesn't.  It doesn't in cases where there is more than one slash in a single one of the input strings.  Regardless, the function is for building paths so in that spirit, we don't want those double separators anyways. Soooo, it differs from Ruby in these cases.
+ *
+ * @todo the no_doubles path will use a bit more memory than it actually needs if some of the double // are removed.
+ */
+char*
+file_join(const char** strings, int num_strings)
+{
+  if (strings == NULL) { return NULL; }
+  if (num_strings < 1) { return NULL; }
+
+  int i = 0;
+  int j = 0;
+
+  /* Include enough space for the number of file_separators as well as
+     the null char */
+  int path_len = num_strings;
+
+  char* path = NULL;
+
+  for (i = 0; i < num_strings; ++i) {
+    if (strings[i] == NULL) { return NULL; }
+
+    path_len += strlen(strings[i]);
+  }
+
+  path = malloc(sizeof(char) * path_len);
+  if (path == NULL) { return NULL; }
+
+  int total_i = 0;
+  for (i = 0; i < num_strings; ++i) {
+    if (strlen(strings[i]) > 0) {
+      for (j = 0; j < strlen(strings[i]); ++j) {
+        path[total_i++] = strings[i][j];
+      }
+    }
+    if (i < num_strings - 1) {
+      path[total_i++] = FILE_SEPARATOR;
+    }
+  }
+  path[total_i++] = '\0';
+
+  char* no_doubles = malloc(sizeof(char) * (total_i + 1));
+  if (no_doubles == NULL) { return NULL; }
+
+  j = 0;
+  no_doubles[j++] = path[0];
+  for (i = 1; i < total_i-1; ++i) {
+    if (path[i] != FILE_SEPARATOR ||
+        (path[i] == FILE_SEPARATOR && path[i-1] != FILE_SEPARATOR)) {
+      no_doubles[j++] = path[i];
+    }
+  }
+  no_doubles[j++] = '\0';
+
+  free(path);
+  return no_doubles;
+}

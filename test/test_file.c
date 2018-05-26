@@ -186,3 +186,32 @@ test___file_extname___should_ReturnTheExtension(void)
   TEST_ASSERT_EQUAL_STRING(".rb", (actual = file_extname("/tmp//bla.rb")));
   free(actual);
 }
+void
+test___file_join___should_JoinStringsWithFileSep(void)
+{
+  TEST_ASSERT_NULL(file_join(NULL, 1));
+
+  char* actual = NULL;
+
+  const char* strings1[3] = { "apple", "pie", "good" };
+  TEST_ASSERT_EQUAL_STRING("apple/pie/good", (actual = file_join(strings1, 3)));
+  free(actual);
+
+  const char* strings2[1] = { "" };
+  TEST_ASSERT_EQUAL_STRING("", (actual = file_join(strings2, 1)));
+  free(actual);
+
+  const char* strings3[2] = { "", "" };
+  TEST_ASSERT_EQUAL_STRING("/", (actual = file_join(strings3, 2)));
+  free(actual);
+
+  const char* strings4[2] = { NULL, "" };
+  TEST_ASSERT_NULL(file_join(strings4, 2));
+
+  const char* strings5[1] = { "apple" };
+  TEST_ASSERT_NULL(file_join(strings5, 0));
+
+  TEST_ASSERT_NULL(file_join(NULL, 2));
+
+
+}

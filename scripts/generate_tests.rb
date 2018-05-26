@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+
+require "set"
+
 Signal.trap("PIPE", "EXIT")
 
 # See https://github.com/ruby/ruby/blob/e6ad53beaa8f61c784d7e6c9cace5bd6ecc4d5c8/test/ruby/test_file_exhaustive.rb
@@ -53,4 +56,47 @@ File.open(File.join(TEST_CODE_DIR, "test_file_autogen.c"), "w") do |f|
 
     f.puts FUNCTION % [method, assertions.join("\n")]
   end
+
+  # Write the file_join tests.
+  firsts  = ["", " ", "  ", ".", "..", "/", "//", "apple"]
+  seconds = ["", " ", "  ", ".", "..", "/", "//", "pie"]
+  thirds  = ["", " ", "  ", ".", "..", "/", "//", "good"]
+
+  join_fn = "
+void
+test___file_join(void)
+{
+char* actual = NULL;
+
+%s
+}
+"
+  n = 0
+  assertions = []
+  firsts.each do |first|
+    seconds.each do |second|
+      thirds.each do |third|
+        n += 1
+
+        strings = %Q~const char* strings%s[3] = { "%s", "%s", "%s" };~ % [n, first, second, third]
+
+        # Ruby has some weird behavior here where it sometimes keeps
+        # double // and sometimes it doesn't.  It doesn't in cases
+        # where there is more than one slash in a single one of the
+        # input strings.  Regardless, the function is for building
+        # paths so in that spirit, we don't want those double
+        # separators anyways.
+        expected = File.join(first, second, third).gsub(/\/+/, "/")
+
+        msg = "Path%s: ['%s', '%s', '%s']" % [n, first, second, third]
+
+        test = %Q~TEST_ASSERT_EQUAL_STRING_MESSAGE("%s", (actual = file_join(strings%s, 3)), "%s");
+free(actual);~ % [expected, n, msg]
+
+        assertions << ("%s\n%s" % [strings, test])
+      end
+    end
+  end
+
+  f.puts join_fn % assertions.join("\n\n")
 end
