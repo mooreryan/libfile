@@ -72,6 +72,30 @@ make_simple_string(char c)
 }
 
 char*
+make_empty_string(void)
+{
+  char* str = strdup("");
+  PANIC_MEM(stderr, str);
+
+  return str;
+}
+
+/**
+ *
+ * @brief Return the dirname of a file.
+ *
+ * Returns all components of the filename given in file_name except the last one (after first stripping trailing separators).
+ *
+ * @code
+ * TEST_ASSERT_EQUAL_STRING("/apple", file_dirname("/apple/pie.txt"));
+ * @endcode
+ *
+ * @param fname The file name or the path
+ * @return The dirname of the file or path
+ *
+ * @note The caller must free the return value.
+ */
+char*
 file_dirname(const char* fname)
 {
   PANIC_MEM(stderr, fname);
@@ -82,8 +106,7 @@ file_dirname(const char* fname)
   char* dirname = NULL;
 
   if (slen == 0) {
-    dirname = strdup("");
-    PANIC_MEM(stderr, dirname);
+    dirname = make_empty_string();
 
     return dirname;
   }
@@ -154,8 +177,7 @@ file_basename(const char* fname)
 
   /* If we are passed an empty string.... */
   if (slen == 0) {
-    basename = strdup("");
-    PANIC_MEM(stderr, basename);
+    basename = make_empty_string();
 
     return basename;
   }
@@ -165,11 +187,7 @@ file_basename(const char* fname)
   if (i < 0) {
     /* This can only happen for names like "////" */
     assert(fname[0] == FILE_SEPARATOR);
-
-    basename = malloc(sizeof(char) * 2);
-    PANIC_MEM(stderr, basename);
-    basename[0] = FILE_SEPARATOR;
-    basename[1] = '\0';
+    basename = make_simple_string(FILE_SEPARATOR);
   }
   else {
     /* The current index points to the char just before the first of
