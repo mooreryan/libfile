@@ -131,6 +131,18 @@ test___file_basename___should_ReturnTheBaseName(void)
 }
 
 void
+test___file_dirname___should_ReturnTheDirName(void)
+{
+  char* actual = NULL;
+
+  TEST_ASSERT_EQUAL_STRING("/apple", (actual = file_dirname("/apple/pie.txt")));
+  free(actual);
+
+  TEST_ASSERT_EQUAL_STRING("/", (actual = file_dirname("/apple")));
+  free(actual);
+}
+
+void
 test___file_extname___should_ReturnTheExtension(void)
 {
   char* actual = NULL;

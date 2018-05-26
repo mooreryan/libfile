@@ -16,7 +16,7 @@
 #include "err_codes.h"
 
 int
-index_of_last_file_separator(const char* fname)
+index_before_first_trailing_file_separator(const char* fname)
 {
   int i = 0;
 
@@ -28,6 +28,103 @@ index_of_last_file_separator(const char* fname)
 
   return i;
 }
+
+int
+index_of_last_file_separator(const char* fname)
+{
+  int i = 0;
+
+  for (i = strlen(fname) - 1; i >= 0; --i) {
+    if (fname[i] == FILE_SEPARATOR) {
+      break;
+    }
+  }
+
+  return i;
+}
+
+int
+index_of_last_file_separator_from_pos(const char* fname, int pos)
+{
+  int i = 0;
+
+  assert(pos <= strlen(fname) - 1);
+
+  for (i = pos; i >= 0; --i) {
+    if (fname[i] == FILE_SEPARATOR) {
+      break;
+    }
+  }
+
+  return i;
+}
+
+char*
+file_dirname(const char* fname)
+{
+  PANIC_MEM(stderr, fname);
+
+  int i = 0;
+  size_t slen = strlen(fname);
+
+  char* dirname = NULL;
+
+  if (slen == 0) {
+    dirname = strdup("");
+    PANIC_MEM(stderr, dirname);
+
+    return dirname;
+  }
+
+  i = index_of_last_file_separator(fname);
+  if (i < 0 && fname[0] == FILE_SEPARATOR) {
+    /* Filenames like: "/////" */
+
+    dirname = malloc(sizeof(char) * 2);
+    PANIC_MEM(stderr, dirname);
+    dirname[0] = FILE_SEPARATOR;
+    dirname[1] = '\0';
+  }
+  else if (i < 0) {
+    /* Filenames like: "apple" */
+
+    dirname = malloc(sizeof(char) * 2);
+    PANIC_MEM(stderr, dirname);
+    dirname[0] = '.';
+    dirname[1] = '\0';
+  }
+  else {
+    /* Need to make sure that there aren't a bunch of fs chars right
+       in a row. */
+    i = index_of_last_file_separator_from_pos(fname, i);
+    if (i < 0) {
+      /* This could happen for filenames like: "/////apple" */
+      assert(fname[0] == FILE_SEPARATOR);
+
+      dirname = malloc(sizeof(char) * 2);
+      PANIC_MEM(stderr, dirname);
+      dirname[0] = FILE_SEPARATOR;
+      dirname[1] = '\0';
+    }
+    else if (i == 0) {
+      /* For fnames like: "/apple" */
+      dirname = malloc(sizeof(char) * 2);
+      PANIC_MEM(stderr, dirname);
+      dirname[0] = FILE_SEPARATOR;
+      dirname[1] = '\0';
+    }
+    else {
+      int i_before_last_fs = i - 1;
+      dirname = malloc(sizeof(char) * (i_before_last_fs + 2));
+      PANIC_MEM(stderr, dirname);
+      strncpy(dirname, fname, i_before_last_fs + 1);
+      dirname[i_before_last_fs + 1] = '\0';
+    }
+  }
+
+  return dirname;
+}
+
 
 /**
  *
@@ -67,7 +164,7 @@ file_basename(const char* fname)
     return basename;
   }
 
-  i = index_of_last_file_separator(fname);
+  i = index_before_first_trailing_file_separator(fname);
 
   if (i < 0) {
     /* This can only happen for names like "////" */
@@ -84,7 +181,7 @@ file_basename(const char* fname)
        FILE_SEPARATORs begin at i + 1. */
     i_last_fs = i + 1;
 
-    for (i           = i_last_fs - 1; i >= 0; --i) {
+    for (i = i_last_fs - 1; i >= 0; --i) {
       if (fname[i] == FILE_SEPARATOR) {
         break;
       }
@@ -95,7 +192,7 @@ file_basename(const char* fname)
     basename = malloc(sizeof(char) * (basename_len + 1));
     PANIC_MEM(stderr, basename);
 
-    for (i                 = 0; i < basename_len; ++i) {
+    for (i = 0; i < basename_len; ++i) {
       basename[i] = fname[i + i_basename_start];
     }
     basename[basename_len] = '\0';
@@ -141,11 +238,12 @@ file_extname(const char* fname)
       (*last_dot == basename[basename_len - 1])) {
 
     extname = malloc(sizeof(char) * 2);
-    strncpy(extname, "", 2);
+    strncpy(extname, "", 1);
+    extname[1] = '\0';
   }
   else {
     extname = malloc(sizeof(char) * (basename_len + 1));
-    strncpy(extname, last_dot, basename_len + 1);
+    strncpy(extname, last_dot, basename_len);
     extname[basename_len] = '\0';
   }
 

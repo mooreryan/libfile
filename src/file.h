@@ -14,13 +14,9 @@
 #  define S_ISREG(mode) (((mode) & S_IFMT) == S_IFREG)
 #endif
 
-
-
-char* file_basename(const char* fname);
-
-char* file_dirname(const char* fname);
-
-char* file_extname(const char* fname);
-
 int file_is_directory(const char* fname);
 int file_is_file(const char* fname);
+
+char* file_basename(const char* fname);
+char* file_dirname(const char* fname);
+char* file_extname(const char* fname);
