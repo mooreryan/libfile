@@ -42,6 +42,9 @@ File.open(File.join(TEST_CODE_DIR, "test_file_autogen.c"), "w") do |f|
   f.puts '#include <stdlib.h>'
   f.puts '#include "unity.h"'
   f.puts '#include "file.h"'
+  f.puts '#include "bstrlib.h"'
+  f.puts '#include "rstring.h"'
+
   f.puts
 
   methods.each do |method, results|

@@ -14,6 +14,10 @@
 #include "unity.h"
 #include "file.h"
 
+/* Need this for the tests to compile. */
+#include "bstrlib.h"
+#include "rstring.h"
+
 void
 test___file_is_directory___should_TellIfPathIsDirectory(void)
 {

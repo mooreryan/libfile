@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "unity.h"
 #include "file.h"
+#include "bstrlib.h"
+#include "rstring.h"
 
 void
 test___file_basename(void)

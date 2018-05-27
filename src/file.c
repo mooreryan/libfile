@@ -14,6 +14,8 @@
 
 #include "file.h"
 #include "err_codes.h"
+#include "bstrlib.h"
+#include "rstring.h"
 
 int
 index_before_first_trailing_file_separator(const char* fname)
@@ -380,6 +382,33 @@ file_join(const char** strings, int num_strings)
 {
   if (strings == NULL) { return NULL; }
   if (num_strings < 1) { return NULL; }
+
+  /* /\* Check if any of the strings are null *\/ */
+  /* for (int i = 0; i < num_strings; ++i) { */
+  /*   if (strings[i] == NULL) { return NULL; } */
+  /* } */
+
+  /* rstring* path = NULL; */
+  /* rstring* sep = NULL; */
+  /* rstring_array* rary = NULL; */
+
+  /* const rstring* rstrings[num_strings]; */
+  /* for (int i = 0; i < num_strings; ++i) { */
+  /*   rstrings[i] = rstring_new(strings[i]); */
+  /* } */
+  /* rary = rstring_array_new(rstrings, num_strings); */
+  /* if (rary == NULL) { return NULL; } */
+
+  /* sep = rstring_new(FILE_SEPARATOR_STR); */
+  /* path = rstring_array_join(rary, sep); */
+  /* rstring_free(sep); */
+
+  /* char* cpath = bstr2cstr((const_bstring)path, '?'); */
+
+  /* rstring_free(path); */
+  /* rstring_array_free(rary); */
+
+  /* return cpath; */
 
   int i = 0;
   int j = 0;

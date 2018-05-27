@@ -224,6 +224,8 @@ rstring_array_new(const rstring** strings, int size)
     assert(rary->qty == 0 && rary->mlen >= size);
 
     for (i = 0; i < size; ++i) {
+      if (strings[i] == NULL) { return NULL; }
+
       rary->entry[i] = strings[i];
     }
     rary->qty = size;
