@@ -1,3 +1,6 @@
+#include <assert.h>
+#include <stdarg.h>
+
 #include "bstrlib.h"
 
 #include "rstring.h"
@@ -159,6 +162,21 @@ rstring_slice(const rstring* rstr, int index, int length)
 }
 
 /**
+ * @brief Split the rstring by the delimiter.
+ *
+ * If split_by is a ' ', string is split on whitespace, with leading whitespace and runs of contiguous whitespace characters ignored.
+ *
+ * @returns an rstring_array* with the splits.
+
+ * @note Ruby also has a version of this with a limit field.
+ */
+rstring_array*
+rstring_split_by_char(const rstring* rstr, unsigned char split_by)
+{
+
+}
+
+/**
  * @brief Return a copy of rstr with everything uppercase.
  *
  * @returns a copy of the string in uppercase or NULL if errors occured.
@@ -183,4 +201,50 @@ rstring_upcase(const rstring* rstr)
 
   return new_rstr;
 
+}
+
+rstring_array*
+rstring_array_new(rstring** strings, int size)
+{
+  if (strings == NULL) { return NULL; }
+
+  int i = 0;
+  rstring_array* rary = NULL;
+
+  rary = bstrListCreate();
+  if (rary == NULL) { return NULL; }
+
+  if (size == 0) {
+    return rary;
+  }
+  else {
+    int ret_val = bstrListAlloc(rary, size);
+    if (ret_val == BSTR_ERR) { return NULL; }
+
+    assert(rary->qty == 0 && rary->mlen >= size);
+
+    for (i = 0; i < size; ++i) {
+      rary->entry[i] = strings[i];
+    }
+    rary->qty = size;
+
+    return rary;
+  }
+}
+
+int
+rstring_array_free(rstring_array* rary)
+{
+  return bstrListDestroy((struct bstrList*)rary);
+}
+
+rstring*
+rstring_array_join(rstring_array* rstrings, rstring* sep)
+{
+  if (rstrings == NULL || sep == NULL) { return NULL; }
+  if (rstrings->qty == 0) {
+    return rstring_new("");
+  }
+
+  return bjoin((const struct bstrList*)rstrings, (const_bstring)sep);
 }

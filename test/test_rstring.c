@@ -6,6 +6,11 @@
 #include "bstrlib.h"
 
 #define TEST_ASSERT_EQUAL_RSTRING(expected, actual) TEST_ASSERT_TRUE(biseqcstr((const_bstring)actual, expected))
+#define TEST_ASSERT_EQUAL_RSTRING_ARRAY(expected, actual) \
+  do { \
+    TEST_ASSERT_EQUAL(1, rstring_array_eql(expected, actual)); \
+  } while (0)
+
 
 void setUp(void)
 {
@@ -291,4 +296,62 @@ test___rstring_upcase___should_ReturnAnUppercaseString(void)
   TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_upcase(rstr)));
   rstring_free(rstr);
   rstring_free(actual);
+}
+
+void
+test___rstring_array_join___should_JoinStrings(void)
+{
+  int size = 0;
+  rstring* actual = NULL;
+  rstring* sep = NULL;
+
+  rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
+  size = 3;
+  rstring_array* rary = rstring_array_new(strings, size);
+
+  sep = rstring_new("");
+  actual = rstring_array_join(rary, sep);
+  TEST_ASSERT_EQUAL_RSTRING("applepiegood", actual);
+  rstring_free(actual);
+  rstring_free(sep);
+
+  sep = rstring_new("/");
+  actual = rstring_array_join(rary, sep);
+  TEST_ASSERT_EQUAL_RSTRING("apple/pie/good", actual);
+  rstring_free(actual);
+  rstring_free(sep);
+
+  sep = rstring_new("//");
+  actual = rstring_array_join(rary, sep);
+  TEST_ASSERT_EQUAL_RSTRING("apple//pie//good", actual);
+  rstring_free(actual);
+  rstring_free(sep);
+
+  rstring_array_free(rary);
+
+
+  /* Empty array */
+  rstring* strings2[0] = {};
+  rary = rstring_array_new(strings2, 0);
+
+  sep = rstring_new(".");
+  actual = rstring_array_join(rary, sep);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(actual);
+  rstring_free(sep);
+
+  rstring_array_free(rary);
+
+  /* Single element */
+  rstring* strings3[1] = { rstring_new("apple") };
+  rary = rstring_array_new(strings3, 1);
+
+  sep = rstring_new(".");
+  actual = rstring_array_join(rary, sep);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(actual);
+  rstring_free(sep);
+
+  rstring_array_free(rary);
+
 }
