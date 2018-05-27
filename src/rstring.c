@@ -58,6 +58,34 @@ rstring_chomp(const rstring* rstr)
 }
 
 /**
+ * @brief Return a copy of rstr with everything lowercase.
+ *
+ * @returns a copy of the string in lowercase or NULL if errors occured.
+ *
+ * @warning The caller must free the result.
+ */
+rstring*
+rstring_downcase(const rstring* rstr)
+{
+  if (rstr == NULL) { return NULL; }
+
+  if (rstring_length(rstr) == 0) { return rstring_new(""); }
+
+  rstring* new_rstr = bstrcpy((const_bstring)rstr);
+  if (new_rstr == NULL) { return NULL; }
+
+  int ret_val = 0;
+
+  ret_val = btolower(new_rstr);
+
+  if (ret_val == RSTRING_ERR) { return NULL; }
+
+  return new_rstr;
+
+}
+
+
+/**
  * @brief Two strings are equal if they have the same length and content.
  *
  * @returns 1 if equal, 0 if not, -1 if there was an error.
@@ -128,4 +156,31 @@ rstring_slice(const rstring* rstr, int index, int length)
 
 
   return bmidstr((bstring)rstr, index, length);
+}
+
+/**
+ * @brief Return a copy of rstr with everything uppercase.
+ *
+ * @returns a copy of the string in uppercase or NULL if errors occured.
+ *
+ * @warning The caller must free the result.
+ */
+rstring*
+rstring_upcase(const rstring* rstr)
+{
+  if (rstr == NULL) { return NULL; }
+
+  if (rstring_length(rstr) == 0) { return rstring_new(""); }
+
+  rstring* new_rstr = bstrcpy((const_bstring)rstr);
+  if (new_rstr == NULL) { return NULL; }
+
+  int ret_val = 0;
+
+  ret_val = btoupper(new_rstr);
+
+  if (ret_val == RSTRING_ERR) { return NULL; }
+
+  return new_rstr;
+
 }

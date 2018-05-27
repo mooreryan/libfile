@@ -228,3 +228,67 @@ test___rstring_eql___should_TellIfStringsAreEqual(void)
   rstring_free(rstr1);
   rstring_free(rstr2);
 }
+
+void
+test___rstring_downcase___should_ReturnALowcaseString(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  rstr = rstring_new("APPLE");
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_downcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("Apple");
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_downcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple");
+  TEST_ASSERT_EQUAL_RSTRING("apple", (actual = rstring_downcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple PIE 123");
+  TEST_ASSERT_EQUAL_RSTRING("apple pie 123", (actual = rstring_downcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("");
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_downcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
+void
+test___rstring_upcase___should_ReturnAnUppercaseString(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  rstr = rstring_new("APPLE");
+  TEST_ASSERT_EQUAL_RSTRING("APPLE", (actual = rstring_upcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("Apple");
+  TEST_ASSERT_EQUAL_RSTRING("APPLE", (actual = rstring_upcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple");
+  TEST_ASSERT_EQUAL_RSTRING("APPLE", (actual = rstring_upcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple PIE 123");
+  TEST_ASSERT_EQUAL_RSTRING("APPLE PIE 123", (actual = rstring_upcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("");
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_upcase(rstr)));
+  rstring_free(rstr);
+  rstring_free(actual);
+}
