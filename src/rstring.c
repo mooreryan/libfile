@@ -250,7 +250,7 @@ rstring_array_join(const rstring_array* rstrings, const rstring* sep)
 }
 
 rstring_array*
-rstring_split(const rstring* rstr, const rstring* sep)
+rstring_split(rstring* rstr, const rstring* sep)
 {
-  return NULL;
+  return bsplitstr((bstring)rstr, (const_bstring)sep);
 }

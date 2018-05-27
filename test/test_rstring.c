@@ -305,7 +305,7 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring* actual = NULL;
   rstring* sep = NULL;
 
-  rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
+  const rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
   size = 3;
   rstring_array* rary = rstring_array_new(strings, size);
 
@@ -331,7 +331,7 @@ test___rstring_array_join___should_JoinStrings(void)
 
 
   /* Empty array */
-  rstring* strings2[0] = {};
+  const rstring* strings2[0] = {};
   rary = rstring_array_new(strings2, 0);
 
   sep = rstring_new(".");
@@ -343,7 +343,7 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_array_free(rary);
 
   /* Single element */
-  rstring* strings3[1] = { rstring_new("apple") };
+  const rstring* strings3[1] = { rstring_new("apple") };
   rary = rstring_array_new(strings3, 1);
 
   sep = rstring_new(".");
@@ -368,4 +368,40 @@ test___rstring_split___should_SplitString(void)
   TEST_ASSERT_EQUAL(1, actual->qty);
   rstring_free(rstr);
   rstring_free(sep);
+  rstring_array_free(actual);
+
+
+  actual = rstring_split((rstr = rstring_new("apple")), (sep = rstring_new("/")));
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual->entry[0]);
+  TEST_ASSERT_EQUAL(1, actual->qty);
+  /* Also it doesn't change the input */
+  TEST_ASSERT_EQUAL_RSTRING("apple", rstr);
+  rstring_free(rstr);
+  rstring_free(sep);
+  rstring_array_free(actual);
+
+  actual = rstring_split((rstr = rstring_new("apple/pie")), (sep = rstring_new("/")));
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual->entry[0]);
+  TEST_ASSERT_EQUAL_RSTRING("pie", actual->entry[1]);
+  TEST_ASSERT_EQUAL(2, actual->qty);
+  rstring_free(rstr);
+  rstring_free(sep);
+  rstring_array_free(actual);
+
+  /* It can take strings of whatever length as seps */
+  actual = rstring_split((rstr = rstring_new("apple//pie")), (sep = rstring_new("//")));
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual->entry[0]);
+  TEST_ASSERT_EQUAL_RSTRING("pie", actual->entry[1]);
+  TEST_ASSERT_EQUAL(2, actual->qty);
+  rstring_free(rstr);
+  rstring_free(sep);
+  rstring_array_free(actual);
+
+  /* It doesn't match part of the string, rather the whole thing. */
+  actual = rstring_split((rstr = rstring_new("apple/pie")), (sep = rstring_new("//")));
+  TEST_ASSERT_EQUAL_RSTRING("apple/pie", actual->entry[0]);
+  TEST_ASSERT_EQUAL(1, actual->qty);
+  rstring_free(rstr);
+  rstring_free(sep);
+  rstring_array_free(actual);
 }
