@@ -355,3 +355,17 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_array_free(rary);
 
 }
+
+void
+test___rstring_split___should_SplitString(void)
+{
+  rstring_array* actual = NULL;
+  rstring* sep = NULL;
+  rstring* rstr = NULL;
+
+  actual = rstring_split((rstr = rstring_new("")), (sep = rstring_new("/")));
+  TEST_ASSERT_EQUAL_RSTRING("", actual->entry[0]);
+  TEST_ASSERT_EQUAL(1, actual->qty);
+  rstring_free(rstr);
+  rstring_free(sep);
+}

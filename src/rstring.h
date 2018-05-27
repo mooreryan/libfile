@@ -45,12 +45,11 @@ rstring* rstring_upcase(const rstring* rstr);
 
 
 
-rstring_array* rstring_array_new(rstring** strings, int size);
+rstring_array* rstring_array_new(const rstring** strings, int size);
 int rstring_array_free(rstring_array* rary);
 
-rstring* rstring_array_join(rstring_array* rstrings, rstring* sep);
+rstring* rstring_array_join(const rstring_array* rstrings, const rstring* sep);
 
-rstring_array* rstring_split_by_char(const rstring* rstr, unsigned char split_by);
-rstring_array* rstring_split_by_str(const rstring* rstr, const rstring* split_by);
+rstring_array* rstring_split(const rstring* rstr, const rstring* sep);
 
 #endif // _RSTRING_H

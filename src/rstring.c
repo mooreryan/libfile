@@ -204,7 +204,7 @@ rstring_upcase(const rstring* rstr)
 }
 
 rstring_array*
-rstring_array_new(rstring** strings, int size)
+rstring_array_new(const rstring** strings, int size)
 {
   if (strings == NULL) { return NULL; }
 
@@ -239,7 +239,7 @@ rstring_array_free(rstring_array* rary)
 }
 
 rstring*
-rstring_array_join(rstring_array* rstrings, rstring* sep)
+rstring_array_join(const rstring_array* rstrings, const rstring* sep)
 {
   if (rstrings == NULL || sep == NULL) { return NULL; }
   if (rstrings->qty == 0) {
@@ -247,4 +247,10 @@ rstring_array_join(rstring_array* rstrings, rstring* sep)
   }
 
   return bjoin((const struct bstrList*)rstrings, (const_bstring)sep);
+}
+
+rstring_array*
+rstring_split(const rstring* rstr, const rstring* sep)
+{
+  return NULL;
 }
