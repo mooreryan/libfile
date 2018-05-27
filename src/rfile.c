@@ -61,25 +61,28 @@ index_of_last_file_separator(const rstring* fname)
 }
 
 
-char*
-make_simple_string(char c)
+/**
+ * @brief Tells whether a file exists or not (i.e., stat is successful).
+ *
+ */
+int
+rfile_exist(const rstring* fname)
 {
-  char* str = malloc(sizeof(char) * 2);
-  if (str == NULL) { return NULL; }
+  if (fname == NULL) { return RSTR_ERR; }
 
-  str[0] = c;
-  str[1] = '\0';
+  int ret_val = 0;
+  char* cfname = bstr2cstr(fname, '?');
+  if (cfname == NULL) { return RSTR_ERR; }
 
-  return str;
-}
+  struct stat st;
+  ret_val = stat(cfname, &st);
 
-char*
-make_empty_string(void)
-{
-  char* str = strdup("");
-  if (str == NULL) { return NULL; }
-
-  return str;
+  if (ret_val < 0) {
+    return 0;
+  }
+  else {
+    return 1;
+  }
 }
 
 /**

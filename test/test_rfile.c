@@ -30,6 +30,41 @@ void tearDown(void)
 }
 
 void
+test___rfile_exist___should_TellIfFnameExists(void)
+{
+  TEST_ASSERT_EQUAL(RSTR_ERR, rfile_exist(NULL));
+
+  int ret_val = 0;
+  rstring* rstr = NULL;
+  char* cfname = "ryan_lala.txt";
+  rstr = rstring_new(cfname);
+
+  remove(cfname);
+
+  TEST_ASSERT_FALSE(rfile_exist(rstr));
+
+  FILE* file = fopen(cfname, "w");
+  if (file == NULL) {
+    perror("Error opening file");
+    exit(1);
+  }
+  fclose(file);
+
+  TEST_ASSERT_TRUE(rfile_exist(rstr));
+
+  remove(cfname);
+  rstring_free(rstr);
+
+  rstr = rstring_new(__FILE__);
+  TEST_ASSERT_TRUE(rfile_exist(rstr));
+  rstring_free(rstr);
+
+  rstr = rstring_new(".");
+  TEST_ASSERT_TRUE(rfile_exist(rstr));
+  rstring_free(rstr);
+}
+
+void
 test___rfile_is_directory___should_TellIfPathIsDirectory(void)
 {
   TEST_ASSERT_FALSE(rfile_is_directory(NULL));
