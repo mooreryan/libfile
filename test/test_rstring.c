@@ -46,7 +46,7 @@ void test___rstring_length___should_ReturnTheLength(void)
   int len = 0;
   rstring* rstr = NULL;
 
-  TEST_ASSERT_EQUAL(-1, rstring_length(NULL));
+  TEST_ASSERT_EQUAL(RSTR_ERR, rstring_length(NULL));
 
   rstr = rstring_new("");
   len = rstring_length(rstr);
@@ -305,7 +305,7 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring* actual = NULL;
   rstring* sep = NULL;
 
-  const rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
+  rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
   size = 3;
   rstring_array* rary = rstring_array_new(strings, size);
 
@@ -328,10 +328,13 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_free(sep);
 
   rstring_array_free(rary);
+  rstring_free(strings[0]);
+  rstring_free(strings[1]);
+  rstring_free(strings[2]);
 
 
   /* Empty array */
-  const rstring* strings2[0] = {};
+  rstring* strings2[0] = {};
   rary = rstring_array_new(strings2, 0);
 
   sep = rstring_new(".");
@@ -343,7 +346,7 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_array_free(rary);
 
   /* Single element */
-  const rstring* strings3[1] = { rstring_new("apple") };
+  rstring* strings3[1] = { rstring_new("apple") };
   rary = rstring_array_new(strings3, 1);
 
   sep = rstring_new(".");
@@ -353,6 +356,7 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_free(sep);
 
   rstring_array_free(rary);
+  rstring_free(strings3[0]);
 
 }
 

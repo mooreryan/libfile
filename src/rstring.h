@@ -5,8 +5,8 @@ typedef struct tagbstring rstring;
 
 typedef struct bstrList rstring_array;
 
-#define RSTRING_ERR BSTR_ERR
-#define RSTRING_OK BSTR_OK
+#define RSTR_ERR BSTR_ERR
+#define RSTR_OK BSTR_OK
 
 /**
  * @brief Return the char at given position
@@ -16,7 +16,7 @@ typedef struct bstrList rstring_array;
  *
  * @returns The char at the position.  Or '\0' if the position doesn't exist ro the rstring is NULL.
  */
-/* #define rstring_char_at bchar */
+#define rstring_char_at bchar
 
 /* Constructing */
 
@@ -27,7 +27,9 @@ int rstring_free(rstring* rstr);
 
 /* Other */
 
-char rstring_char_at(const rstring* rstr, int index);
+/* char rstring_char_at(const rstring* rstr, int index); */
+
+rstring* rstring_copy(const rstring* rstr);
 
 rstring* rstring_chomp(const rstring* rstr);
 
@@ -45,10 +47,10 @@ rstring* rstring_upcase(const rstring* rstr);
 
 
 
-rstring_array* rstring_array_new(const rstring** strings, int size);
+rstring_array* rstring_array_new(rstring** strings, int size);
 int rstring_array_free(rstring_array* rary);
 
-rstring* rstring_array_join(const rstring_array* rstrings, const rstring* sep);
+rstring* rstring_array_join(rstring_array* rstrings, const rstring* sep);
 
 rstring_array* rstring_split(rstring* rstr, const rstring* sep);
 

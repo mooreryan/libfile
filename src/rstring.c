@@ -1,21 +1,26 @@
 #include <assert.h>
 #include <stdarg.h>
+#include <limits.h>
 
 #include "bstrlib.h"
 
 #include "rstring.h"
+
 
 /**
  * @brief Make a new rstring from c string.
  *
  * @return Pointer to an rstring or NULL if it failed.
  *
+ * @note Also will return NULL if you try and save a string whose length is greater than INT_MAX.
+ *
  * @warning The caller must free the result.
  */
 rstring*
 rstring_new(const char* cstr)
 {
-  return bfromcstr(cstr);
+
+  return (rstring*)bfromcstr_check_length(cstr);
 }
 
 /**
@@ -81,7 +86,7 @@ rstring_downcase(const rstring* rstr)
 
   ret_val = btolower(new_rstr);
 
-  if (ret_val == RSTRING_ERR) { return NULL; }
+  if (ret_val == RSTR_ERR) { return NULL; }
 
   return new_rstr;
 
@@ -104,12 +109,12 @@ rstring_eql(const rstring* rstr1, const rstring* rstr2)
 /**
  * @brief Returns the length of rstr.
  *
- * @returns -1 if rstr == NULL, length otherwise.
+ * @returns RSTR_ERR if rstr == NULL, length otherwise.
  */
 int
 rstring_length(const rstring* rstr)
 {
-  return blengthe(rstr, -1);
+  return blengthe(rstr, RSTR_ERR);
 }
 
 /**
@@ -197,19 +202,23 @@ rstring_upcase(const rstring* rstr)
 
   ret_val = btoupper(new_rstr);
 
-  if (ret_val == RSTRING_ERR) { return NULL; }
+  if (ret_val == RSTR_ERR) { return NULL; }
 
   return new_rstr;
 
 }
 
+/**
+ @todo Technically this should be const rstring**
+*/
 rstring_array*
-rstring_array_new(const rstring** strings, int size)
+rstring_array_new(rstring** strings, int size)
 {
   if (strings == NULL) { return NULL; }
 
   int i = 0;
   rstring_array* rary = NULL;
+  rstring* copy = NULL;
 
   rary = bstrListCreate();
   if (rary == NULL) { return NULL; }
@@ -226,7 +235,10 @@ rstring_array_new(const rstring** strings, int size)
     for (i = 0; i < size; ++i) {
       if (strings[i] == NULL) { return NULL; }
 
-      rary->entry[i] = strings[i];
+      copy = rstring_copy(strings[i]);
+      if (copy == NULL) { return NULL; }
+
+      rary->entry[i] = copy;
     }
     rary->qty = size;
 
@@ -241,7 +253,7 @@ rstring_array_free(rstring_array* rary)
 }
 
 rstring*
-rstring_array_join(const rstring_array* rstrings, const rstring* sep)
+rstring_array_join(rstring_array* rstrings, const rstring* sep)
 {
   if (rstrings == NULL || sep == NULL) { return NULL; }
   if (rstrings->qty == 0) {
@@ -255,4 +267,10 @@ rstring_array*
 rstring_split(rstring* rstr, const rstring* sep)
 {
   return bsplitstr((bstring)rstr, (const_bstring)sep);
+}
+
+rstring*
+rstring_copy(const rstring* rstr)
+{
+  return (rstring*)bstrcpy((const_bstring)rstr);
 }

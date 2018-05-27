@@ -9,3 +9,5 @@ latex
 bin
 
 src/*.o
+
+sandbox

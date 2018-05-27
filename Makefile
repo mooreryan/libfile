@@ -14,4 +14,4 @@ test_main: main
 	valgrind --leak-check=full $(BIN)/main
 
 ceedling:
-	ceedling && parallel "echo;echo;echo;echo;echo;echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'; valgrind --leak-check=full {}" ::: build/test/out/*.out
+	rm build/test/out/*; ceedling && parallel "echo;echo;echo;echo;echo;echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'; valgrind --leak-check=full {}" ::: build/test/out/*.out

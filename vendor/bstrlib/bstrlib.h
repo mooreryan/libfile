@@ -44,6 +44,7 @@ typedef const struct tagbstring * const_bstring;
 /* Copy functions */
 #define cstr2bstr bfromcstr
 extern bstring bfromcstr (const char * str);
+extern bstring bfromcstr_check_length (const char * str);
 extern bstring bfromcstralloc (int mlen, const char * str);
 extern bstring bfromcstrrangealloc (int minl, int maxl, const char* str);
 extern bstring blk2bstr (const void * blk, int len);
@@ -188,9 +189,9 @@ extern int bsreadlnsa (bstring r, struct bStream * s, const_bstring term);
 extern int bsreada (bstring b, struct bStream * s, int n);
 extern int bsunread (struct bStream * s, const_bstring b);
 extern int bspeek (bstring r, const struct bStream * s);
-extern int bssplitscb (struct bStream * s, const_bstring splitStr, 
+extern int bssplitscb (struct bStream * s, const_bstring splitStr,
 	int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
-extern int bssplitstrcb (struct bStream * s, const_bstring splitStr, 
+extern int bssplitstrcb (struct bStream * s, const_bstring splitStr,
 	int (* cb) (void * parm, int ofs, const_bstring entry), void * parm);
 extern int bseof (const struct bStream * s);
 

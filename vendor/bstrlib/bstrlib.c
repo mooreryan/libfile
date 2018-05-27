@@ -224,6 +224,41 @@ size_t j;
 	return b;
 }
 
+/**
+ * @brief Like `bfromcstr` but checks that the strlen is not >= INT_MAX.
+ *
+ * @returns the bstring or NULL if there were errors or the string length is longer than INT_MAX.
+ *
+ * @author mooreryan
+ * @date 2018-05-27
+ */
+bstring
+bfromcstr_check_length(const char* str) {
+  bstring b;
+  int i;
+  size_t j;
+
+  if (str == NULL) return NULL;
+
+  j = (strnlen) (str, INT_MAX);
+  if (j == INT_MAX) return NULL;
+
+  i = snapUpSize ((int) (j + (2 - (j != 0))));
+  if (i <= (int) j) return NULL;
+
+  b = (bstring) bstr__alloc (sizeof (struct tagbstring));
+  if (NULL == b) return NULL;
+  b->slen = (int) j;
+  if (NULL == (b->data = (unsigned char *) bstr__alloc (b->mlen = i))) {
+    bstr__free (b);
+    return NULL;
+  }
+
+  bstr__memcpy (b->data, str, j+1);
+  return b;
+}
+
+
 /*  bstring bfromcstrrangealloc (int minl, int maxl, const char* str)
  *
  *  Create a bstring which contains the contents of the '\0' terminated
