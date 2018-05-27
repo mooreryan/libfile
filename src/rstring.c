@@ -86,7 +86,7 @@ rstring_downcase(const rstring* rstr)
 
   ret_val = btolower(new_rstr);
 
-  if (ret_val == RSTR_ERR) { return NULL; }
+  if (ret_val == RERROR) { return NULL; }
 
   return new_rstr;
 
@@ -109,12 +109,12 @@ rstring_eql(const rstring* rstr1, const rstring* rstr2)
 /**
  * @brief Returns the length of rstr.
  *
- * @returns RSTR_ERR if rstr == NULL, length otherwise.
+ * @returns RERROR if rstr == NULL, length otherwise.
  */
 int
 rstring_length(const rstring* rstr)
 {
-  return blengthe(rstr, RSTR_ERR);
+  return blengthe(rstr, RERROR);
 }
 
 /**
@@ -202,7 +202,7 @@ rstring_upcase(const rstring* rstr)
 
   ret_val = btoupper(new_rstr);
 
-  if (ret_val == RSTR_ERR) { return NULL; }
+  if (ret_val == RERROR) { return NULL; }
 
   return new_rstr;
 

@@ -1,12 +1,11 @@
 #ifndef _RSTRING_H
 #define _RSTRING_H
 
+#include "rlib.h"
+
 typedef struct tagbstring rstring;
 
 typedef struct bstrList rstring_array;
-
-#define RSTR_ERR BSTR_ERR
-#define RSTR_OK BSTR_OK
 
 /**
  * @brief Return the char at given position

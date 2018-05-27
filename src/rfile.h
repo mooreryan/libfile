@@ -1,6 +1,7 @@
 #ifndef _RFILE_H
 #define _RFILE_H
 
+#include "rlib.h"
 #include "rstring.h"
 
 #if defined(_WIN32)

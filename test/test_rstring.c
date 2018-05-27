@@ -1,16 +1,10 @@
 #include "unity.h"
 #include "rstring.h"
+#include "helper.h"
 
 /* Also need to include bstrlib.h in the test file so Ceedling knows
    about it. */
 #include "bstrlib.h"
-
-#define TEST_ASSERT_EQUAL_RSTRING(expected, actual) TEST_ASSERT_TRUE(biseqcstr((const_bstring)actual, expected))
-#define TEST_ASSERT_EQUAL_RSTRING_ARRAY(expected, actual) \
-  do { \
-    TEST_ASSERT_EQUAL(1, rstring_array_eql(expected, actual)); \
-  } while (0)
-
 
 void setUp(void)
 {
@@ -38,7 +32,7 @@ test___rstring_free___should_FreeRstring(void)
 {
   rstring* rstr = rstring_new("apple");
   int ret = rstring_free(rstr);
-  TEST_ASSERT_EQUAL(BSTR_OK, ret);
+  TEST_ASSERT_EQUAL(ROKAY, ret);
 }
 
 void test___rstring_length___should_ReturnTheLength(void)
@@ -46,7 +40,7 @@ void test___rstring_length___should_ReturnTheLength(void)
   int len = 0;
   rstring* rstr = NULL;
 
-  TEST_ASSERT_EQUAL(RSTR_ERR, rstring_length(NULL));
+  TEST_ASSERT_RERROR(rstring_length(NULL));
 
   rstr = rstring_new("");
   len = rstring_length(rstr);

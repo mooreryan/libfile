@@ -15,12 +15,11 @@
 #include "rfile.h"
 #include "err_codes.h"
 #include "bstrlib.h"
-#include "rstring.h"
 
 int
 index_before_first_trailing_file_separator(const rstring* fname)
 {
-  if (fname == NULL) { return RSTR_ERR; }
+  if (fname == NULL) { return RERROR; }
 
   int i = 0;
 
@@ -37,7 +36,7 @@ int
 index_of_last_file_separator_from_pos(const rstring* fname, int pos)
 {
   if (fname == NULL || pos < 0 || pos >= rstring_length(fname)) {
-    return RSTR_ERR;
+    return RERROR;
   }
   int i = 0;
 
@@ -53,7 +52,7 @@ index_of_last_file_separator_from_pos(const rstring* fname, int pos)
 int
 index_of_last_file_separator(const rstring* fname)
 {
-  if (fname == NULL) { return RSTR_ERR; }
+  if (fname == NULL) { return RERROR; }
 
   int pos = rstring_length(fname) - 1;
 
@@ -68,20 +67,20 @@ index_of_last_file_separator(const rstring* fname)
 int
 rfile_exist(const rstring* fname)
 {
-  if (fname == NULL) { return RSTR_ERR; }
+  if (fname == NULL) { return RERROR; }
 
   int ret_val = 0;
   char* cfname = bstr2cstr(fname, '?');
-  if (cfname == NULL) { return RSTR_ERR; }
+  if (cfname == NULL) { return RERROR; }
 
   struct stat st;
   ret_val = stat(cfname, &st);
 
   if (ret_val < 0) {
-    return 0;
+    return RFALSE;
   }
   else {
-    return 1;
+    return RTRUE;
   }
 }
 
@@ -90,18 +89,18 @@ rfile_exist(const rstring* fname)
  * @brief Returns true if the named file is a directory, and false otherwise.
  *
  * @param fname The file name or the path.
- * @return 1 if fname is a directory, 0 otherwise.  If the fname was NULL, 0 is returned.
+ * @return RTRUE if fname is a directory, RFALSE if not, RERROR if errors occured.
  *
  * @todo Ruby also returns true if fname is a symlink that points at a directory.
  */
 int
 rfile_is_directory(const rstring* fname)
 {
-  if (fname == NULL) { return 0; }
+  if (fname == NULL) { return RERROR; }
 
   int ret_val = 0;
   char* cfname = bstr2cstr(fname, '?');
-  if (cfname == NULL) { return 0; }
+  if (cfname == NULL) { return RERROR; }
 
   struct stat st;
 
@@ -109,11 +108,11 @@ rfile_is_directory(const rstring* fname)
 
   bcstrfree(cfname);
 
-  if (ret_val < 0) {
-    return 0;
+  if (ret_val < 0 || !S_ISDIR(st.st_mode)) {
+    return RFALSE;
   }
   else {
-    return S_ISDIR(st.st_mode);
+    return RTRUE;
   }
 }
 
@@ -129,11 +128,11 @@ rfile_is_directory(const rstring* fname)
 int
 rfile_is_file(const rstring* fname)
 {
-  if (fname == NULL) { return 0; }
+  if (fname == NULL) { return RERROR; }
 
   int ret_val = 0;
   char* cfname = bstr2cstr(fname, '?');
-  if (cfname == NULL) { return 0; }
+  if (cfname == NULL) { return RERROR; }
 
   struct stat st;
 
@@ -141,11 +140,11 @@ rfile_is_file(const rstring* fname)
 
   bcstrfree(cfname);
 
-  if (ret_val < 0) {
-    return 0;
+  if (ret_val < 0 || !S_ISREG(st.st_mode)) {
+    return RFALSE;
   }
   else {
-    return S_ISREG(st.st_mode);
+    return RTRUE;
   }
 }
 
@@ -171,7 +170,7 @@ rfile_basename(const rstring* fname)
   int i_basename_start = 0;
 
   int slen         = rstring_length(fname);
-  if (slen == RSTR_ERR) { return NULL; }
+  if (slen == RERROR) { return NULL; }
 
   int basename_len = 0;
 

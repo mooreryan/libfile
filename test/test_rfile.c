@@ -12,14 +12,13 @@
 #include <errno.h>
 
 #include "unity.h"
+#include "helper.h"
 #include "rfile.h"
 
 /* Need this for the tests to compile. */
 #include "bstrlib.h"
+#include "rlib.h"
 #include "rstring.h"
-
-#define TEST_ASSERT_EQUAL_RSTRING(expected, actual) TEST_ASSERT_TRUE(biseqcstr((const_bstring)actual, expected))
-#define TEST_ASSERT_EQUAL_RSTRING_MESSAGE(expected, actual, msg) TEST_ASSERT_TRUE_MESSAGE(biseqcstr((const_bstring)actual, expected), msg)
 
 void setUp(void)
 {
@@ -32,7 +31,7 @@ void tearDown(void)
 void
 test___rfile_exist___should_TellIfFnameExists(void)
 {
-  TEST_ASSERT_EQUAL(RSTR_ERR, rfile_exist(NULL));
+  TEST_ASSERT_RERROR(rfile_exist(NULL));
 
   int ret_val = 0;
   rstring* rstr = NULL;
@@ -41,7 +40,7 @@ test___rfile_exist___should_TellIfFnameExists(void)
 
   remove(cfname);
 
-  TEST_ASSERT_FALSE(rfile_exist(rstr));
+  TEST_ASSERT_RFALSE(rfile_exist(rstr));
 
   FILE* file = fopen(cfname, "w");
   if (file == NULL) {
@@ -50,24 +49,24 @@ test___rfile_exist___should_TellIfFnameExists(void)
   }
   fclose(file);
 
-  TEST_ASSERT_TRUE(rfile_exist(rstr));
+  TEST_ASSERT_RTRUE(rfile_exist(rstr));
 
   remove(cfname);
   rstring_free(rstr);
 
   rstr = rstring_new(__FILE__);
-  TEST_ASSERT_TRUE(rfile_exist(rstr));
+  TEST_ASSERT_RTRUE(rfile_exist(rstr));
   rstring_free(rstr);
 
   rstr = rstring_new(".");
-  TEST_ASSERT_TRUE(rfile_exist(rstr));
+  TEST_ASSERT_RTRUE(rfile_exist(rstr));
   rstring_free(rstr);
 }
 
 void
 test___rfile_is_directory___should_TellIfPathIsDirectory(void)
 {
-  TEST_ASSERT_FALSE(rfile_is_directory(NULL));
+  TEST_ASSERT_RERROR(rfile_is_directory(NULL));
 
   rstring* rstr = NULL;
   int ret_val = 0;
@@ -80,7 +79,7 @@ test___rfile_is_directory___should_TellIfPathIsDirectory(void)
     exit(1);
   }
   rstr = rstring_new(dirname);
-  TEST_ASSERT_TRUE(rfile_is_directory(rstr));
+  TEST_ASSERT_RTRUE(rfile_is_directory(rstr));
   rstring_free(rstr);
 
   ret_val = rmdir(dirname);
@@ -89,11 +88,11 @@ test___rfile_is_directory___should_TellIfPathIsDirectory(void)
     exit(1);
   }
   rstr = rstring_new(dirname);
-  TEST_ASSERT_FALSE(rfile_is_directory(rstr));
+  TEST_ASSERT_RFALSE(rfile_is_directory(rstr));
   rstring_free(rstr);
 
   rstr = rstring_new(__FILE__);
-  TEST_ASSERT_FALSE(rfile_is_directory(rstr));
+  TEST_ASSERT_RFALSE(rfile_is_directory(rstr));
   rstring_free(rstr);
 }
 
@@ -103,7 +102,7 @@ test___rfile_is_file___should_TellIfFileNameIsAFile(void)
 
   rstring* rstr = NULL;
 
-  TEST_ASSERT_FALSE(rfile_is_file(NULL));
+  TEST_ASSERT_RERROR(rfile_is_file(NULL));
 
   char* fname = "ryan_lala.txt";
   remove(fname);
@@ -117,14 +116,14 @@ test___rfile_is_file___should_TellIfFileNameIsAFile(void)
   fclose(file);
 
   rstr = rstring_new(fname);
-  TEST_ASSERT_TRUE(rfile_is_file(rstr));
+  TEST_ASSERT_RTRUE(rfile_is_file(rstr));
   remove(fname);
-  TEST_ASSERT_FALSE(rfile_is_file(rstr));
+  TEST_ASSERT_RFALSE(rfile_is_file(rstr));
   rstring_free(rstr);
 
 
   rstr = rstring_new(__FILE__);
-  TEST_ASSERT_TRUE(rfile_is_file(rstr));
+  TEST_ASSERT_RTRUE(rfile_is_file(rstr));
   rstring_free(rstr);
 }
 
