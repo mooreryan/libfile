@@ -27,17 +27,6 @@ rstring_free(rstring* rstr)
 }
 
 /**
- * @brief Returns the length of rstr.
- *
- * @returns -1 if rstr == NULL, length otherwise.
- */
-int
-rstring_length(rstring* rstr)
-{
-  return blengthe(rstr, -1);
-}
-
-/**
  * @brief Return a new string with final trailing record separator removed.
  *
  * Will remove \n, \r, and \r\n.  If there are multiple line separators at the end of the string, only the last one will be removed.
@@ -47,7 +36,7 @@ rstring_length(rstring* rstr)
  * @warning The caller must free the result.
  */
 rstring*
-rstring_chomp(rstring* rstr)
+rstring_chomp(const rstring* rstr)
 {
 
 
@@ -64,8 +53,32 @@ rstring_chomp(rstring* rstr)
     return rstring_slice(rstr, 0, len-1);
   }
   else {
-    return bstrcpy((bstring)rstr);
+    return bstrcpy((const_bstring)rstr);
   }
+}
+
+/**
+ * @brief Two strings are equal if they have the same length and content.
+ *
+ * @returns 1 if equal, 0 if not, -1 if there was an error.
+ *
+ * @note This differs from ruby in that you can't just check for true or false, you must check for 1 or 0 as -1 signals an error.
+ */
+int
+rstring_eql(const rstring* rstr1, const rstring* rstr2)
+{
+  return biseq((const_bstring)rstr1, (const_bstring)rstr2);
+}
+
+/**
+ * @brief Returns the length of rstr.
+ *
+ * @returns -1 if rstr == NULL, length otherwise.
+ */
+int
+rstring_length(const rstring* rstr)
+{
+  return blengthe(rstr, -1);
 }
 
 /**
@@ -76,7 +89,7 @@ rstring_chomp(rstring* rstr)
  * @warning The caller must free the result.
  */
 rstring*
-rstring_slice1(rstring* rstr, int index)
+rstring_slice1(const rstring* rstr, int index)
 {
   if (index < 0 || index >= rstring_length(rstr)) {
     return NULL;
@@ -94,7 +107,7 @@ rstring_slice1(rstring* rstr, int index)
  * @warning The caller must free the result.
  */
 rstring*
-rstring_slice(rstring* rstr, int index, int length)
+rstring_slice(const rstring* rstr, int index, int length)
 {
   int len = rstring_length(rstr);
   int idx = index;

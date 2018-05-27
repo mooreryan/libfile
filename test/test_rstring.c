@@ -197,3 +197,34 @@ test___rstring_slice___should_ReturnSubstringOfGivenLength(void)
   rstring_free(rstr);
 
 }
+
+void
+test___rstring_eql___should_TellIfStringsAreEqual(void)
+{
+  rstring* rstr1 = NULL;
+  rstring* rstr2 = NULL;
+
+  rstr1 = rstring_new("apple");
+  rstr2 = rstring_new("apple");
+
+  TEST_ASSERT_EQUAL(1, rstring_eql(rstr1, rstr2));
+
+  rstring_free(rstr2);
+  rstr2 = rstring_new("pie");
+
+  TEST_ASSERT_EQUAL(0, rstring_eql(rstr1, rstr2));
+  rstring_free(rstr2);
+
+  /* Weird things you shouldn't do, like manually change the length. */
+  rstr2 = rstring_new("apple");
+  rstr2->data[0] = 'Z';
+  TEST_ASSERT_EQUAL(0, rstring_eql(rstr1, rstr2));
+
+  rstr2->data[0] = 'a';
+  rstr2->slen = 10;
+  TEST_ASSERT_EQUAL(0, rstring_eql(rstr1, rstr2));
+  rstr2->slen = 5;
+
+  rstring_free(rstr1);
+  rstring_free(rstr2);
+}
