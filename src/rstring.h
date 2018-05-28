@@ -17,6 +17,11 @@ typedef struct bstrList rstring_array;
  */
 #define rstring_char_at bchar
 
+/**
+ * @brief These conditions must hold for the rstring to be valid.  See the btolower function for this.
+ */
+#define rstring_bad(rstr) (rstr == NULL || rstr->data == NULL || rstr->mlen < rstr->slen || rstr->slen < 0 || rstr->mlen <=0)
+
 /* Constructing */
 
 rstring* rstring_new(const char* cstr);

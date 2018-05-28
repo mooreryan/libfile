@@ -6,21 +6,25 @@
 
 #include "rstring.h"
 
-
 /**
  * @brief Make a new rstring from c string.
  *
- * @return Pointer to an rstring or NULL if it failed.
+ * @return Pointer to an rstring or NULL if there were errors or cstr is NULL.
  *
  * @note Also will return NULL if you try and save a string whose length is greater than INT_MAX.
  *
  * @warning The caller must free the result.
- */
+*/
 rstring*
 rstring_new(const char* cstr)
 {
+  if (cstr == NULL) { return NULL; }
 
-  return (rstring*)bfromcstr_check_length(cstr);
+  rstring* rstr = (rstring*)bfromcstr_check_length(cstr);
+
+  if (rstring_bad(rstr)) { return NULL; }
+
+  return rstr;
 }
 
 /**
