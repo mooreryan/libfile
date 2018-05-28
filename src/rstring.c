@@ -208,6 +208,63 @@ rstring_upcase(const rstring* rstr)
 
 }
 
+rstring_array*
+rstring_array_new2()
+{
+  rstring_array* rary = NULL;
+
+  rary = bstrListCreate();
+  if (rary == NULL) { return NULL; }
+
+  return rary;
+}
+
+int
+rstring_array_push_rstr(rstring_array* rary, rstring* rstr)
+{
+  int current_size = rary->qty;
+  int rval = 0;
+  rval = bstrListAlloc((struct bstrList*)rary, current_size + 1);
+  if (rval == BSTR_ERR) { return RERROR; }
+  rary->qty = current_size + 1;
+  rary->entry[rary->qty - 1] = rstr;
+  assert(rary->qty <= rary->mlen);
+
+  return ROKAY;
+}
+
+int
+rstring_array_push_cstr(rstring_array* rary, char* cstr)
+{
+  int current_size = rary->qty;
+  int rval = 0;
+  rstring* rstr = NULL;
+  rval = bstrListAlloc((struct bstrList*)rary, current_size + 1);
+  if (rval == BSTR_ERR) { return RERROR; }
+
+  rstr = rstring_new(cstr);
+  if (rstr == NULL) { return RERROR; }
+
+  rary->qty = current_size + 1;
+  rary->entry[rary->qty - 1] = rstr;
+  assert(rary->qty <= rary->mlen);
+
+  return ROKAY;
+}
+
+rstring*
+rstring_array_get(rstring_array* rary, int index)
+{
+  if (index < 0 || index >= rary->qty) { return NULL; }
+  if (rary->qty > rary->mlen) { return NULL; }
+
+  rstring* rstr = NULL;
+  rstr = rary->entry[index];
+  if (rstr == NULL) { return NULL; }
+
+  return rstr;
+}
+
 /**
  @todo Technically this should be const rstring**
 */

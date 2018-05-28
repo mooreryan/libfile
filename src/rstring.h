@@ -46,8 +46,16 @@ rstring* rstring_upcase(const rstring* rstr);
 
 
 
+rstring_array* rstring_array_new2();
 rstring_array* rstring_array_new(rstring** strings, int size);
 int rstring_array_free(rstring_array* rary);
+
+int rstring_array_push_cstr(rstring_array* rary, char* cstr);
+int rstring_array_push_rstr(rstring_array* rary, rstring* rstr);
+
+rstring* rstring_array_get(rstring_array* rary, int index);
+
+
 
 rstring* rstring_array_join(rstring_array* rstrings, const rstring* sep);
 
