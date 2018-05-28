@@ -301,7 +301,10 @@ test___rstring_array_join___should_JoinStrings(void)
 
   rstring* strings[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
   size = 3;
-  rstring_array* rary = rstring_array_new(strings, size);
+  rstring_array* rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
 
   sep = rstring_new("");
   actual = rstring_array_join(rary, sep);
@@ -328,8 +331,7 @@ test___rstring_array_join___should_JoinStrings(void)
 
 
   /* Empty array */
-  rstring* strings2[0] = {};
-  rary = rstring_array_new(strings2, 0);
+  rary = rstring_array_new();
 
   sep = rstring_new(".");
   actual = rstring_array_join(rary, sep);
@@ -340,8 +342,8 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_array_free(rary);
 
   /* Single element */
-  rstring* strings3[1] = { rstring_new("apple") };
-  rary = rstring_array_new(strings3, 1);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
 
   sep = rstring_new(".");
   actual = rstring_array_join(rary, sep);
@@ -350,7 +352,6 @@ test___rstring_array_join___should_JoinStrings(void)
   rstring_free(sep);
 
   rstring_array_free(rary);
-  rstring_free(strings3[0]);
 
 }
 
@@ -407,7 +408,7 @@ test___rstring_split___should_SplitString(void)
 void
 test___rstring_array_push_cstr___should_AddTheCstr(void)
 {
-  rstring_array* rary = rstring_array_new2();
+  rstring_array* rary = rstring_array_new();
 
   rstring_array_push_cstr(rary, "apple");
   TEST_ASSERT_EQUAL_RSTRING("apple", rary->entry[0]);
@@ -426,7 +427,7 @@ test___rstring_array_push_cstr___should_AddTheCstr(void)
 void
 test___rstring_array_push_rstr___should_AddTheCstr(void)
 {
-  rstring_array* rary = rstring_array_new2();
+  rstring_array* rary = rstring_array_new();
 
   rstring_array_push_rstr(rary, rstring_new("apple"));
   TEST_ASSERT_EQUAL_RSTRING("apple", rary->entry[0]);
@@ -438,23 +439,27 @@ test___rstring_array_push_rstr___should_AddTheCstr(void)
   TEST_ASSERT_EQUAL_RSTRING("pie", rary->entry[1]);
   TEST_ASSERT_EQUAL(2, rary->qty);
   TEST_ASSERT(rary->mlen >= rary->qty);
+
+  rstring_array_free(rary);
 }
 
 void
 test___rstring_array_get___should_ReturnElemAtIndex(void)
 {
-  rstring_array* rary = rstring_array_new2();
+  rstring_array* rary = rstring_array_new();
 
   TEST_ASSERT_NULL(rstring_array_get(rary, -1));
-  TEST_ASSERT_NULL(rstring_array_get(rary, 0))
-  TEST_ASSERT_NULL(rstring_array_get(rary, 1))
+  TEST_ASSERT_NULL(rstring_array_get(rary, 0));
+  TEST_ASSERT_NULL(rstring_array_get(rary, 1));
 
   rstring_array_push_cstr(rary, "apple");
-  TEST_ASSERT_EQUAL_RSTRING("apple", rstring_array_get(rary, 0))
+  TEST_ASSERT_EQUAL_RSTRING("apple", rstring_array_get(rary, 0));
   TEST_ASSERT_NULL(rstring_array_get(rary, 1))
 
-  rstring_array_push_cstr(rary, "pie");
-  TEST_ASSERT_EQUAL_RSTRING("apple", rstring_array_get(rary, 0))
-  TEST_ASSERT_EQUAL_RSTRING("pie", rstring_array_get(rary, 1))
-  TEST_ASSERT_NULL(rstring_array_get(rary, 2))
+    rstring_array_push_cstr(rary, "pie");
+  TEST_ASSERT_EQUAL_RSTRING("apple", rstring_array_get(rary, 0));
+  TEST_ASSERT_EQUAL_RSTRING("pie", rstring_array_get(rary, 1));
+  TEST_ASSERT_NULL(rstring_array_get(rary, 2));
+
+  rstring_array_free(rary);
 }

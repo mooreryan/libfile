@@ -252,41 +252,36 @@ test___rfile_extname___should_ReturnTheExtension(void)
 void
 test___rfile_join___should_JoinStringsWithFileSep(void)
 {
-  TEST_ASSERT_NULL(rfile_join(NULL, 1));
+  TEST_ASSERT_NULL(rfile_join(NULL));
 
-  rstring* rstr = NULL;
+  int val = 0;
+  rstring_array* rary = NULL;
   rstring* actual = NULL;
 
-  rstring* strings1[3] = {
-    rstring_new("apple"),
-    rstring_new("pie"),
-    rstring_new("good")
-  };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(strings1, 3)), actual->data);
+  rary = rstring_array_new();
+  assert(rstring_array_push_cstr(rary, "apple") == ROKAY);
+  assert(rstring_array_push_cstr(rary, "pie") == ROKAY);
+  assert(rstring_array_push_cstr(rary, "good") == ROKAY);
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(rary)), actual->data);
   rstring_free(actual);
-  rstring_free(rstr);
-  rstring_free(strings1[0]);
-  rstring_free(strings1[1]);
-  rstring_free(strings1[2]);
+  rstring_array_free(rary);
 
-  rstring* strings2[1] = { rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING("", (actual = rfile_join(strings2, 1)));
-  rstring_free(actual); rstring_free(rstr);
-  rstring_free(strings2[0]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  TEST_ASSERT_EQUAL_RSTRING("", (actual = rfile_join(rary)));
+  rstring_free(actual);
+  rstring_array_free(rary);
 
-  rstring* strings3[2] = { rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING("/", (actual = rfile_join(strings3, 2)));
-  rstring_free(actual); rstring_free(rstr);
-  rstring_free(strings3[0]);
-  rstring_free(strings3[1]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  TEST_ASSERT_EQUAL_RSTRING("/", (actual = rfile_join(rary)));
+  rstring_free(actual);
+  rstring_array_free(rary);
 
-  rstring* strings4[2] = { rstring_new(NULL), rstring_new("") };
-  TEST_ASSERT_NULL(rfile_join(strings4, 2));
-  rstring_free(strings4[1]);
-
-  rstring* strings5[1] = { rstring_new("apple") };
-  TEST_ASSERT_NULL(rfile_join(strings5, 0));
-  rstring_free(strings5[0]);
-
-  TEST_ASSERT_NULL(rfile_join(NULL, 2));
+  /* There's actually no way to get an rstring_array with one of its members being NULL now. */
+  /* rstring* strings4[2] = { rstring_new(NULL), rstring_new("") }; */
+  /* TEST_ASSERT_NULL(rfile_join(strings4, 2)); */
+  /* rstring_free(strings4[1]); */
 }

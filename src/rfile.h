@@ -33,6 +33,6 @@ rstring* rfile_dirname(const rstring* fname);
 rstring* rfile_extname(const rstring* fname);
 
 /* Making paths */
-rstring* rfile_join(rstring** strings, int num_strings);
+rstring* rfile_join(rstring_array* rary);
 
 #endif // _RFILE_H

@@ -76,6 +76,8 @@ rfile_exist(const rstring* fname)
   struct stat st;
   ret_val = stat(cfname, &st);
 
+  free(cfname);
+
   if (ret_val < 0) {
     return RFALSE;
   }
@@ -351,31 +353,25 @@ free(actual);
  * @todo Clean this up...
  */
 rstring*
-rfile_join(rstring** rstrings, int num_rstrings)
+rfile_join(rstring_array* rary)
 {
-  if (rstrings == NULL) { return NULL; }
-  if (num_rstrings < 1) { return NULL; }
+  if (rary == NULL) { return NULL; }
 
   int i = 0;
   int j = 0;
 
   /* Check if any of the rstrings are null */
-  for (i = 0; i < num_rstrings; ++i) {
-    if (rstrings[i] == NULL) { return NULL; }
+  for (i = 0; i < rary->qty; ++i) {
+    if (rstring_array_get(rary, i) == NULL) { return NULL; }
   }
 
   rstring* path = NULL;
   rstring* sep = NULL;
-  rstring_array* rary = NULL;
   unsigned char c = '\0';
-
-  rary = rstring_array_new(rstrings, num_rstrings);
-  if (rary == NULL) { return NULL; }
 
   sep = rstring_new(RFILE_SEPARATOR_STR);
   path = rstring_array_join(rary, sep);
   rstring_free(sep);
-  rstring_array_free(rary);
 
   /* If it's empty, there are no doubles. */
   if (rstring_length(path) == 0) {

@@ -72,6 +72,7 @@ void
 test___rfile_join(void)
 {
   rstring* actual = NULL;
+  rstring_array* rary = NULL;
 
 %s
 }
@@ -83,7 +84,14 @@ test___rfile_join(void)
       thirds.each do |third|
         n += 1
 
-        strings = %Q~  rstring* strings%s[3] = { rstring_new("%s"), rstring_new("%s"), rstring_new("%s") };~ % [n, first, second, third]
+        strings = %Q~
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "%s");
+  rstring_array_push_cstr(rary, "%s");
+  rstring_array_push_cstr(rary, "%s");
+~ % [first, second, third]
+
+        # strings = %Q~  rstring* strings%s[3] = { rstring_new("%s"), rstring_new("%s"), rstring_new("%s") };~ % [n, first, second, third]
 
         # Ruby has some weird behavior here where it sometimes keeps
         # double // and sometimes it doesn't.  It doesn't in cases
@@ -95,8 +103,8 @@ test___rfile_join(void)
 
         msg = "Path%s: ['%s', '%s', '%s']" % [n, first, second, third]
 
-        test = %Q~  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("%s", (actual = rfile_join(strings%s, 3)), "%s");~ % [expected, n, msg]
-        clean_up = %Q~  rstring_free(actual); rstring_free(strings%s[0]); rstring_free(strings%s[1]); rstring_free(strings%s[2]);~ % [n, n, n]
+        test = %Q~  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("%s", (actual = rfile_join(rary)), "%s");~ % [expected, n, msg]
+        clean_up = %Q~  rstring_free(actual); rstring_array_free(rary);~
 
         assertions << ("%s\n%s\n%s" % [strings, test, clean_up])
       end

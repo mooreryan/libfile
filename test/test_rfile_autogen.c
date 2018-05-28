@@ -5075,2052 +5075,4613 @@ void
 test___rfile_join(void)
 {
   rstring* actual = NULL;
+  rstring_array* rary = NULL;
 
-  rstring* strings1[3] = { rstring_new(""), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings1, 3)), "Path1: ['', '', '']");
-  rstring_free(actual); rstring_free(strings1[0]); rstring_free(strings1[1]); rstring_free(strings1[2]);
 
-  rstring* strings2[3] = { rstring_new(""), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings2, 3)), "Path2: ['', '', ' ']");
-  rstring_free(actual); rstring_free(strings2[0]); rstring_free(strings2[1]); rstring_free(strings2[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings3[3] = { rstring_new(""), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings3, 3)), "Path3: ['', '', '  ']");
-  rstring_free(actual); rstring_free(strings3[0]); rstring_free(strings3[1]); rstring_free(strings3[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "1");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings4[3] = { rstring_new(""), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings4, 3)), "Path4: ['', '', '.']");
-  rstring_free(actual); rstring_free(strings4[0]); rstring_free(strings4[1]); rstring_free(strings4[2]);
 
-  rstring* strings5[3] = { rstring_new(""), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings5, 3)), "Path5: ['', '', '..']");
-  rstring_free(actual); rstring_free(strings5[0]); rstring_free(strings5[1]); rstring_free(strings5[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings6[3] = { rstring_new(""), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings6, 3)), "Path6: ['', '', '/']");
-  rstring_free(actual); rstring_free(strings6[0]); rstring_free(strings6[1]); rstring_free(strings6[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "2");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings7[3] = { rstring_new(""), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings7, 3)), "Path7: ['', '', '//']");
-  rstring_free(actual); rstring_free(strings7[0]); rstring_free(strings7[1]); rstring_free(strings7[2]);
 
-  rstring* strings8[3] = { rstring_new(""), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings8, 3)), "Path8: ['', '', 'good']");
-  rstring_free(actual); rstring_free(strings8[0]); rstring_free(strings8[1]); rstring_free(strings8[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings9[3] = { rstring_new(""), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings9, 3)), "Path9: ['', ' ', '']");
-  rstring_free(actual); rstring_free(strings9[0]); rstring_free(strings9[1]); rstring_free(strings9[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "3");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings10[3] = { rstring_new(""), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(strings10, 3)), "Path10: ['', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings10[0]); rstring_free(strings10[1]); rstring_free(strings10[2]);
 
-  rstring* strings11[3] = { rstring_new(""), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(strings11, 3)), "Path11: ['', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings11[0]); rstring_free(strings11[1]); rstring_free(strings11[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings12[3] = { rstring_new(""), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(strings12, 3)), "Path12: ['', ' ', '.']");
-  rstring_free(actual); rstring_free(strings12[0]); rstring_free(strings12[1]); rstring_free(strings12[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "4");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings13[3] = { rstring_new(""), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(strings13, 3)), "Path13: ['', ' ', '..']");
-  rstring_free(actual); rstring_free(strings13[0]); rstring_free(strings13[1]); rstring_free(strings13[2]);
 
-  rstring* strings14[3] = { rstring_new(""), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings14, 3)), "Path14: ['', ' ', '/']");
-  rstring_free(actual); rstring_free(strings14[0]); rstring_free(strings14[1]); rstring_free(strings14[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings15[3] = { rstring_new(""), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings15, 3)), "Path15: ['', ' ', '//']");
-  rstring_free(actual); rstring_free(strings15[0]); rstring_free(strings15[1]); rstring_free(strings15[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "5");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings16[3] = { rstring_new(""), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(strings16, 3)), "Path16: ['', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings16[0]); rstring_free(strings16[1]); rstring_free(strings16[2]);
 
-  rstring* strings17[3] = { rstring_new(""), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings17, 3)), "Path17: ['', '  ', '']");
-  rstring_free(actual); rstring_free(strings17[0]); rstring_free(strings17[1]); rstring_free(strings17[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings18[3] = { rstring_new(""), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(strings18, 3)), "Path18: ['', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings18[0]); rstring_free(strings18[1]); rstring_free(strings18[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "6");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings19[3] = { rstring_new(""), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(strings19, 3)), "Path19: ['', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings19[0]); rstring_free(strings19[1]); rstring_free(strings19[2]);
 
-  rstring* strings20[3] = { rstring_new(""), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(strings20, 3)), "Path20: ['', '  ', '.']");
-  rstring_free(actual); rstring_free(strings20[0]); rstring_free(strings20[1]); rstring_free(strings20[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings21[3] = { rstring_new(""), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(strings21, 3)), "Path21: ['', '  ', '..']");
-  rstring_free(actual); rstring_free(strings21[0]); rstring_free(strings21[1]); rstring_free(strings21[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "7");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings22[3] = { rstring_new(""), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings22, 3)), "Path22: ['', '  ', '/']");
-  rstring_free(actual); rstring_free(strings22[0]); rstring_free(strings22[1]); rstring_free(strings22[2]);
 
-  rstring* strings23[3] = { rstring_new(""), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings23, 3)), "Path23: ['', '  ', '//']");
-  rstring_free(actual); rstring_free(strings23[0]); rstring_free(strings23[1]); rstring_free(strings23[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings24[3] = { rstring_new(""), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(strings24, 3)), "Path24: ['', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings24[0]); rstring_free(strings24[1]); rstring_free(strings24[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "8");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings25[3] = { rstring_new(""), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings25, 3)), "Path25: ['', '.', '']");
-  rstring_free(actual); rstring_free(strings25[0]); rstring_free(strings25[1]); rstring_free(strings25[2]);
 
-  rstring* strings26[3] = { rstring_new(""), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(strings26, 3)), "Path26: ['', '.', ' ']");
-  rstring_free(actual); rstring_free(strings26[0]); rstring_free(strings26[1]); rstring_free(strings26[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings27[3] = { rstring_new(""), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(strings27, 3)), "Path27: ['', '.', '  ']");
-  rstring_free(actual); rstring_free(strings27[0]); rstring_free(strings27[1]); rstring_free(strings27[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "9");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings28[3] = { rstring_new(""), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(strings28, 3)), "Path28: ['', '.', '.']");
-  rstring_free(actual); rstring_free(strings28[0]); rstring_free(strings28[1]); rstring_free(strings28[2]);
 
-  rstring* strings29[3] = { rstring_new(""), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(strings29, 3)), "Path29: ['', '.', '..']");
-  rstring_free(actual); rstring_free(strings29[0]); rstring_free(strings29[1]); rstring_free(strings29[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings30[3] = { rstring_new(""), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings30, 3)), "Path30: ['', '.', '/']");
-  rstring_free(actual); rstring_free(strings30[0]); rstring_free(strings30[1]); rstring_free(strings30[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(rary)), "10");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings31[3] = { rstring_new(""), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings31, 3)), "Path31: ['', '.', '//']");
-  rstring_free(actual); rstring_free(strings31[0]); rstring_free(strings31[1]); rstring_free(strings31[2]);
 
-  rstring* strings32[3] = { rstring_new(""), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(strings32, 3)), "Path32: ['', '.', 'good']");
-  rstring_free(actual); rstring_free(strings32[0]); rstring_free(strings32[1]); rstring_free(strings32[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings33[3] = { rstring_new(""), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings33, 3)), "Path33: ['', '..', '']");
-  rstring_free(actual); rstring_free(strings33[0]); rstring_free(strings33[1]); rstring_free(strings33[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(rary)), "11");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings34[3] = { rstring_new(""), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(strings34, 3)), "Path34: ['', '..', ' ']");
-  rstring_free(actual); rstring_free(strings34[0]); rstring_free(strings34[1]); rstring_free(strings34[2]);
 
-  rstring* strings35[3] = { rstring_new(""), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(strings35, 3)), "Path35: ['', '..', '  ']");
-  rstring_free(actual); rstring_free(strings35[0]); rstring_free(strings35[1]); rstring_free(strings35[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings36[3] = { rstring_new(""), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(strings36, 3)), "Path36: ['', '..', '.']");
-  rstring_free(actual); rstring_free(strings36[0]); rstring_free(strings36[1]); rstring_free(strings36[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(rary)), "12");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings37[3] = { rstring_new(""), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(strings37, 3)), "Path37: ['', '..', '..']");
-  rstring_free(actual); rstring_free(strings37[0]); rstring_free(strings37[1]); rstring_free(strings37[2]);
 
-  rstring* strings38[3] = { rstring_new(""), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings38, 3)), "Path38: ['', '..', '/']");
-  rstring_free(actual); rstring_free(strings38[0]); rstring_free(strings38[1]); rstring_free(strings38[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings39[3] = { rstring_new(""), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings39, 3)), "Path39: ['', '..', '//']");
-  rstring_free(actual); rstring_free(strings39[0]); rstring_free(strings39[1]); rstring_free(strings39[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(rary)), "13");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings40[3] = { rstring_new(""), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(strings40, 3)), "Path40: ['', '..', 'good']");
-  rstring_free(actual); rstring_free(strings40[0]); rstring_free(strings40[1]); rstring_free(strings40[2]);
 
-  rstring* strings41[3] = { rstring_new(""), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings41, 3)), "Path41: ['', '/', '']");
-  rstring_free(actual); rstring_free(strings41[0]); rstring_free(strings41[1]); rstring_free(strings41[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings42[3] = { rstring_new(""), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings42, 3)), "Path42: ['', '/', ' ']");
-  rstring_free(actual); rstring_free(strings42[0]); rstring_free(strings42[1]); rstring_free(strings42[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "14");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings43[3] = { rstring_new(""), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings43, 3)), "Path43: ['', '/', '  ']");
-  rstring_free(actual); rstring_free(strings43[0]); rstring_free(strings43[1]); rstring_free(strings43[2]);
 
-  rstring* strings44[3] = { rstring_new(""), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings44, 3)), "Path44: ['', '/', '.']");
-  rstring_free(actual); rstring_free(strings44[0]); rstring_free(strings44[1]); rstring_free(strings44[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings45[3] = { rstring_new(""), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings45, 3)), "Path45: ['', '/', '..']");
-  rstring_free(actual); rstring_free(strings45[0]); rstring_free(strings45[1]); rstring_free(strings45[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "15");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings46[3] = { rstring_new(""), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings46, 3)), "Path46: ['', '/', '/']");
-  rstring_free(actual); rstring_free(strings46[0]); rstring_free(strings46[1]); rstring_free(strings46[2]);
 
-  rstring* strings47[3] = { rstring_new(""), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings47, 3)), "Path47: ['', '/', '//']");
-  rstring_free(actual); rstring_free(strings47[0]); rstring_free(strings47[1]); rstring_free(strings47[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings48[3] = { rstring_new(""), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings48, 3)), "Path48: ['', '/', 'good']");
-  rstring_free(actual); rstring_free(strings48[0]); rstring_free(strings48[1]); rstring_free(strings48[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(rary)), "16");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings49[3] = { rstring_new(""), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings49, 3)), "Path49: ['', '//', '']");
-  rstring_free(actual); rstring_free(strings49[0]); rstring_free(strings49[1]); rstring_free(strings49[2]);
 
-  rstring* strings50[3] = { rstring_new(""), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings50, 3)), "Path50: ['', '//', ' ']");
-  rstring_free(actual); rstring_free(strings50[0]); rstring_free(strings50[1]); rstring_free(strings50[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings51[3] = { rstring_new(""), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings51, 3)), "Path51: ['', '//', '  ']");
-  rstring_free(actual); rstring_free(strings51[0]); rstring_free(strings51[1]); rstring_free(strings51[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "17");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings52[3] = { rstring_new(""), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings52, 3)), "Path52: ['', '//', '.']");
-  rstring_free(actual); rstring_free(strings52[0]); rstring_free(strings52[1]); rstring_free(strings52[2]);
 
-  rstring* strings53[3] = { rstring_new(""), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings53, 3)), "Path53: ['', '//', '..']");
-  rstring_free(actual); rstring_free(strings53[0]); rstring_free(strings53[1]); rstring_free(strings53[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings54[3] = { rstring_new(""), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings54, 3)), "Path54: ['', '//', '/']");
-  rstring_free(actual); rstring_free(strings54[0]); rstring_free(strings54[1]); rstring_free(strings54[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(rary)), "18");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings55[3] = { rstring_new(""), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings55, 3)), "Path55: ['', '//', '//']");
-  rstring_free(actual); rstring_free(strings55[0]); rstring_free(strings55[1]); rstring_free(strings55[2]);
 
-  rstring* strings56[3] = { rstring_new(""), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings56, 3)), "Path56: ['', '//', 'good']");
-  rstring_free(actual); rstring_free(strings56[0]); rstring_free(strings56[1]); rstring_free(strings56[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings57[3] = { rstring_new(""), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings57, 3)), "Path57: ['', 'pie', '']");
-  rstring_free(actual); rstring_free(strings57[0]); rstring_free(strings57[1]); rstring_free(strings57[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(rary)), "19");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings58[3] = { rstring_new(""), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(strings58, 3)), "Path58: ['', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings58[0]); rstring_free(strings58[1]); rstring_free(strings58[2]);
 
-  rstring* strings59[3] = { rstring_new(""), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(strings59, 3)), "Path59: ['', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings59[0]); rstring_free(strings59[1]); rstring_free(strings59[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings60[3] = { rstring_new(""), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(strings60, 3)), "Path60: ['', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings60[0]); rstring_free(strings60[1]); rstring_free(strings60[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(rary)), "20");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings61[3] = { rstring_new(""), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(strings61, 3)), "Path61: ['', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings61[0]); rstring_free(strings61[1]); rstring_free(strings61[2]);
 
-  rstring* strings62[3] = { rstring_new(""), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings62, 3)), "Path62: ['', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings62[0]); rstring_free(strings62[1]); rstring_free(strings62[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings63[3] = { rstring_new(""), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings63, 3)), "Path63: ['', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings63[0]); rstring_free(strings63[1]); rstring_free(strings63[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(rary)), "21");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings64[3] = { rstring_new(""), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(strings64, 3)), "Path64: ['', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings64[0]); rstring_free(strings64[1]); rstring_free(strings64[2]);
 
-  rstring* strings65[3] = { rstring_new(" "), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings65, 3)), "Path65: [' ', '', '']");
-  rstring_free(actual); rstring_free(strings65[0]); rstring_free(strings65[1]); rstring_free(strings65[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings66[3] = { rstring_new(" "), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(strings66, 3)), "Path66: [' ', '', ' ']");
-  rstring_free(actual); rstring_free(strings66[0]); rstring_free(strings66[1]); rstring_free(strings66[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "22");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings67[3] = { rstring_new(" "), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(strings67, 3)), "Path67: [' ', '', '  ']");
-  rstring_free(actual); rstring_free(strings67[0]); rstring_free(strings67[1]); rstring_free(strings67[2]);
 
-  rstring* strings68[3] = { rstring_new(" "), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(strings68, 3)), "Path68: [' ', '', '.']");
-  rstring_free(actual); rstring_free(strings68[0]); rstring_free(strings68[1]); rstring_free(strings68[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings69[3] = { rstring_new(" "), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(strings69, 3)), "Path69: [' ', '', '..']");
-  rstring_free(actual); rstring_free(strings69[0]); rstring_free(strings69[1]); rstring_free(strings69[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "23");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings70[3] = { rstring_new(" "), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings70, 3)), "Path70: [' ', '', '/']");
-  rstring_free(actual); rstring_free(strings70[0]); rstring_free(strings70[1]); rstring_free(strings70[2]);
 
-  rstring* strings71[3] = { rstring_new(" "), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings71, 3)), "Path71: [' ', '', '//']");
-  rstring_free(actual); rstring_free(strings71[0]); rstring_free(strings71[1]); rstring_free(strings71[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings72[3] = { rstring_new(" "), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(strings72, 3)), "Path72: [' ', '', 'good']");
-  rstring_free(actual); rstring_free(strings72[0]); rstring_free(strings72[1]); rstring_free(strings72[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(rary)), "24");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings73[3] = { rstring_new(" "), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(strings73, 3)), "Path73: [' ', ' ', '']");
-  rstring_free(actual); rstring_free(strings73[0]); rstring_free(strings73[1]); rstring_free(strings73[2]);
 
-  rstring* strings74[3] = { rstring_new(" "), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / / ", (actual = rfile_join(strings74, 3)), "Path74: [' ', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings74[0]); rstring_free(strings74[1]); rstring_free(strings74[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings75[3] = { rstring_new(" "), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /  ", (actual = rfile_join(strings75, 3)), "Path75: [' ', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings75[0]); rstring_free(strings75[1]); rstring_free(strings75[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "25");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings76[3] = { rstring_new(" "), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /.", (actual = rfile_join(strings76, 3)), "Path76: [' ', ' ', '.']");
-  rstring_free(actual); rstring_free(strings76[0]); rstring_free(strings76[1]); rstring_free(strings76[2]);
 
-  rstring* strings77[3] = { rstring_new(" "), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /..", (actual = rfile_join(strings77, 3)), "Path77: [' ', ' ', '..']");
-  rstring_free(actual); rstring_free(strings77[0]); rstring_free(strings77[1]); rstring_free(strings77[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings78[3] = { rstring_new(" "), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(strings78, 3)), "Path78: [' ', ' ', '/']");
-  rstring_free(actual); rstring_free(strings78[0]); rstring_free(strings78[1]); rstring_free(strings78[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(rary)), "26");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings79[3] = { rstring_new(" "), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(strings79, 3)), "Path79: [' ', ' ', '//']");
-  rstring_free(actual); rstring_free(strings79[0]); rstring_free(strings79[1]); rstring_free(strings79[2]);
 
-  rstring* strings80[3] = { rstring_new(" "), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /good", (actual = rfile_join(strings80, 3)), "Path80: [' ', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings80[0]); rstring_free(strings80[1]); rstring_free(strings80[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings81[3] = { rstring_new(" "), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(strings81, 3)), "Path81: [' ', '  ', '']");
-  rstring_free(actual); rstring_free(strings81[0]); rstring_free(strings81[1]); rstring_free(strings81[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(rary)), "27");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings82[3] = { rstring_new(" "), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  / ", (actual = rfile_join(strings82, 3)), "Path82: [' ', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings82[0]); rstring_free(strings82[1]); rstring_free(strings82[2]);
 
-  rstring* strings83[3] = { rstring_new(" "), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /  ", (actual = rfile_join(strings83, 3)), "Path83: [' ', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings83[0]); rstring_free(strings83[1]); rstring_free(strings83[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings84[3] = { rstring_new(" "), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /.", (actual = rfile_join(strings84, 3)), "Path84: [' ', '  ', '.']");
-  rstring_free(actual); rstring_free(strings84[0]); rstring_free(strings84[1]); rstring_free(strings84[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(rary)), "28");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings85[3] = { rstring_new(" "), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /..", (actual = rfile_join(strings85, 3)), "Path85: [' ', '  ', '..']");
-  rstring_free(actual); rstring_free(strings85[0]); rstring_free(strings85[1]); rstring_free(strings85[2]);
 
-  rstring* strings86[3] = { rstring_new(" "), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(strings86, 3)), "Path86: [' ', '  ', '/']");
-  rstring_free(actual); rstring_free(strings86[0]); rstring_free(strings86[1]); rstring_free(strings86[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings87[3] = { rstring_new(" "), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(strings87, 3)), "Path87: [' ', '  ', '//']");
-  rstring_free(actual); rstring_free(strings87[0]); rstring_free(strings87[1]); rstring_free(strings87[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(rary)), "29");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings88[3] = { rstring_new(" "), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /good", (actual = rfile_join(strings88, 3)), "Path88: [' ', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings88[0]); rstring_free(strings88[1]); rstring_free(strings88[2]);
 
-  rstring* strings89[3] = { rstring_new(" "), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(strings89, 3)), "Path89: [' ', '.', '']");
-  rstring_free(actual); rstring_free(strings89[0]); rstring_free(strings89[1]); rstring_free(strings89[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings90[3] = { rstring_new(" "), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./ ", (actual = rfile_join(strings90, 3)), "Path90: [' ', '.', ' ']");
-  rstring_free(actual); rstring_free(strings90[0]); rstring_free(strings90[1]); rstring_free(strings90[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "30");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings91[3] = { rstring_new(" "), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./  ", (actual = rfile_join(strings91, 3)), "Path91: [' ', '.', '  ']");
-  rstring_free(actual); rstring_free(strings91[0]); rstring_free(strings91[1]); rstring_free(strings91[2]);
 
-  rstring* strings92[3] = { rstring_new(" "), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./.", (actual = rfile_join(strings92, 3)), "Path92: [' ', '.', '.']");
-  rstring_free(actual); rstring_free(strings92[0]); rstring_free(strings92[1]); rstring_free(strings92[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings93[3] = { rstring_new(" "), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./..", (actual = rfile_join(strings93, 3)), "Path93: [' ', '.', '..']");
-  rstring_free(actual); rstring_free(strings93[0]); rstring_free(strings93[1]); rstring_free(strings93[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "31");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings94[3] = { rstring_new(" "), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(strings94, 3)), "Path94: [' ', '.', '/']");
-  rstring_free(actual); rstring_free(strings94[0]); rstring_free(strings94[1]); rstring_free(strings94[2]);
 
-  rstring* strings95[3] = { rstring_new(" "), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(strings95, 3)), "Path95: [' ', '.', '//']");
-  rstring_free(actual); rstring_free(strings95[0]); rstring_free(strings95[1]); rstring_free(strings95[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings96[3] = { rstring_new(" "), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./good", (actual = rfile_join(strings96, 3)), "Path96: [' ', '.', 'good']");
-  rstring_free(actual); rstring_free(strings96[0]); rstring_free(strings96[1]); rstring_free(strings96[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(rary)), "32");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings97[3] = { rstring_new(" "), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(strings97, 3)), "Path97: [' ', '..', '']");
-  rstring_free(actual); rstring_free(strings97[0]); rstring_free(strings97[1]); rstring_free(strings97[2]);
 
-  rstring* strings98[3] = { rstring_new(" "), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../ ", (actual = rfile_join(strings98, 3)), "Path98: [' ', '..', ' ']");
-  rstring_free(actual); rstring_free(strings98[0]); rstring_free(strings98[1]); rstring_free(strings98[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings99[3] = { rstring_new(" "), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../  ", (actual = rfile_join(strings99, 3)), "Path99: [' ', '..', '  ']");
-  rstring_free(actual); rstring_free(strings99[0]); rstring_free(strings99[1]); rstring_free(strings99[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "33");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings100[3] = { rstring_new(" "), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../.", (actual = rfile_join(strings100, 3)), "Path100: [' ', '..', '.']");
-  rstring_free(actual); rstring_free(strings100[0]); rstring_free(strings100[1]); rstring_free(strings100[2]);
 
-  rstring* strings101[3] = { rstring_new(" "), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../..", (actual = rfile_join(strings101, 3)), "Path101: [' ', '..', '..']");
-  rstring_free(actual); rstring_free(strings101[0]); rstring_free(strings101[1]); rstring_free(strings101[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings102[3] = { rstring_new(" "), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(strings102, 3)), "Path102: [' ', '..', '/']");
-  rstring_free(actual); rstring_free(strings102[0]); rstring_free(strings102[1]); rstring_free(strings102[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(rary)), "34");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings103[3] = { rstring_new(" "), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(strings103, 3)), "Path103: [' ', '..', '//']");
-  rstring_free(actual); rstring_free(strings103[0]); rstring_free(strings103[1]); rstring_free(strings103[2]);
 
-  rstring* strings104[3] = { rstring_new(" "), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../good", (actual = rfile_join(strings104, 3)), "Path104: [' ', '..', 'good']");
-  rstring_free(actual); rstring_free(strings104[0]); rstring_free(strings104[1]); rstring_free(strings104[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings105[3] = { rstring_new(" "), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings105, 3)), "Path105: [' ', '/', '']");
-  rstring_free(actual); rstring_free(strings105[0]); rstring_free(strings105[1]); rstring_free(strings105[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(rary)), "35");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings106[3] = { rstring_new(" "), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(strings106, 3)), "Path106: [' ', '/', ' ']");
-  rstring_free(actual); rstring_free(strings106[0]); rstring_free(strings106[1]); rstring_free(strings106[2]);
 
-  rstring* strings107[3] = { rstring_new(" "), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(strings107, 3)), "Path107: [' ', '/', '  ']");
-  rstring_free(actual); rstring_free(strings107[0]); rstring_free(strings107[1]); rstring_free(strings107[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings108[3] = { rstring_new(" "), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(strings108, 3)), "Path108: [' ', '/', '.']");
-  rstring_free(actual); rstring_free(strings108[0]); rstring_free(strings108[1]); rstring_free(strings108[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(rary)), "36");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings109[3] = { rstring_new(" "), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(strings109, 3)), "Path109: [' ', '/', '..']");
-  rstring_free(actual); rstring_free(strings109[0]); rstring_free(strings109[1]); rstring_free(strings109[2]);
 
-  rstring* strings110[3] = { rstring_new(" "), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings110, 3)), "Path110: [' ', '/', '/']");
-  rstring_free(actual); rstring_free(strings110[0]); rstring_free(strings110[1]); rstring_free(strings110[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings111[3] = { rstring_new(" "), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings111, 3)), "Path111: [' ', '/', '//']");
-  rstring_free(actual); rstring_free(strings111[0]); rstring_free(strings111[1]); rstring_free(strings111[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(rary)), "37");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings112[3] = { rstring_new(" "), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(strings112, 3)), "Path112: [' ', '/', 'good']");
-  rstring_free(actual); rstring_free(strings112[0]); rstring_free(strings112[1]); rstring_free(strings112[2]);
 
-  rstring* strings113[3] = { rstring_new(" "), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings113, 3)), "Path113: [' ', '//', '']");
-  rstring_free(actual); rstring_free(strings113[0]); rstring_free(strings113[1]); rstring_free(strings113[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings114[3] = { rstring_new(" "), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(strings114, 3)), "Path114: [' ', '//', ' ']");
-  rstring_free(actual); rstring_free(strings114[0]); rstring_free(strings114[1]); rstring_free(strings114[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "38");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings115[3] = { rstring_new(" "), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(strings115, 3)), "Path115: [' ', '//', '  ']");
-  rstring_free(actual); rstring_free(strings115[0]); rstring_free(strings115[1]); rstring_free(strings115[2]);
 
-  rstring* strings116[3] = { rstring_new(" "), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(strings116, 3)), "Path116: [' ', '//', '.']");
-  rstring_free(actual); rstring_free(strings116[0]); rstring_free(strings116[1]); rstring_free(strings116[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings117[3] = { rstring_new(" "), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(strings117, 3)), "Path117: [' ', '//', '..']");
-  rstring_free(actual); rstring_free(strings117[0]); rstring_free(strings117[1]); rstring_free(strings117[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "39");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings118[3] = { rstring_new(" "), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings118, 3)), "Path118: [' ', '//', '/']");
-  rstring_free(actual); rstring_free(strings118[0]); rstring_free(strings118[1]); rstring_free(strings118[2]);
 
-  rstring* strings119[3] = { rstring_new(" "), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(strings119, 3)), "Path119: [' ', '//', '//']");
-  rstring_free(actual); rstring_free(strings119[0]); rstring_free(strings119[1]); rstring_free(strings119[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings120[3] = { rstring_new(" "), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(strings120, 3)), "Path120: [' ', '//', 'good']");
-  rstring_free(actual); rstring_free(strings120[0]); rstring_free(strings120[1]); rstring_free(strings120[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(rary)), "40");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings121[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(strings121, 3)), "Path121: [' ', 'pie', '']");
-  rstring_free(actual); rstring_free(strings121[0]); rstring_free(strings121[1]); rstring_free(strings121[2]);
 
-  rstring* strings122[3] = { rstring_new(" "), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/ ", (actual = rfile_join(strings122, 3)), "Path122: [' ', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings122[0]); rstring_free(strings122[1]); rstring_free(strings122[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings123[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/  ", (actual = rfile_join(strings123, 3)), "Path123: [' ', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings123[0]); rstring_free(strings123[1]); rstring_free(strings123[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "41");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings124[3] = { rstring_new(" "), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/.", (actual = rfile_join(strings124, 3)), "Path124: [' ', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings124[0]); rstring_free(strings124[1]); rstring_free(strings124[2]);
 
-  rstring* strings125[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/..", (actual = rfile_join(strings125, 3)), "Path125: [' ', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings125[0]); rstring_free(strings125[1]); rstring_free(strings125[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings126[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(strings126, 3)), "Path126: [' ', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings126[0]); rstring_free(strings126[1]); rstring_free(strings126[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "42");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings127[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(strings127, 3)), "Path127: [' ', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings127[0]); rstring_free(strings127[1]); rstring_free(strings127[2]);
 
-  rstring* strings128[3] = { rstring_new(" "), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/good", (actual = rfile_join(strings128, 3)), "Path128: [' ', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings128[0]); rstring_free(strings128[1]); rstring_free(strings128[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings129[3] = { rstring_new("  "), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings129, 3)), "Path129: ['  ', '', '']");
-  rstring_free(actual); rstring_free(strings129[0]); rstring_free(strings129[1]); rstring_free(strings129[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "43");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings130[3] = { rstring_new("  "), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(strings130, 3)), "Path130: ['  ', '', ' ']");
-  rstring_free(actual); rstring_free(strings130[0]); rstring_free(strings130[1]); rstring_free(strings130[2]);
 
-  rstring* strings131[3] = { rstring_new("  "), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(strings131, 3)), "Path131: ['  ', '', '  ']");
-  rstring_free(actual); rstring_free(strings131[0]); rstring_free(strings131[1]); rstring_free(strings131[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings132[3] = { rstring_new("  "), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(strings132, 3)), "Path132: ['  ', '', '.']");
-  rstring_free(actual); rstring_free(strings132[0]); rstring_free(strings132[1]); rstring_free(strings132[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "44");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings133[3] = { rstring_new("  "), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(strings133, 3)), "Path133: ['  ', '', '..']");
-  rstring_free(actual); rstring_free(strings133[0]); rstring_free(strings133[1]); rstring_free(strings133[2]);
 
-  rstring* strings134[3] = { rstring_new("  "), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings134, 3)), "Path134: ['  ', '', '/']");
-  rstring_free(actual); rstring_free(strings134[0]); rstring_free(strings134[1]); rstring_free(strings134[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings135[3] = { rstring_new("  "), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings135, 3)), "Path135: ['  ', '', '//']");
-  rstring_free(actual); rstring_free(strings135[0]); rstring_free(strings135[1]); rstring_free(strings135[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "45");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings136[3] = { rstring_new("  "), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(strings136, 3)), "Path136: ['  ', '', 'good']");
-  rstring_free(actual); rstring_free(strings136[0]); rstring_free(strings136[1]); rstring_free(strings136[2]);
 
-  rstring* strings137[3] = { rstring_new("  "), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(strings137, 3)), "Path137: ['  ', ' ', '']");
-  rstring_free(actual); rstring_free(strings137[0]); rstring_free(strings137[1]); rstring_free(strings137[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings138[3] = { rstring_new("  "), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / / ", (actual = rfile_join(strings138, 3)), "Path138: ['  ', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings138[0]); rstring_free(strings138[1]); rstring_free(strings138[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "46");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings139[3] = { rstring_new("  "), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /  ", (actual = rfile_join(strings139, 3)), "Path139: ['  ', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings139[0]); rstring_free(strings139[1]); rstring_free(strings139[2]);
 
-  rstring* strings140[3] = { rstring_new("  "), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /.", (actual = rfile_join(strings140, 3)), "Path140: ['  ', ' ', '.']");
-  rstring_free(actual); rstring_free(strings140[0]); rstring_free(strings140[1]); rstring_free(strings140[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings141[3] = { rstring_new("  "), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /..", (actual = rfile_join(strings141, 3)), "Path141: ['  ', ' ', '..']");
-  rstring_free(actual); rstring_free(strings141[0]); rstring_free(strings141[1]); rstring_free(strings141[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "47");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings142[3] = { rstring_new("  "), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(strings142, 3)), "Path142: ['  ', ' ', '/']");
-  rstring_free(actual); rstring_free(strings142[0]); rstring_free(strings142[1]); rstring_free(strings142[2]);
 
-  rstring* strings143[3] = { rstring_new("  "), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(strings143, 3)), "Path143: ['  ', ' ', '//']");
-  rstring_free(actual); rstring_free(strings143[0]); rstring_free(strings143[1]); rstring_free(strings143[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings144[3] = { rstring_new("  "), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /good", (actual = rfile_join(strings144, 3)), "Path144: ['  ', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings144[0]); rstring_free(strings144[1]); rstring_free(strings144[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "48");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings145[3] = { rstring_new("  "), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(strings145, 3)), "Path145: ['  ', '  ', '']");
-  rstring_free(actual); rstring_free(strings145[0]); rstring_free(strings145[1]); rstring_free(strings145[2]);
 
-  rstring* strings146[3] = { rstring_new("  "), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  / ", (actual = rfile_join(strings146, 3)), "Path146: ['  ', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings146[0]); rstring_free(strings146[1]); rstring_free(strings146[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings147[3] = { rstring_new("  "), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /  ", (actual = rfile_join(strings147, 3)), "Path147: ['  ', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings147[0]); rstring_free(strings147[1]); rstring_free(strings147[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "49");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings148[3] = { rstring_new("  "), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /.", (actual = rfile_join(strings148, 3)), "Path148: ['  ', '  ', '.']");
-  rstring_free(actual); rstring_free(strings148[0]); rstring_free(strings148[1]); rstring_free(strings148[2]);
 
-  rstring* strings149[3] = { rstring_new("  "), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /..", (actual = rfile_join(strings149, 3)), "Path149: ['  ', '  ', '..']");
-  rstring_free(actual); rstring_free(strings149[0]); rstring_free(strings149[1]); rstring_free(strings149[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings150[3] = { rstring_new("  "), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(strings150, 3)), "Path150: ['  ', '  ', '/']");
-  rstring_free(actual); rstring_free(strings150[0]); rstring_free(strings150[1]); rstring_free(strings150[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "50");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings151[3] = { rstring_new("  "), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(strings151, 3)), "Path151: ['  ', '  ', '//']");
-  rstring_free(actual); rstring_free(strings151[0]); rstring_free(strings151[1]); rstring_free(strings151[2]);
 
-  rstring* strings152[3] = { rstring_new("  "), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /good", (actual = rfile_join(strings152, 3)), "Path152: ['  ', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings152[0]); rstring_free(strings152[1]); rstring_free(strings152[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings153[3] = { rstring_new("  "), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(strings153, 3)), "Path153: ['  ', '.', '']");
-  rstring_free(actual); rstring_free(strings153[0]); rstring_free(strings153[1]); rstring_free(strings153[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "51");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings154[3] = { rstring_new("  "), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./ ", (actual = rfile_join(strings154, 3)), "Path154: ['  ', '.', ' ']");
-  rstring_free(actual); rstring_free(strings154[0]); rstring_free(strings154[1]); rstring_free(strings154[2]);
 
-  rstring* strings155[3] = { rstring_new("  "), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./  ", (actual = rfile_join(strings155, 3)), "Path155: ['  ', '.', '  ']");
-  rstring_free(actual); rstring_free(strings155[0]); rstring_free(strings155[1]); rstring_free(strings155[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings156[3] = { rstring_new("  "), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./.", (actual = rfile_join(strings156, 3)), "Path156: ['  ', '.', '.']");
-  rstring_free(actual); rstring_free(strings156[0]); rstring_free(strings156[1]); rstring_free(strings156[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "52");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings157[3] = { rstring_new("  "), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./..", (actual = rfile_join(strings157, 3)), "Path157: ['  ', '.', '..']");
-  rstring_free(actual); rstring_free(strings157[0]); rstring_free(strings157[1]); rstring_free(strings157[2]);
 
-  rstring* strings158[3] = { rstring_new("  "), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(strings158, 3)), "Path158: ['  ', '.', '/']");
-  rstring_free(actual); rstring_free(strings158[0]); rstring_free(strings158[1]); rstring_free(strings158[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings159[3] = { rstring_new("  "), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(strings159, 3)), "Path159: ['  ', '.', '//']");
-  rstring_free(actual); rstring_free(strings159[0]); rstring_free(strings159[1]); rstring_free(strings159[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "53");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings160[3] = { rstring_new("  "), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./good", (actual = rfile_join(strings160, 3)), "Path160: ['  ', '.', 'good']");
-  rstring_free(actual); rstring_free(strings160[0]); rstring_free(strings160[1]); rstring_free(strings160[2]);
 
-  rstring* strings161[3] = { rstring_new("  "), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(strings161, 3)), "Path161: ['  ', '..', '']");
-  rstring_free(actual); rstring_free(strings161[0]); rstring_free(strings161[1]); rstring_free(strings161[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings162[3] = { rstring_new("  "), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../ ", (actual = rfile_join(strings162, 3)), "Path162: ['  ', '..', ' ']");
-  rstring_free(actual); rstring_free(strings162[0]); rstring_free(strings162[1]); rstring_free(strings162[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "54");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings163[3] = { rstring_new("  "), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../  ", (actual = rfile_join(strings163, 3)), "Path163: ['  ', '..', '  ']");
-  rstring_free(actual); rstring_free(strings163[0]); rstring_free(strings163[1]); rstring_free(strings163[2]);
 
-  rstring* strings164[3] = { rstring_new("  "), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../.", (actual = rfile_join(strings164, 3)), "Path164: ['  ', '..', '.']");
-  rstring_free(actual); rstring_free(strings164[0]); rstring_free(strings164[1]); rstring_free(strings164[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings165[3] = { rstring_new("  "), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../..", (actual = rfile_join(strings165, 3)), "Path165: ['  ', '..', '..']");
-  rstring_free(actual); rstring_free(strings165[0]); rstring_free(strings165[1]); rstring_free(strings165[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "55");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings166[3] = { rstring_new("  "), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(strings166, 3)), "Path166: ['  ', '..', '/']");
-  rstring_free(actual); rstring_free(strings166[0]); rstring_free(strings166[1]); rstring_free(strings166[2]);
 
-  rstring* strings167[3] = { rstring_new("  "), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(strings167, 3)), "Path167: ['  ', '..', '//']");
-  rstring_free(actual); rstring_free(strings167[0]); rstring_free(strings167[1]); rstring_free(strings167[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings168[3] = { rstring_new("  "), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../good", (actual = rfile_join(strings168, 3)), "Path168: ['  ', '..', 'good']");
-  rstring_free(actual); rstring_free(strings168[0]); rstring_free(strings168[1]); rstring_free(strings168[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "56");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings169[3] = { rstring_new("  "), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings169, 3)), "Path169: ['  ', '/', '']");
-  rstring_free(actual); rstring_free(strings169[0]); rstring_free(strings169[1]); rstring_free(strings169[2]);
 
-  rstring* strings170[3] = { rstring_new("  "), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(strings170, 3)), "Path170: ['  ', '/', ' ']");
-  rstring_free(actual); rstring_free(strings170[0]); rstring_free(strings170[1]); rstring_free(strings170[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings171[3] = { rstring_new("  "), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(strings171, 3)), "Path171: ['  ', '/', '  ']");
-  rstring_free(actual); rstring_free(strings171[0]); rstring_free(strings171[1]); rstring_free(strings171[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "57");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings172[3] = { rstring_new("  "), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(strings172, 3)), "Path172: ['  ', '/', '.']");
-  rstring_free(actual); rstring_free(strings172[0]); rstring_free(strings172[1]); rstring_free(strings172[2]);
 
-  rstring* strings173[3] = { rstring_new("  "), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(strings173, 3)), "Path173: ['  ', '/', '..']");
-  rstring_free(actual); rstring_free(strings173[0]); rstring_free(strings173[1]); rstring_free(strings173[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings174[3] = { rstring_new("  "), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings174, 3)), "Path174: ['  ', '/', '/']");
-  rstring_free(actual); rstring_free(strings174[0]); rstring_free(strings174[1]); rstring_free(strings174[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(rary)), "58");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings175[3] = { rstring_new("  "), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings175, 3)), "Path175: ['  ', '/', '//']");
-  rstring_free(actual); rstring_free(strings175[0]); rstring_free(strings175[1]); rstring_free(strings175[2]);
 
-  rstring* strings176[3] = { rstring_new("  "), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(strings176, 3)), "Path176: ['  ', '/', 'good']");
-  rstring_free(actual); rstring_free(strings176[0]); rstring_free(strings176[1]); rstring_free(strings176[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings177[3] = { rstring_new("  "), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings177, 3)), "Path177: ['  ', '//', '']");
-  rstring_free(actual); rstring_free(strings177[0]); rstring_free(strings177[1]); rstring_free(strings177[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(rary)), "59");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings178[3] = { rstring_new("  "), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(strings178, 3)), "Path178: ['  ', '//', ' ']");
-  rstring_free(actual); rstring_free(strings178[0]); rstring_free(strings178[1]); rstring_free(strings178[2]);
 
-  rstring* strings179[3] = { rstring_new("  "), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(strings179, 3)), "Path179: ['  ', '//', '  ']");
-  rstring_free(actual); rstring_free(strings179[0]); rstring_free(strings179[1]); rstring_free(strings179[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings180[3] = { rstring_new("  "), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(strings180, 3)), "Path180: ['  ', '//', '.']");
-  rstring_free(actual); rstring_free(strings180[0]); rstring_free(strings180[1]); rstring_free(strings180[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(rary)), "60");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings181[3] = { rstring_new("  "), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(strings181, 3)), "Path181: ['  ', '//', '..']");
-  rstring_free(actual); rstring_free(strings181[0]); rstring_free(strings181[1]); rstring_free(strings181[2]);
 
-  rstring* strings182[3] = { rstring_new("  "), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings182, 3)), "Path182: ['  ', '//', '/']");
-  rstring_free(actual); rstring_free(strings182[0]); rstring_free(strings182[1]); rstring_free(strings182[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings183[3] = { rstring_new("  "), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(strings183, 3)), "Path183: ['  ', '//', '//']");
-  rstring_free(actual); rstring_free(strings183[0]); rstring_free(strings183[1]); rstring_free(strings183[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(rary)), "61");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings184[3] = { rstring_new("  "), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(strings184, 3)), "Path184: ['  ', '//', 'good']");
-  rstring_free(actual); rstring_free(strings184[0]); rstring_free(strings184[1]); rstring_free(strings184[2]);
 
-  rstring* strings185[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(strings185, 3)), "Path185: ['  ', 'pie', '']");
-  rstring_free(actual); rstring_free(strings185[0]); rstring_free(strings185[1]); rstring_free(strings185[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings186[3] = { rstring_new("  "), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/ ", (actual = rfile_join(strings186, 3)), "Path186: ['  ', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings186[0]); rstring_free(strings186[1]); rstring_free(strings186[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "62");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings187[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/  ", (actual = rfile_join(strings187, 3)), "Path187: ['  ', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings187[0]); rstring_free(strings187[1]); rstring_free(strings187[2]);
 
-  rstring* strings188[3] = { rstring_new("  "), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/.", (actual = rfile_join(strings188, 3)), "Path188: ['  ', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings188[0]); rstring_free(strings188[1]); rstring_free(strings188[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings189[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/..", (actual = rfile_join(strings189, 3)), "Path189: ['  ', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings189[0]); rstring_free(strings189[1]); rstring_free(strings189[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "63");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings190[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(strings190, 3)), "Path190: ['  ', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings190[0]); rstring_free(strings190[1]); rstring_free(strings190[2]);
 
-  rstring* strings191[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(strings191, 3)), "Path191: ['  ', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings191[0]); rstring_free(strings191[1]); rstring_free(strings191[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings192[3] = { rstring_new("  "), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/good", (actual = rfile_join(strings192, 3)), "Path192: ['  ', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings192[0]); rstring_free(strings192[1]); rstring_free(strings192[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(rary)), "64");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings193[3] = { rstring_new("."), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings193, 3)), "Path193: ['.', '', '']");
-  rstring_free(actual); rstring_free(strings193[0]); rstring_free(strings193[1]); rstring_free(strings193[2]);
 
-  rstring* strings194[3] = { rstring_new("."), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(strings194, 3)), "Path194: ['.', '', ' ']");
-  rstring_free(actual); rstring_free(strings194[0]); rstring_free(strings194[1]); rstring_free(strings194[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings195[3] = { rstring_new("."), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(strings195, 3)), "Path195: ['.', '', '  ']");
-  rstring_free(actual); rstring_free(strings195[0]); rstring_free(strings195[1]); rstring_free(strings195[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "65");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings196[3] = { rstring_new("."), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(strings196, 3)), "Path196: ['.', '', '.']");
-  rstring_free(actual); rstring_free(strings196[0]); rstring_free(strings196[1]); rstring_free(strings196[2]);
 
-  rstring* strings197[3] = { rstring_new("."), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(strings197, 3)), "Path197: ['.', '', '..']");
-  rstring_free(actual); rstring_free(strings197[0]); rstring_free(strings197[1]); rstring_free(strings197[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings198[3] = { rstring_new("."), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings198, 3)), "Path198: ['.', '', '/']");
-  rstring_free(actual); rstring_free(strings198[0]); rstring_free(strings198[1]); rstring_free(strings198[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(rary)), "66");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings199[3] = { rstring_new("."), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings199, 3)), "Path199: ['.', '', '//']");
-  rstring_free(actual); rstring_free(strings199[0]); rstring_free(strings199[1]); rstring_free(strings199[2]);
 
-  rstring* strings200[3] = { rstring_new("."), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(strings200, 3)), "Path200: ['.', '', 'good']");
-  rstring_free(actual); rstring_free(strings200[0]); rstring_free(strings200[1]); rstring_free(strings200[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings201[3] = { rstring_new("."), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(strings201, 3)), "Path201: ['.', ' ', '']");
-  rstring_free(actual); rstring_free(strings201[0]); rstring_free(strings201[1]); rstring_free(strings201[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(rary)), "67");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings202[3] = { rstring_new("."), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ / ", (actual = rfile_join(strings202, 3)), "Path202: ['.', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings202[0]); rstring_free(strings202[1]); rstring_free(strings202[2]);
 
-  rstring* strings203[3] = { rstring_new("."), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /  ", (actual = rfile_join(strings203, 3)), "Path203: ['.', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings203[0]); rstring_free(strings203[1]); rstring_free(strings203[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings204[3] = { rstring_new("."), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /.", (actual = rfile_join(strings204, 3)), "Path204: ['.', ' ', '.']");
-  rstring_free(actual); rstring_free(strings204[0]); rstring_free(strings204[1]); rstring_free(strings204[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(rary)), "68");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings205[3] = { rstring_new("."), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /..", (actual = rfile_join(strings205, 3)), "Path205: ['.', ' ', '..']");
-  rstring_free(actual); rstring_free(strings205[0]); rstring_free(strings205[1]); rstring_free(strings205[2]);
 
-  rstring* strings206[3] = { rstring_new("."), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(strings206, 3)), "Path206: ['.', ' ', '/']");
-  rstring_free(actual); rstring_free(strings206[0]); rstring_free(strings206[1]); rstring_free(strings206[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings207[3] = { rstring_new("."), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(strings207, 3)), "Path207: ['.', ' ', '//']");
-  rstring_free(actual); rstring_free(strings207[0]); rstring_free(strings207[1]); rstring_free(strings207[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(rary)), "69");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings208[3] = { rstring_new("."), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /good", (actual = rfile_join(strings208, 3)), "Path208: ['.', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings208[0]); rstring_free(strings208[1]); rstring_free(strings208[2]);
 
-  rstring* strings209[3] = { rstring_new("."), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(strings209, 3)), "Path209: ['.', '  ', '']");
-  rstring_free(actual); rstring_free(strings209[0]); rstring_free(strings209[1]); rstring_free(strings209[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings210[3] = { rstring_new("."), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  / ", (actual = rfile_join(strings210, 3)), "Path210: ['.', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings210[0]); rstring_free(strings210[1]); rstring_free(strings210[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "70");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings211[3] = { rstring_new("."), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /  ", (actual = rfile_join(strings211, 3)), "Path211: ['.', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings211[0]); rstring_free(strings211[1]); rstring_free(strings211[2]);
 
-  rstring* strings212[3] = { rstring_new("."), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /.", (actual = rfile_join(strings212, 3)), "Path212: ['.', '  ', '.']");
-  rstring_free(actual); rstring_free(strings212[0]); rstring_free(strings212[1]); rstring_free(strings212[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings213[3] = { rstring_new("."), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /..", (actual = rfile_join(strings213, 3)), "Path213: ['.', '  ', '..']");
-  rstring_free(actual); rstring_free(strings213[0]); rstring_free(strings213[1]); rstring_free(strings213[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "71");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings214[3] = { rstring_new("."), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(strings214, 3)), "Path214: ['.', '  ', '/']");
-  rstring_free(actual); rstring_free(strings214[0]); rstring_free(strings214[1]); rstring_free(strings214[2]);
 
-  rstring* strings215[3] = { rstring_new("."), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(strings215, 3)), "Path215: ['.', '  ', '//']");
-  rstring_free(actual); rstring_free(strings215[0]); rstring_free(strings215[1]); rstring_free(strings215[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings216[3] = { rstring_new("."), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /good", (actual = rfile_join(strings216, 3)), "Path216: ['.', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings216[0]); rstring_free(strings216[1]); rstring_free(strings216[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(rary)), "72");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings217[3] = { rstring_new("."), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(strings217, 3)), "Path217: ['.', '.', '']");
-  rstring_free(actual); rstring_free(strings217[0]); rstring_free(strings217[1]); rstring_free(strings217[2]);
 
-  rstring* strings218[3] = { rstring_new("."), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././ ", (actual = rfile_join(strings218, 3)), "Path218: ['.', '.', ' ']");
-  rstring_free(actual); rstring_free(strings218[0]); rstring_free(strings218[1]); rstring_free(strings218[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings219[3] = { rstring_new("."), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././  ", (actual = rfile_join(strings219, 3)), "Path219: ['.', '.', '  ']");
-  rstring_free(actual); rstring_free(strings219[0]); rstring_free(strings219[1]); rstring_free(strings219[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(rary)), "73");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings220[3] = { rstring_new("."), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././.", (actual = rfile_join(strings220, 3)), "Path220: ['.', '.', '.']");
-  rstring_free(actual); rstring_free(strings220[0]); rstring_free(strings220[1]); rstring_free(strings220[2]);
 
-  rstring* strings221[3] = { rstring_new("."), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././..", (actual = rfile_join(strings221, 3)), "Path221: ['.', '.', '..']");
-  rstring_free(actual); rstring_free(strings221[0]); rstring_free(strings221[1]); rstring_free(strings221[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings222[3] = { rstring_new("."), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(strings222, 3)), "Path222: ['.', '.', '/']");
-  rstring_free(actual); rstring_free(strings222[0]); rstring_free(strings222[1]); rstring_free(strings222[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / / ", (actual = rfile_join(rary)), "74");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings223[3] = { rstring_new("."), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(strings223, 3)), "Path223: ['.', '.', '//']");
-  rstring_free(actual); rstring_free(strings223[0]); rstring_free(strings223[1]); rstring_free(strings223[2]);
 
-  rstring* strings224[3] = { rstring_new("."), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././good", (actual = rfile_join(strings224, 3)), "Path224: ['.', '.', 'good']");
-  rstring_free(actual); rstring_free(strings224[0]); rstring_free(strings224[1]); rstring_free(strings224[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings225[3] = { rstring_new("."), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(strings225, 3)), "Path225: ['.', '..', '']");
-  rstring_free(actual); rstring_free(strings225[0]); rstring_free(strings225[1]); rstring_free(strings225[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /  ", (actual = rfile_join(rary)), "75");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings226[3] = { rstring_new("."), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../ ", (actual = rfile_join(strings226, 3)), "Path226: ['.', '..', ' ']");
-  rstring_free(actual); rstring_free(strings226[0]); rstring_free(strings226[1]); rstring_free(strings226[2]);
 
-  rstring* strings227[3] = { rstring_new("."), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../  ", (actual = rfile_join(strings227, 3)), "Path227: ['.', '..', '  ']");
-  rstring_free(actual); rstring_free(strings227[0]); rstring_free(strings227[1]); rstring_free(strings227[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings228[3] = { rstring_new("."), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../.", (actual = rfile_join(strings228, 3)), "Path228: ['.', '..', '.']");
-  rstring_free(actual); rstring_free(strings228[0]); rstring_free(strings228[1]); rstring_free(strings228[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /.", (actual = rfile_join(rary)), "76");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings229[3] = { rstring_new("."), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../..", (actual = rfile_join(strings229, 3)), "Path229: ['.', '..', '..']");
-  rstring_free(actual); rstring_free(strings229[0]); rstring_free(strings229[1]); rstring_free(strings229[2]);
 
-  rstring* strings230[3] = { rstring_new("."), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(strings230, 3)), "Path230: ['.', '..', '/']");
-  rstring_free(actual); rstring_free(strings230[0]); rstring_free(strings230[1]); rstring_free(strings230[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings231[3] = { rstring_new("."), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(strings231, 3)), "Path231: ['.', '..', '//']");
-  rstring_free(actual); rstring_free(strings231[0]); rstring_free(strings231[1]); rstring_free(strings231[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /..", (actual = rfile_join(rary)), "77");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings232[3] = { rstring_new("."), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../good", (actual = rfile_join(strings232, 3)), "Path232: ['.', '..', 'good']");
-  rstring_free(actual); rstring_free(strings232[0]); rstring_free(strings232[1]); rstring_free(strings232[2]);
 
-  rstring* strings233[3] = { rstring_new("."), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings233, 3)), "Path233: ['.', '/', '']");
-  rstring_free(actual); rstring_free(strings233[0]); rstring_free(strings233[1]); rstring_free(strings233[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings234[3] = { rstring_new("."), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(strings234, 3)), "Path234: ['.', '/', ' ']");
-  rstring_free(actual); rstring_free(strings234[0]); rstring_free(strings234[1]); rstring_free(strings234[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(rary)), "78");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings235[3] = { rstring_new("."), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(strings235, 3)), "Path235: ['.', '/', '  ']");
-  rstring_free(actual); rstring_free(strings235[0]); rstring_free(strings235[1]); rstring_free(strings235[2]);
 
-  rstring* strings236[3] = { rstring_new("."), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(strings236, 3)), "Path236: ['.', '/', '.']");
-  rstring_free(actual); rstring_free(strings236[0]); rstring_free(strings236[1]); rstring_free(strings236[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings237[3] = { rstring_new("."), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(strings237, 3)), "Path237: ['.', '/', '..']");
-  rstring_free(actual); rstring_free(strings237[0]); rstring_free(strings237[1]); rstring_free(strings237[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /", (actual = rfile_join(rary)), "79");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings238[3] = { rstring_new("."), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings238, 3)), "Path238: ['.', '/', '/']");
-  rstring_free(actual); rstring_free(strings238[0]); rstring_free(strings238[1]); rstring_free(strings238[2]);
 
-  rstring* strings239[3] = { rstring_new("."), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings239, 3)), "Path239: ['.', '/', '//']");
-  rstring_free(actual); rstring_free(strings239[0]); rstring_free(strings239[1]); rstring_free(strings239[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings240[3] = { rstring_new("."), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(strings240, 3)), "Path240: ['.', '/', 'good']");
-  rstring_free(actual); rstring_free(strings240[0]); rstring_free(strings240[1]); rstring_free(strings240[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / /good", (actual = rfile_join(rary)), "80");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings241[3] = { rstring_new("."), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings241, 3)), "Path241: ['.', '//', '']");
-  rstring_free(actual); rstring_free(strings241[0]); rstring_free(strings241[1]); rstring_free(strings241[2]);
 
-  rstring* strings242[3] = { rstring_new("."), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(strings242, 3)), "Path242: ['.', '//', ' ']");
-  rstring_free(actual); rstring_free(strings242[0]); rstring_free(strings242[1]); rstring_free(strings242[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings243[3] = { rstring_new("."), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(strings243, 3)), "Path243: ['.', '//', '  ']");
-  rstring_free(actual); rstring_free(strings243[0]); rstring_free(strings243[1]); rstring_free(strings243[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(rary)), "81");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings244[3] = { rstring_new("."), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(strings244, 3)), "Path244: ['.', '//', '.']");
-  rstring_free(actual); rstring_free(strings244[0]); rstring_free(strings244[1]); rstring_free(strings244[2]);
 
-  rstring* strings245[3] = { rstring_new("."), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(strings245, 3)), "Path245: ['.', '//', '..']");
-  rstring_free(actual); rstring_free(strings245[0]); rstring_free(strings245[1]); rstring_free(strings245[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings246[3] = { rstring_new("."), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings246, 3)), "Path246: ['.', '//', '/']");
-  rstring_free(actual); rstring_free(strings246[0]); rstring_free(strings246[1]); rstring_free(strings246[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  / ", (actual = rfile_join(rary)), "82");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings247[3] = { rstring_new("."), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(strings247, 3)), "Path247: ['.', '//', '//']");
-  rstring_free(actual); rstring_free(strings247[0]); rstring_free(strings247[1]); rstring_free(strings247[2]);
 
-  rstring* strings248[3] = { rstring_new("."), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(strings248, 3)), "Path248: ['.', '//', 'good']");
-  rstring_free(actual); rstring_free(strings248[0]); rstring_free(strings248[1]); rstring_free(strings248[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings249[3] = { rstring_new("."), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(strings249, 3)), "Path249: ['.', 'pie', '']");
-  rstring_free(actual); rstring_free(strings249[0]); rstring_free(strings249[1]); rstring_free(strings249[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /  ", (actual = rfile_join(rary)), "83");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings250[3] = { rstring_new("."), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/ ", (actual = rfile_join(strings250, 3)), "Path250: ['.', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings250[0]); rstring_free(strings250[1]); rstring_free(strings250[2]);
 
-  rstring* strings251[3] = { rstring_new("."), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/  ", (actual = rfile_join(strings251, 3)), "Path251: ['.', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings251[0]); rstring_free(strings251[1]); rstring_free(strings251[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings252[3] = { rstring_new("."), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/.", (actual = rfile_join(strings252, 3)), "Path252: ['.', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings252[0]); rstring_free(strings252[1]); rstring_free(strings252[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /.", (actual = rfile_join(rary)), "84");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings253[3] = { rstring_new("."), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/..", (actual = rfile_join(strings253, 3)), "Path253: ['.', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings253[0]); rstring_free(strings253[1]); rstring_free(strings253[2]);
 
-  rstring* strings254[3] = { rstring_new("."), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(strings254, 3)), "Path254: ['.', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings254[0]); rstring_free(strings254[1]); rstring_free(strings254[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings255[3] = { rstring_new("."), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(strings255, 3)), "Path255: ['.', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings255[0]); rstring_free(strings255[1]); rstring_free(strings255[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /..", (actual = rfile_join(rary)), "85");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings256[3] = { rstring_new("."), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/good", (actual = rfile_join(strings256, 3)), "Path256: ['.', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings256[0]); rstring_free(strings256[1]); rstring_free(strings256[2]);
 
-  rstring* strings257[3] = { rstring_new(".."), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings257, 3)), "Path257: ['..', '', '']");
-  rstring_free(actual); rstring_free(strings257[0]); rstring_free(strings257[1]); rstring_free(strings257[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings258[3] = { rstring_new(".."), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(strings258, 3)), "Path258: ['..', '', ' ']");
-  rstring_free(actual); rstring_free(strings258[0]); rstring_free(strings258[1]); rstring_free(strings258[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(rary)), "86");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings259[3] = { rstring_new(".."), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(strings259, 3)), "Path259: ['..', '', '  ']");
-  rstring_free(actual); rstring_free(strings259[0]); rstring_free(strings259[1]); rstring_free(strings259[2]);
 
-  rstring* strings260[3] = { rstring_new(".."), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(strings260, 3)), "Path260: ['..', '', '.']");
-  rstring_free(actual); rstring_free(strings260[0]); rstring_free(strings260[1]); rstring_free(strings260[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings261[3] = { rstring_new(".."), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(strings261, 3)), "Path261: ['..', '', '..']");
-  rstring_free(actual); rstring_free(strings261[0]); rstring_free(strings261[1]); rstring_free(strings261[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /", (actual = rfile_join(rary)), "87");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings262[3] = { rstring_new(".."), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings262, 3)), "Path262: ['..', '', '/']");
-  rstring_free(actual); rstring_free(strings262[0]); rstring_free(strings262[1]); rstring_free(strings262[2]);
 
-  rstring* strings263[3] = { rstring_new(".."), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings263, 3)), "Path263: ['..', '', '//']");
-  rstring_free(actual); rstring_free(strings263[0]); rstring_free(strings263[1]); rstring_free(strings263[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings264[3] = { rstring_new(".."), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(strings264, 3)), "Path264: ['..', '', 'good']");
-  rstring_free(actual); rstring_free(strings264[0]); rstring_free(strings264[1]); rstring_free(strings264[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  /good", (actual = rfile_join(rary)), "88");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings265[3] = { rstring_new(".."), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(strings265, 3)), "Path265: ['..', ' ', '']");
-  rstring_free(actual); rstring_free(strings265[0]); rstring_free(strings265[1]); rstring_free(strings265[2]);
 
-  rstring* strings266[3] = { rstring_new(".."), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ / ", (actual = rfile_join(strings266, 3)), "Path266: ['..', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings266[0]); rstring_free(strings266[1]); rstring_free(strings266[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings267[3] = { rstring_new(".."), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /  ", (actual = rfile_join(strings267, 3)), "Path267: ['..', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings267[0]); rstring_free(strings267[1]); rstring_free(strings267[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(rary)), "89");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings268[3] = { rstring_new(".."), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /.", (actual = rfile_join(strings268, 3)), "Path268: ['..', ' ', '.']");
-  rstring_free(actual); rstring_free(strings268[0]); rstring_free(strings268[1]); rstring_free(strings268[2]);
 
-  rstring* strings269[3] = { rstring_new(".."), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /..", (actual = rfile_join(strings269, 3)), "Path269: ['..', ' ', '..']");
-  rstring_free(actual); rstring_free(strings269[0]); rstring_free(strings269[1]); rstring_free(strings269[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings270[3] = { rstring_new(".."), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(strings270, 3)), "Path270: ['..', ' ', '/']");
-  rstring_free(actual); rstring_free(strings270[0]); rstring_free(strings270[1]); rstring_free(strings270[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./ ", (actual = rfile_join(rary)), "90");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings271[3] = { rstring_new(".."), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(strings271, 3)), "Path271: ['..', ' ', '//']");
-  rstring_free(actual); rstring_free(strings271[0]); rstring_free(strings271[1]); rstring_free(strings271[2]);
 
-  rstring* strings272[3] = { rstring_new(".."), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /good", (actual = rfile_join(strings272, 3)), "Path272: ['..', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings272[0]); rstring_free(strings272[1]); rstring_free(strings272[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings273[3] = { rstring_new(".."), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(strings273, 3)), "Path273: ['..', '  ', '']");
-  rstring_free(actual); rstring_free(strings273[0]); rstring_free(strings273[1]); rstring_free(strings273[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./  ", (actual = rfile_join(rary)), "91");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings274[3] = { rstring_new(".."), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  / ", (actual = rfile_join(strings274, 3)), "Path274: ['..', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings274[0]); rstring_free(strings274[1]); rstring_free(strings274[2]);
 
-  rstring* strings275[3] = { rstring_new(".."), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /  ", (actual = rfile_join(strings275, 3)), "Path275: ['..', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings275[0]); rstring_free(strings275[1]); rstring_free(strings275[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings276[3] = { rstring_new(".."), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /.", (actual = rfile_join(strings276, 3)), "Path276: ['..', '  ', '.']");
-  rstring_free(actual); rstring_free(strings276[0]); rstring_free(strings276[1]); rstring_free(strings276[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./.", (actual = rfile_join(rary)), "92");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings277[3] = { rstring_new(".."), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /..", (actual = rfile_join(strings277, 3)), "Path277: ['..', '  ', '..']");
-  rstring_free(actual); rstring_free(strings277[0]); rstring_free(strings277[1]); rstring_free(strings277[2]);
 
-  rstring* strings278[3] = { rstring_new(".."), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(strings278, 3)), "Path278: ['..', '  ', '/']");
-  rstring_free(actual); rstring_free(strings278[0]); rstring_free(strings278[1]); rstring_free(strings278[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings279[3] = { rstring_new(".."), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(strings279, 3)), "Path279: ['..', '  ', '//']");
-  rstring_free(actual); rstring_free(strings279[0]); rstring_free(strings279[1]); rstring_free(strings279[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./..", (actual = rfile_join(rary)), "93");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings280[3] = { rstring_new(".."), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /good", (actual = rfile_join(strings280, 3)), "Path280: ['..', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings280[0]); rstring_free(strings280[1]); rstring_free(strings280[2]);
 
-  rstring* strings281[3] = { rstring_new(".."), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(strings281, 3)), "Path281: ['..', '.', '']");
-  rstring_free(actual); rstring_free(strings281[0]); rstring_free(strings281[1]); rstring_free(strings281[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings282[3] = { rstring_new(".."), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././ ", (actual = rfile_join(strings282, 3)), "Path282: ['..', '.', ' ']");
-  rstring_free(actual); rstring_free(strings282[0]); rstring_free(strings282[1]); rstring_free(strings282[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(rary)), "94");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings283[3] = { rstring_new(".."), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././  ", (actual = rfile_join(strings283, 3)), "Path283: ['..', '.', '  ']");
-  rstring_free(actual); rstring_free(strings283[0]); rstring_free(strings283[1]); rstring_free(strings283[2]);
 
-  rstring* strings284[3] = { rstring_new(".."), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././.", (actual = rfile_join(strings284, 3)), "Path284: ['..', '.', '.']");
-  rstring_free(actual); rstring_free(strings284[0]); rstring_free(strings284[1]); rstring_free(strings284[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings285[3] = { rstring_new(".."), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././..", (actual = rfile_join(strings285, 3)), "Path285: ['..', '.', '..']");
-  rstring_free(actual); rstring_free(strings285[0]); rstring_free(strings285[1]); rstring_free(strings285[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./", (actual = rfile_join(rary)), "95");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings286[3] = { rstring_new(".."), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(strings286, 3)), "Path286: ['..', '.', '/']");
-  rstring_free(actual); rstring_free(strings286[0]); rstring_free(strings286[1]); rstring_free(strings286[2]);
 
-  rstring* strings287[3] = { rstring_new(".."), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(strings287, 3)), "Path287: ['..', '.', '//']");
-  rstring_free(actual); rstring_free(strings287[0]); rstring_free(strings287[1]); rstring_free(strings287[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings288[3] = { rstring_new(".."), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././good", (actual = rfile_join(strings288, 3)), "Path288: ['..', '.', 'good']");
-  rstring_free(actual); rstring_free(strings288[0]); rstring_free(strings288[1]); rstring_free(strings288[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /./good", (actual = rfile_join(rary)), "96");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings289[3] = { rstring_new(".."), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(strings289, 3)), "Path289: ['..', '..', '']");
-  rstring_free(actual); rstring_free(strings289[0]); rstring_free(strings289[1]); rstring_free(strings289[2]);
 
-  rstring* strings290[3] = { rstring_new(".."), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../ ", (actual = rfile_join(strings290, 3)), "Path290: ['..', '..', ' ']");
-  rstring_free(actual); rstring_free(strings290[0]); rstring_free(strings290[1]); rstring_free(strings290[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings291[3] = { rstring_new(".."), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../  ", (actual = rfile_join(strings291, 3)), "Path291: ['..', '..', '  ']");
-  rstring_free(actual); rstring_free(strings291[0]); rstring_free(strings291[1]); rstring_free(strings291[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(rary)), "97");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings292[3] = { rstring_new(".."), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../.", (actual = rfile_join(strings292, 3)), "Path292: ['..', '..', '.']");
-  rstring_free(actual); rstring_free(strings292[0]); rstring_free(strings292[1]); rstring_free(strings292[2]);
 
-  rstring* strings293[3] = { rstring_new(".."), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../..", (actual = rfile_join(strings293, 3)), "Path293: ['..', '..', '..']");
-  rstring_free(actual); rstring_free(strings293[0]); rstring_free(strings293[1]); rstring_free(strings293[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings294[3] = { rstring_new(".."), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(strings294, 3)), "Path294: ['..', '..', '/']");
-  rstring_free(actual); rstring_free(strings294[0]); rstring_free(strings294[1]); rstring_free(strings294[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../ ", (actual = rfile_join(rary)), "98");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings295[3] = { rstring_new(".."), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(strings295, 3)), "Path295: ['..', '..', '//']");
-  rstring_free(actual); rstring_free(strings295[0]); rstring_free(strings295[1]); rstring_free(strings295[2]);
 
-  rstring* strings296[3] = { rstring_new(".."), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../good", (actual = rfile_join(strings296, 3)), "Path296: ['..', '..', 'good']");
-  rstring_free(actual); rstring_free(strings296[0]); rstring_free(strings296[1]); rstring_free(strings296[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings297[3] = { rstring_new(".."), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings297, 3)), "Path297: ['..', '/', '']");
-  rstring_free(actual); rstring_free(strings297[0]); rstring_free(strings297[1]); rstring_free(strings297[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../  ", (actual = rfile_join(rary)), "99");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings298[3] = { rstring_new(".."), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(strings298, 3)), "Path298: ['..', '/', ' ']");
-  rstring_free(actual); rstring_free(strings298[0]); rstring_free(strings298[1]); rstring_free(strings298[2]);
 
-  rstring* strings299[3] = { rstring_new(".."), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(strings299, 3)), "Path299: ['..', '/', '  ']");
-  rstring_free(actual); rstring_free(strings299[0]); rstring_free(strings299[1]); rstring_free(strings299[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings300[3] = { rstring_new(".."), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(strings300, 3)), "Path300: ['..', '/', '.']");
-  rstring_free(actual); rstring_free(strings300[0]); rstring_free(strings300[1]); rstring_free(strings300[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../.", (actual = rfile_join(rary)), "100");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings301[3] = { rstring_new(".."), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(strings301, 3)), "Path301: ['..', '/', '..']");
-  rstring_free(actual); rstring_free(strings301[0]); rstring_free(strings301[1]); rstring_free(strings301[2]);
 
-  rstring* strings302[3] = { rstring_new(".."), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings302, 3)), "Path302: ['..', '/', '/']");
-  rstring_free(actual); rstring_free(strings302[0]); rstring_free(strings302[1]); rstring_free(strings302[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings303[3] = { rstring_new(".."), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings303, 3)), "Path303: ['..', '/', '//']");
-  rstring_free(actual); rstring_free(strings303[0]); rstring_free(strings303[1]); rstring_free(strings303[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../..", (actual = rfile_join(rary)), "101");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings304[3] = { rstring_new(".."), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(strings304, 3)), "Path304: ['..', '/', 'good']");
-  rstring_free(actual); rstring_free(strings304[0]); rstring_free(strings304[1]); rstring_free(strings304[2]);
 
-  rstring* strings305[3] = { rstring_new(".."), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings305, 3)), "Path305: ['..', '//', '']");
-  rstring_free(actual); rstring_free(strings305[0]); rstring_free(strings305[1]); rstring_free(strings305[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings306[3] = { rstring_new(".."), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(strings306, 3)), "Path306: ['..', '//', ' ']");
-  rstring_free(actual); rstring_free(strings306[0]); rstring_free(strings306[1]); rstring_free(strings306[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(rary)), "102");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings307[3] = { rstring_new(".."), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(strings307, 3)), "Path307: ['..', '//', '  ']");
-  rstring_free(actual); rstring_free(strings307[0]); rstring_free(strings307[1]); rstring_free(strings307[2]);
 
-  rstring* strings308[3] = { rstring_new(".."), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(strings308, 3)), "Path308: ['..', '//', '.']");
-  rstring_free(actual); rstring_free(strings308[0]); rstring_free(strings308[1]); rstring_free(strings308[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings309[3] = { rstring_new(".."), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(strings309, 3)), "Path309: ['..', '//', '..']");
-  rstring_free(actual); rstring_free(strings309[0]); rstring_free(strings309[1]); rstring_free(strings309[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../", (actual = rfile_join(rary)), "103");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings310[3] = { rstring_new(".."), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings310, 3)), "Path310: ['..', '//', '/']");
-  rstring_free(actual); rstring_free(strings310[0]); rstring_free(strings310[1]); rstring_free(strings310[2]);
 
-  rstring* strings311[3] = { rstring_new(".."), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(strings311, 3)), "Path311: ['..', '//', '//']");
-  rstring_free(actual); rstring_free(strings311[0]); rstring_free(strings311[1]); rstring_free(strings311[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings312[3] = { rstring_new(".."), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(strings312, 3)), "Path312: ['..', '//', 'good']");
-  rstring_free(actual); rstring_free(strings312[0]); rstring_free(strings312[1]); rstring_free(strings312[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /../good", (actual = rfile_join(rary)), "104");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings313[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(strings313, 3)), "Path313: ['..', 'pie', '']");
-  rstring_free(actual); rstring_free(strings313[0]); rstring_free(strings313[1]); rstring_free(strings313[2]);
 
-  rstring* strings314[3] = { rstring_new(".."), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/ ", (actual = rfile_join(strings314, 3)), "Path314: ['..', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings314[0]); rstring_free(strings314[1]); rstring_free(strings314[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings315[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/  ", (actual = rfile_join(strings315, 3)), "Path315: ['..', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings315[0]); rstring_free(strings315[1]); rstring_free(strings315[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "105");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings316[3] = { rstring_new(".."), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/.", (actual = rfile_join(strings316, 3)), "Path316: ['..', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings316[0]); rstring_free(strings316[1]); rstring_free(strings316[2]);
 
-  rstring* strings317[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/..", (actual = rfile_join(strings317, 3)), "Path317: ['..', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings317[0]); rstring_free(strings317[1]); rstring_free(strings317[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings318[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(strings318, 3)), "Path318: ['..', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings318[0]); rstring_free(strings318[1]); rstring_free(strings318[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(rary)), "106");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings319[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(strings319, 3)), "Path319: ['..', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings319[0]); rstring_free(strings319[1]); rstring_free(strings319[2]);
 
-  rstring* strings320[3] = { rstring_new(".."), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/good", (actual = rfile_join(strings320, 3)), "Path320: ['..', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings320[0]); rstring_free(strings320[1]); rstring_free(strings320[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings321[3] = { rstring_new("/"), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings321, 3)), "Path321: ['/', '', '']");
-  rstring_free(actual); rstring_free(strings321[0]); rstring_free(strings321[1]); rstring_free(strings321[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(rary)), "107");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings322[3] = { rstring_new("/"), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings322, 3)), "Path322: ['/', '', ' ']");
-  rstring_free(actual); rstring_free(strings322[0]); rstring_free(strings322[1]); rstring_free(strings322[2]);
 
-  rstring* strings323[3] = { rstring_new("/"), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings323, 3)), "Path323: ['/', '', '  ']");
-  rstring_free(actual); rstring_free(strings323[0]); rstring_free(strings323[1]); rstring_free(strings323[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings324[3] = { rstring_new("/"), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings324, 3)), "Path324: ['/', '', '.']");
-  rstring_free(actual); rstring_free(strings324[0]); rstring_free(strings324[1]); rstring_free(strings324[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(rary)), "108");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings325[3] = { rstring_new("/"), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings325, 3)), "Path325: ['/', '', '..']");
-  rstring_free(actual); rstring_free(strings325[0]); rstring_free(strings325[1]); rstring_free(strings325[2]);
 
-  rstring* strings326[3] = { rstring_new("/"), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings326, 3)), "Path326: ['/', '', '/']");
-  rstring_free(actual); rstring_free(strings326[0]); rstring_free(strings326[1]); rstring_free(strings326[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings327[3] = { rstring_new("/"), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings327, 3)), "Path327: ['/', '', '//']");
-  rstring_free(actual); rstring_free(strings327[0]); rstring_free(strings327[1]); rstring_free(strings327[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(rary)), "109");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings328[3] = { rstring_new("/"), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings328, 3)), "Path328: ['/', '', 'good']");
-  rstring_free(actual); rstring_free(strings328[0]); rstring_free(strings328[1]); rstring_free(strings328[2]);
 
-  rstring* strings329[3] = { rstring_new("/"), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings329, 3)), "Path329: ['/', ' ', '']");
-  rstring_free(actual); rstring_free(strings329[0]); rstring_free(strings329[1]); rstring_free(strings329[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings330[3] = { rstring_new("/"), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(strings330, 3)), "Path330: ['/', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings330[0]); rstring_free(strings330[1]); rstring_free(strings330[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "110");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings331[3] = { rstring_new("/"), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(strings331, 3)), "Path331: ['/', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings331[0]); rstring_free(strings331[1]); rstring_free(strings331[2]);
 
-  rstring* strings332[3] = { rstring_new("/"), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(strings332, 3)), "Path332: ['/', ' ', '.']");
-  rstring_free(actual); rstring_free(strings332[0]); rstring_free(strings332[1]); rstring_free(strings332[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings333[3] = { rstring_new("/"), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(strings333, 3)), "Path333: ['/', ' ', '..']");
-  rstring_free(actual); rstring_free(strings333[0]); rstring_free(strings333[1]); rstring_free(strings333[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "111");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings334[3] = { rstring_new("/"), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings334, 3)), "Path334: ['/', ' ', '/']");
-  rstring_free(actual); rstring_free(strings334[0]); rstring_free(strings334[1]); rstring_free(strings334[2]);
 
-  rstring* strings335[3] = { rstring_new("/"), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings335, 3)), "Path335: ['/', ' ', '//']");
-  rstring_free(actual); rstring_free(strings335[0]); rstring_free(strings335[1]); rstring_free(strings335[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings336[3] = { rstring_new("/"), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(strings336, 3)), "Path336: ['/', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings336[0]); rstring_free(strings336[1]); rstring_free(strings336[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(rary)), "112");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings337[3] = { rstring_new("/"), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings337, 3)), "Path337: ['/', '  ', '']");
-  rstring_free(actual); rstring_free(strings337[0]); rstring_free(strings337[1]); rstring_free(strings337[2]);
 
-  rstring* strings338[3] = { rstring_new("/"), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(strings338, 3)), "Path338: ['/', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings338[0]); rstring_free(strings338[1]); rstring_free(strings338[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings339[3] = { rstring_new("/"), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(strings339, 3)), "Path339: ['/', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings339[0]); rstring_free(strings339[1]); rstring_free(strings339[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "113");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings340[3] = { rstring_new("/"), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(strings340, 3)), "Path340: ['/', '  ', '.']");
-  rstring_free(actual); rstring_free(strings340[0]); rstring_free(strings340[1]); rstring_free(strings340[2]);
 
-  rstring* strings341[3] = { rstring_new("/"), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(strings341, 3)), "Path341: ['/', '  ', '..']");
-  rstring_free(actual); rstring_free(strings341[0]); rstring_free(strings341[1]); rstring_free(strings341[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings342[3] = { rstring_new("/"), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings342, 3)), "Path342: ['/', '  ', '/']");
-  rstring_free(actual); rstring_free(strings342[0]); rstring_free(strings342[1]); rstring_free(strings342[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" / ", (actual = rfile_join(rary)), "114");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings343[3] = { rstring_new("/"), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings343, 3)), "Path343: ['/', '  ', '//']");
-  rstring_free(actual); rstring_free(strings343[0]); rstring_free(strings343[1]); rstring_free(strings343[2]);
 
-  rstring* strings344[3] = { rstring_new("/"), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(strings344, 3)), "Path344: ['/', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings344[0]); rstring_free(strings344[1]); rstring_free(strings344[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings345[3] = { rstring_new("/"), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings345, 3)), "Path345: ['/', '.', '']");
-  rstring_free(actual); rstring_free(strings345[0]); rstring_free(strings345[1]); rstring_free(strings345[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /  ", (actual = rfile_join(rary)), "115");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings346[3] = { rstring_new("/"), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(strings346, 3)), "Path346: ['/', '.', ' ']");
-  rstring_free(actual); rstring_free(strings346[0]); rstring_free(strings346[1]); rstring_free(strings346[2]);
 
-  rstring* strings347[3] = { rstring_new("/"), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(strings347, 3)), "Path347: ['/', '.', '  ']");
-  rstring_free(actual); rstring_free(strings347[0]); rstring_free(strings347[1]); rstring_free(strings347[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings348[3] = { rstring_new("/"), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(strings348, 3)), "Path348: ['/', '.', '.']");
-  rstring_free(actual); rstring_free(strings348[0]); rstring_free(strings348[1]); rstring_free(strings348[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /.", (actual = rfile_join(rary)), "116");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings349[3] = { rstring_new("/"), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(strings349, 3)), "Path349: ['/', '.', '..']");
-  rstring_free(actual); rstring_free(strings349[0]); rstring_free(strings349[1]); rstring_free(strings349[2]);
 
-  rstring* strings350[3] = { rstring_new("/"), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings350, 3)), "Path350: ['/', '.', '/']");
-  rstring_free(actual); rstring_free(strings350[0]); rstring_free(strings350[1]); rstring_free(strings350[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings351[3] = { rstring_new("/"), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings351, 3)), "Path351: ['/', '.', '//']");
-  rstring_free(actual); rstring_free(strings351[0]); rstring_free(strings351[1]); rstring_free(strings351[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /..", (actual = rfile_join(rary)), "117");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings352[3] = { rstring_new("/"), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(strings352, 3)), "Path352: ['/', '.', 'good']");
-  rstring_free(actual); rstring_free(strings352[0]); rstring_free(strings352[1]); rstring_free(strings352[2]);
 
-  rstring* strings353[3] = { rstring_new("/"), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings353, 3)), "Path353: ['/', '..', '']");
-  rstring_free(actual); rstring_free(strings353[0]); rstring_free(strings353[1]); rstring_free(strings353[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings354[3] = { rstring_new("/"), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(strings354, 3)), "Path354: ['/', '..', ' ']");
-  rstring_free(actual); rstring_free(strings354[0]); rstring_free(strings354[1]); rstring_free(strings354[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "118");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings355[3] = { rstring_new("/"), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(strings355, 3)), "Path355: ['/', '..', '  ']");
-  rstring_free(actual); rstring_free(strings355[0]); rstring_free(strings355[1]); rstring_free(strings355[2]);
 
-  rstring* strings356[3] = { rstring_new("/"), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(strings356, 3)), "Path356: ['/', '..', '.']");
-  rstring_free(actual); rstring_free(strings356[0]); rstring_free(strings356[1]); rstring_free(strings356[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings357[3] = { rstring_new("/"), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(strings357, 3)), "Path357: ['/', '..', '..']");
-  rstring_free(actual); rstring_free(strings357[0]); rstring_free(strings357[1]); rstring_free(strings357[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /", (actual = rfile_join(rary)), "119");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings358[3] = { rstring_new("/"), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings358, 3)), "Path358: ['/', '..', '/']");
-  rstring_free(actual); rstring_free(strings358[0]); rstring_free(strings358[1]); rstring_free(strings358[2]);
 
-  rstring* strings359[3] = { rstring_new("/"), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings359, 3)), "Path359: ['/', '..', '//']");
-  rstring_free(actual); rstring_free(strings359[0]); rstring_free(strings359[1]); rstring_free(strings359[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings360[3] = { rstring_new("/"), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(strings360, 3)), "Path360: ['/', '..', 'good']");
-  rstring_free(actual); rstring_free(strings360[0]); rstring_free(strings360[1]); rstring_free(strings360[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /good", (actual = rfile_join(rary)), "120");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings361[3] = { rstring_new("/"), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings361, 3)), "Path361: ['/', '/', '']");
-  rstring_free(actual); rstring_free(strings361[0]); rstring_free(strings361[1]); rstring_free(strings361[2]);
 
-  rstring* strings362[3] = { rstring_new("/"), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings362, 3)), "Path362: ['/', '/', ' ']");
-  rstring_free(actual); rstring_free(strings362[0]); rstring_free(strings362[1]); rstring_free(strings362[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings363[3] = { rstring_new("/"), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings363, 3)), "Path363: ['/', '/', '  ']");
-  rstring_free(actual); rstring_free(strings363[0]); rstring_free(strings363[1]); rstring_free(strings363[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(rary)), "121");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings364[3] = { rstring_new("/"), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings364, 3)), "Path364: ['/', '/', '.']");
-  rstring_free(actual); rstring_free(strings364[0]); rstring_free(strings364[1]); rstring_free(strings364[2]);
 
-  rstring* strings365[3] = { rstring_new("/"), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings365, 3)), "Path365: ['/', '/', '..']");
-  rstring_free(actual); rstring_free(strings365[0]); rstring_free(strings365[1]); rstring_free(strings365[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings366[3] = { rstring_new("/"), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings366, 3)), "Path366: ['/', '/', '/']");
-  rstring_free(actual); rstring_free(strings366[0]); rstring_free(strings366[1]); rstring_free(strings366[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/ ", (actual = rfile_join(rary)), "122");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings367[3] = { rstring_new("/"), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings367, 3)), "Path367: ['/', '/', '//']");
-  rstring_free(actual); rstring_free(strings367[0]); rstring_free(strings367[1]); rstring_free(strings367[2]);
 
-  rstring* strings368[3] = { rstring_new("/"), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings368, 3)), "Path368: ['/', '/', 'good']");
-  rstring_free(actual); rstring_free(strings368[0]); rstring_free(strings368[1]); rstring_free(strings368[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings369[3] = { rstring_new("/"), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings369, 3)), "Path369: ['/', '//', '']");
-  rstring_free(actual); rstring_free(strings369[0]); rstring_free(strings369[1]); rstring_free(strings369[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/  ", (actual = rfile_join(rary)), "123");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings370[3] = { rstring_new("/"), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings370, 3)), "Path370: ['/', '//', ' ']");
-  rstring_free(actual); rstring_free(strings370[0]); rstring_free(strings370[1]); rstring_free(strings370[2]);
 
-  rstring* strings371[3] = { rstring_new("/"), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings371, 3)), "Path371: ['/', '//', '  ']");
-  rstring_free(actual); rstring_free(strings371[0]); rstring_free(strings371[1]); rstring_free(strings371[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings372[3] = { rstring_new("/"), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings372, 3)), "Path372: ['/', '//', '.']");
-  rstring_free(actual); rstring_free(strings372[0]); rstring_free(strings372[1]); rstring_free(strings372[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/.", (actual = rfile_join(rary)), "124");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings373[3] = { rstring_new("/"), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings373, 3)), "Path373: ['/', '//', '..']");
-  rstring_free(actual); rstring_free(strings373[0]); rstring_free(strings373[1]); rstring_free(strings373[2]);
 
-  rstring* strings374[3] = { rstring_new("/"), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings374, 3)), "Path374: ['/', '//', '/']");
-  rstring_free(actual); rstring_free(strings374[0]); rstring_free(strings374[1]); rstring_free(strings374[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings375[3] = { rstring_new("/"), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings375, 3)), "Path375: ['/', '//', '//']");
-  rstring_free(actual); rstring_free(strings375[0]); rstring_free(strings375[1]); rstring_free(strings375[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/..", (actual = rfile_join(rary)), "125");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings376[3] = { rstring_new("/"), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings376, 3)), "Path376: ['/', '//', 'good']");
-  rstring_free(actual); rstring_free(strings376[0]); rstring_free(strings376[1]); rstring_free(strings376[2]);
 
-  rstring* strings377[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings377, 3)), "Path377: ['/', 'pie', '']");
-  rstring_free(actual); rstring_free(strings377[0]); rstring_free(strings377[1]); rstring_free(strings377[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings378[3] = { rstring_new("/"), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(strings378, 3)), "Path378: ['/', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings378[0]); rstring_free(strings378[1]); rstring_free(strings378[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(rary)), "126");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings379[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(strings379, 3)), "Path379: ['/', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings379[0]); rstring_free(strings379[1]); rstring_free(strings379[2]);
 
-  rstring* strings380[3] = { rstring_new("/"), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(strings380, 3)), "Path380: ['/', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings380[0]); rstring_free(strings380[1]); rstring_free(strings380[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings381[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(strings381, 3)), "Path381: ['/', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings381[0]); rstring_free(strings381[1]); rstring_free(strings381[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/", (actual = rfile_join(rary)), "127");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings382[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings382, 3)), "Path382: ['/', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings382[0]); rstring_free(strings382[1]); rstring_free(strings382[2]);
 
-  rstring* strings383[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings383, 3)), "Path383: ['/', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings383[0]); rstring_free(strings383[1]); rstring_free(strings383[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings384[3] = { rstring_new("/"), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(strings384, 3)), "Path384: ['/', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings384[0]); rstring_free(strings384[1]); rstring_free(strings384[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(" /pie/good", (actual = rfile_join(rary)), "128");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings385[3] = { rstring_new("//"), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings385, 3)), "Path385: ['//', '', '']");
-  rstring_free(actual); rstring_free(strings385[0]); rstring_free(strings385[1]); rstring_free(strings385[2]);
 
-  rstring* strings386[3] = { rstring_new("//"), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings386, 3)), "Path386: ['//', '', ' ']");
-  rstring_free(actual); rstring_free(strings386[0]); rstring_free(strings386[1]); rstring_free(strings386[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings387[3] = { rstring_new("//"), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings387, 3)), "Path387: ['//', '', '  ']");
-  rstring_free(actual); rstring_free(strings387[0]); rstring_free(strings387[1]); rstring_free(strings387[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "129");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings388[3] = { rstring_new("//"), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings388, 3)), "Path388: ['//', '', '.']");
-  rstring_free(actual); rstring_free(strings388[0]); rstring_free(strings388[1]); rstring_free(strings388[2]);
 
-  rstring* strings389[3] = { rstring_new("//"), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings389, 3)), "Path389: ['//', '', '..']");
-  rstring_free(actual); rstring_free(strings389[0]); rstring_free(strings389[1]); rstring_free(strings389[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings390[3] = { rstring_new("//"), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings390, 3)), "Path390: ['//', '', '/']");
-  rstring_free(actual); rstring_free(strings390[0]); rstring_free(strings390[1]); rstring_free(strings390[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(rary)), "130");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings391[3] = { rstring_new("//"), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings391, 3)), "Path391: ['//', '', '//']");
-  rstring_free(actual); rstring_free(strings391[0]); rstring_free(strings391[1]); rstring_free(strings391[2]);
 
-  rstring* strings392[3] = { rstring_new("//"), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings392, 3)), "Path392: ['//', '', 'good']");
-  rstring_free(actual); rstring_free(strings392[0]); rstring_free(strings392[1]); rstring_free(strings392[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings393[3] = { rstring_new("//"), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings393, 3)), "Path393: ['//', ' ', '']");
-  rstring_free(actual); rstring_free(strings393[0]); rstring_free(strings393[1]); rstring_free(strings393[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(rary)), "131");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings394[3] = { rstring_new("//"), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(strings394, 3)), "Path394: ['//', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings394[0]); rstring_free(strings394[1]); rstring_free(strings394[2]);
 
-  rstring* strings395[3] = { rstring_new("//"), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(strings395, 3)), "Path395: ['//', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings395[0]); rstring_free(strings395[1]); rstring_free(strings395[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings396[3] = { rstring_new("//"), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(strings396, 3)), "Path396: ['//', ' ', '.']");
-  rstring_free(actual); rstring_free(strings396[0]); rstring_free(strings396[1]); rstring_free(strings396[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(rary)), "132");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings397[3] = { rstring_new("//"), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(strings397, 3)), "Path397: ['//', ' ', '..']");
-  rstring_free(actual); rstring_free(strings397[0]); rstring_free(strings397[1]); rstring_free(strings397[2]);
 
-  rstring* strings398[3] = { rstring_new("//"), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings398, 3)), "Path398: ['//', ' ', '/']");
-  rstring_free(actual); rstring_free(strings398[0]); rstring_free(strings398[1]); rstring_free(strings398[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings399[3] = { rstring_new("//"), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(strings399, 3)), "Path399: ['//', ' ', '//']");
-  rstring_free(actual); rstring_free(strings399[0]); rstring_free(strings399[1]); rstring_free(strings399[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(rary)), "133");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings400[3] = { rstring_new("//"), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(strings400, 3)), "Path400: ['//', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings400[0]); rstring_free(strings400[1]); rstring_free(strings400[2]);
 
-  rstring* strings401[3] = { rstring_new("//"), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings401, 3)), "Path401: ['//', '  ', '']");
-  rstring_free(actual); rstring_free(strings401[0]); rstring_free(strings401[1]); rstring_free(strings401[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings402[3] = { rstring_new("//"), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(strings402, 3)), "Path402: ['//', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings402[0]); rstring_free(strings402[1]); rstring_free(strings402[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "134");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings403[3] = { rstring_new("//"), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(strings403, 3)), "Path403: ['//', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings403[0]); rstring_free(strings403[1]); rstring_free(strings403[2]);
 
-  rstring* strings404[3] = { rstring_new("//"), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(strings404, 3)), "Path404: ['//', '  ', '.']");
-  rstring_free(actual); rstring_free(strings404[0]); rstring_free(strings404[1]); rstring_free(strings404[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings405[3] = { rstring_new("//"), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(strings405, 3)), "Path405: ['//', '  ', '..']");
-  rstring_free(actual); rstring_free(strings405[0]); rstring_free(strings405[1]); rstring_free(strings405[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "135");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings406[3] = { rstring_new("//"), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings406, 3)), "Path406: ['//', '  ', '/']");
-  rstring_free(actual); rstring_free(strings406[0]); rstring_free(strings406[1]); rstring_free(strings406[2]);
 
-  rstring* strings407[3] = { rstring_new("//"), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(strings407, 3)), "Path407: ['//', '  ', '//']");
-  rstring_free(actual); rstring_free(strings407[0]); rstring_free(strings407[1]); rstring_free(strings407[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings408[3] = { rstring_new("//"), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(strings408, 3)), "Path408: ['//', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings408[0]); rstring_free(strings408[1]); rstring_free(strings408[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(rary)), "136");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings409[3] = { rstring_new("//"), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings409, 3)), "Path409: ['//', '.', '']");
-  rstring_free(actual); rstring_free(strings409[0]); rstring_free(strings409[1]); rstring_free(strings409[2]);
 
-  rstring* strings410[3] = { rstring_new("//"), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(strings410, 3)), "Path410: ['//', '.', ' ']");
-  rstring_free(actual); rstring_free(strings410[0]); rstring_free(strings410[1]); rstring_free(strings410[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings411[3] = { rstring_new("//"), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(strings411, 3)), "Path411: ['//', '.', '  ']");
-  rstring_free(actual); rstring_free(strings411[0]); rstring_free(strings411[1]); rstring_free(strings411[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(rary)), "137");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings412[3] = { rstring_new("//"), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(strings412, 3)), "Path412: ['//', '.', '.']");
-  rstring_free(actual); rstring_free(strings412[0]); rstring_free(strings412[1]); rstring_free(strings412[2]);
 
-  rstring* strings413[3] = { rstring_new("//"), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(strings413, 3)), "Path413: ['//', '.', '..']");
-  rstring_free(actual); rstring_free(strings413[0]); rstring_free(strings413[1]); rstring_free(strings413[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings414[3] = { rstring_new("//"), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings414, 3)), "Path414: ['//', '.', '/']");
-  rstring_free(actual); rstring_free(strings414[0]); rstring_free(strings414[1]); rstring_free(strings414[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / / ", (actual = rfile_join(rary)), "138");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings415[3] = { rstring_new("//"), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(strings415, 3)), "Path415: ['//', '.', '//']");
-  rstring_free(actual); rstring_free(strings415[0]); rstring_free(strings415[1]); rstring_free(strings415[2]);
 
-  rstring* strings416[3] = { rstring_new("//"), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(strings416, 3)), "Path416: ['//', '.', 'good']");
-  rstring_free(actual); rstring_free(strings416[0]); rstring_free(strings416[1]); rstring_free(strings416[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings417[3] = { rstring_new("//"), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings417, 3)), "Path417: ['//', '..', '']");
-  rstring_free(actual); rstring_free(strings417[0]); rstring_free(strings417[1]); rstring_free(strings417[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /  ", (actual = rfile_join(rary)), "139");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings418[3] = { rstring_new("//"), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(strings418, 3)), "Path418: ['//', '..', ' ']");
-  rstring_free(actual); rstring_free(strings418[0]); rstring_free(strings418[1]); rstring_free(strings418[2]);
 
-  rstring* strings419[3] = { rstring_new("//"), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(strings419, 3)), "Path419: ['//', '..', '  ']");
-  rstring_free(actual); rstring_free(strings419[0]); rstring_free(strings419[1]); rstring_free(strings419[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings420[3] = { rstring_new("//"), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(strings420, 3)), "Path420: ['//', '..', '.']");
-  rstring_free(actual); rstring_free(strings420[0]); rstring_free(strings420[1]); rstring_free(strings420[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /.", (actual = rfile_join(rary)), "140");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings421[3] = { rstring_new("//"), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(strings421, 3)), "Path421: ['//', '..', '..']");
-  rstring_free(actual); rstring_free(strings421[0]); rstring_free(strings421[1]); rstring_free(strings421[2]);
 
-  rstring* strings422[3] = { rstring_new("//"), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings422, 3)), "Path422: ['//', '..', '/']");
-  rstring_free(actual); rstring_free(strings422[0]); rstring_free(strings422[1]); rstring_free(strings422[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings423[3] = { rstring_new("//"), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(strings423, 3)), "Path423: ['//', '..', '//']");
-  rstring_free(actual); rstring_free(strings423[0]); rstring_free(strings423[1]); rstring_free(strings423[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /..", (actual = rfile_join(rary)), "141");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings424[3] = { rstring_new("//"), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(strings424, 3)), "Path424: ['//', '..', 'good']");
-  rstring_free(actual); rstring_free(strings424[0]); rstring_free(strings424[1]); rstring_free(strings424[2]);
 
-  rstring* strings425[3] = { rstring_new("//"), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings425, 3)), "Path425: ['//', '/', '']");
-  rstring_free(actual); rstring_free(strings425[0]); rstring_free(strings425[1]); rstring_free(strings425[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings426[3] = { rstring_new("//"), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings426, 3)), "Path426: ['//', '/', ' ']");
-  rstring_free(actual); rstring_free(strings426[0]); rstring_free(strings426[1]); rstring_free(strings426[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(rary)), "142");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings427[3] = { rstring_new("//"), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings427, 3)), "Path427: ['//', '/', '  ']");
-  rstring_free(actual); rstring_free(strings427[0]); rstring_free(strings427[1]); rstring_free(strings427[2]);
 
-  rstring* strings428[3] = { rstring_new("//"), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings428, 3)), "Path428: ['//', '/', '.']");
-  rstring_free(actual); rstring_free(strings428[0]); rstring_free(strings428[1]); rstring_free(strings428[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings429[3] = { rstring_new("//"), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings429, 3)), "Path429: ['//', '/', '..']");
-  rstring_free(actual); rstring_free(strings429[0]); rstring_free(strings429[1]); rstring_free(strings429[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /", (actual = rfile_join(rary)), "143");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings430[3] = { rstring_new("//"), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings430, 3)), "Path430: ['//', '/', '/']");
-  rstring_free(actual); rstring_free(strings430[0]); rstring_free(strings430[1]); rstring_free(strings430[2]);
 
-  rstring* strings431[3] = { rstring_new("//"), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings431, 3)), "Path431: ['//', '/', '//']");
-  rstring_free(actual); rstring_free(strings431[0]); rstring_free(strings431[1]); rstring_free(strings431[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings432[3] = { rstring_new("//"), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings432, 3)), "Path432: ['//', '/', 'good']");
-  rstring_free(actual); rstring_free(strings432[0]); rstring_free(strings432[1]); rstring_free(strings432[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / /good", (actual = rfile_join(rary)), "144");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings433[3] = { rstring_new("//"), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings433, 3)), "Path433: ['//', '//', '']");
-  rstring_free(actual); rstring_free(strings433[0]); rstring_free(strings433[1]); rstring_free(strings433[2]);
 
-  rstring* strings434[3] = { rstring_new("//"), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(strings434, 3)), "Path434: ['//', '//', ' ']");
-  rstring_free(actual); rstring_free(strings434[0]); rstring_free(strings434[1]); rstring_free(strings434[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings435[3] = { rstring_new("//"), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(strings435, 3)), "Path435: ['//', '//', '  ']");
-  rstring_free(actual); rstring_free(strings435[0]); rstring_free(strings435[1]); rstring_free(strings435[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(rary)), "145");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings436[3] = { rstring_new("//"), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(strings436, 3)), "Path436: ['//', '//', '.']");
-  rstring_free(actual); rstring_free(strings436[0]); rstring_free(strings436[1]); rstring_free(strings436[2]);
 
-  rstring* strings437[3] = { rstring_new("//"), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(strings437, 3)), "Path437: ['//', '//', '..']");
-  rstring_free(actual); rstring_free(strings437[0]); rstring_free(strings437[1]); rstring_free(strings437[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings438[3] = { rstring_new("//"), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings438, 3)), "Path438: ['//', '//', '/']");
-  rstring_free(actual); rstring_free(strings438[0]); rstring_free(strings438[1]); rstring_free(strings438[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  / ", (actual = rfile_join(rary)), "146");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings439[3] = { rstring_new("//"), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(strings439, 3)), "Path439: ['//', '//', '//']");
-  rstring_free(actual); rstring_free(strings439[0]); rstring_free(strings439[1]); rstring_free(strings439[2]);
 
-  rstring* strings440[3] = { rstring_new("//"), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(strings440, 3)), "Path440: ['//', '//', 'good']");
-  rstring_free(actual); rstring_free(strings440[0]); rstring_free(strings440[1]); rstring_free(strings440[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings441[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings441, 3)), "Path441: ['//', 'pie', '']");
-  rstring_free(actual); rstring_free(strings441[0]); rstring_free(strings441[1]); rstring_free(strings441[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /  ", (actual = rfile_join(rary)), "147");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings442[3] = { rstring_new("//"), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(strings442, 3)), "Path442: ['//', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings442[0]); rstring_free(strings442[1]); rstring_free(strings442[2]);
 
-  rstring* strings443[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(strings443, 3)), "Path443: ['//', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings443[0]); rstring_free(strings443[1]); rstring_free(strings443[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings444[3] = { rstring_new("//"), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(strings444, 3)), "Path444: ['//', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings444[0]); rstring_free(strings444[1]); rstring_free(strings444[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /.", (actual = rfile_join(rary)), "148");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings445[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(strings445, 3)), "Path445: ['//', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings445[0]); rstring_free(strings445[1]); rstring_free(strings445[2]);
 
-  rstring* strings446[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings446, 3)), "Path446: ['//', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings446[0]); rstring_free(strings446[1]); rstring_free(strings446[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings447[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(strings447, 3)), "Path447: ['//', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings447[0]); rstring_free(strings447[1]); rstring_free(strings447[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /..", (actual = rfile_join(rary)), "149");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings448[3] = { rstring_new("//"), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(strings448, 3)), "Path448: ['//', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings448[0]); rstring_free(strings448[1]); rstring_free(strings448[2]);
 
-  rstring* strings449[3] = { rstring_new("apple"), rstring_new(""), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings449, 3)), "Path449: ['apple', '', '']");
-  rstring_free(actual); rstring_free(strings449[0]); rstring_free(strings449[1]); rstring_free(strings449[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings450[3] = { rstring_new("apple"), rstring_new(""), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(strings450, 3)), "Path450: ['apple', '', ' ']");
-  rstring_free(actual); rstring_free(strings450[0]); rstring_free(strings450[1]); rstring_free(strings450[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(rary)), "150");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings451[3] = { rstring_new("apple"), rstring_new(""), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(strings451, 3)), "Path451: ['apple', '', '  ']");
-  rstring_free(actual); rstring_free(strings451[0]); rstring_free(strings451[1]); rstring_free(strings451[2]);
 
-  rstring* strings452[3] = { rstring_new("apple"), rstring_new(""), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(strings452, 3)), "Path452: ['apple', '', '.']");
-  rstring_free(actual); rstring_free(strings452[0]); rstring_free(strings452[1]); rstring_free(strings452[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings453[3] = { rstring_new("apple"), rstring_new(""), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(strings453, 3)), "Path453: ['apple', '', '..']");
-  rstring_free(actual); rstring_free(strings453[0]); rstring_free(strings453[1]); rstring_free(strings453[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /", (actual = rfile_join(rary)), "151");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings454[3] = { rstring_new("apple"), rstring_new(""), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings454, 3)), "Path454: ['apple', '', '/']");
-  rstring_free(actual); rstring_free(strings454[0]); rstring_free(strings454[1]); rstring_free(strings454[2]);
 
-  rstring* strings455[3] = { rstring_new("apple"), rstring_new(""), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings455, 3)), "Path455: ['apple', '', '//']");
-  rstring_free(actual); rstring_free(strings455[0]); rstring_free(strings455[1]); rstring_free(strings455[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings456[3] = { rstring_new("apple"), rstring_new(""), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(strings456, 3)), "Path456: ['apple', '', 'good']");
-  rstring_free(actual); rstring_free(strings456[0]); rstring_free(strings456[1]); rstring_free(strings456[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  /good", (actual = rfile_join(rary)), "152");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings457[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(strings457, 3)), "Path457: ['apple', ' ', '']");
-  rstring_free(actual); rstring_free(strings457[0]); rstring_free(strings457[1]); rstring_free(strings457[2]);
 
-  rstring* strings458[3] = { rstring_new("apple"), rstring_new(" "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ / ", (actual = rfile_join(strings458, 3)), "Path458: ['apple', ' ', ' ']");
-  rstring_free(actual); rstring_free(strings458[0]); rstring_free(strings458[1]); rstring_free(strings458[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings459[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /  ", (actual = rfile_join(strings459, 3)), "Path459: ['apple', ' ', '  ']");
-  rstring_free(actual); rstring_free(strings459[0]); rstring_free(strings459[1]); rstring_free(strings459[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(rary)), "153");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings460[3] = { rstring_new("apple"), rstring_new(" "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /.", (actual = rfile_join(strings460, 3)), "Path460: ['apple', ' ', '.']");
-  rstring_free(actual); rstring_free(strings460[0]); rstring_free(strings460[1]); rstring_free(strings460[2]);
 
-  rstring* strings461[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /..", (actual = rfile_join(strings461, 3)), "Path461: ['apple', ' ', '..']");
-  rstring_free(actual); rstring_free(strings461[0]); rstring_free(strings461[1]); rstring_free(strings461[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings462[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(strings462, 3)), "Path462: ['apple', ' ', '/']");
-  rstring_free(actual); rstring_free(strings462[0]); rstring_free(strings462[1]); rstring_free(strings462[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./ ", (actual = rfile_join(rary)), "154");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings463[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(strings463, 3)), "Path463: ['apple', ' ', '//']");
-  rstring_free(actual); rstring_free(strings463[0]); rstring_free(strings463[1]); rstring_free(strings463[2]);
 
-  rstring* strings464[3] = { rstring_new("apple"), rstring_new(" "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /good", (actual = rfile_join(strings464, 3)), "Path464: ['apple', ' ', 'good']");
-  rstring_free(actual); rstring_free(strings464[0]); rstring_free(strings464[1]); rstring_free(strings464[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings465[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(strings465, 3)), "Path465: ['apple', '  ', '']");
-  rstring_free(actual); rstring_free(strings465[0]); rstring_free(strings465[1]); rstring_free(strings465[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./  ", (actual = rfile_join(rary)), "155");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings466[3] = { rstring_new("apple"), rstring_new("  "), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  / ", (actual = rfile_join(strings466, 3)), "Path466: ['apple', '  ', ' ']");
-  rstring_free(actual); rstring_free(strings466[0]); rstring_free(strings466[1]); rstring_free(strings466[2]);
 
-  rstring* strings467[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /  ", (actual = rfile_join(strings467, 3)), "Path467: ['apple', '  ', '  ']");
-  rstring_free(actual); rstring_free(strings467[0]); rstring_free(strings467[1]); rstring_free(strings467[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings468[3] = { rstring_new("apple"), rstring_new("  "), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /.", (actual = rfile_join(strings468, 3)), "Path468: ['apple', '  ', '.']");
-  rstring_free(actual); rstring_free(strings468[0]); rstring_free(strings468[1]); rstring_free(strings468[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./.", (actual = rfile_join(rary)), "156");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings469[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /..", (actual = rfile_join(strings469, 3)), "Path469: ['apple', '  ', '..']");
-  rstring_free(actual); rstring_free(strings469[0]); rstring_free(strings469[1]); rstring_free(strings469[2]);
 
-  rstring* strings470[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(strings470, 3)), "Path470: ['apple', '  ', '/']");
-  rstring_free(actual); rstring_free(strings470[0]); rstring_free(strings470[1]); rstring_free(strings470[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings471[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(strings471, 3)), "Path471: ['apple', '  ', '//']");
-  rstring_free(actual); rstring_free(strings471[0]); rstring_free(strings471[1]); rstring_free(strings471[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./..", (actual = rfile_join(rary)), "157");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings472[3] = { rstring_new("apple"), rstring_new("  "), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /good", (actual = rfile_join(strings472, 3)), "Path472: ['apple', '  ', 'good']");
-  rstring_free(actual); rstring_free(strings472[0]); rstring_free(strings472[1]); rstring_free(strings472[2]);
 
-  rstring* strings473[3] = { rstring_new("apple"), rstring_new("."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(strings473, 3)), "Path473: ['apple', '.', '']");
-  rstring_free(actual); rstring_free(strings473[0]); rstring_free(strings473[1]); rstring_free(strings473[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings474[3] = { rstring_new("apple"), rstring_new("."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./ ", (actual = rfile_join(strings474, 3)), "Path474: ['apple', '.', ' ']");
-  rstring_free(actual); rstring_free(strings474[0]); rstring_free(strings474[1]); rstring_free(strings474[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(rary)), "158");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings475[3] = { rstring_new("apple"), rstring_new("."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./  ", (actual = rfile_join(strings475, 3)), "Path475: ['apple', '.', '  ']");
-  rstring_free(actual); rstring_free(strings475[0]); rstring_free(strings475[1]); rstring_free(strings475[2]);
 
-  rstring* strings476[3] = { rstring_new("apple"), rstring_new("."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./.", (actual = rfile_join(strings476, 3)), "Path476: ['apple', '.', '.']");
-  rstring_free(actual); rstring_free(strings476[0]); rstring_free(strings476[1]); rstring_free(strings476[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings477[3] = { rstring_new("apple"), rstring_new("."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./..", (actual = rfile_join(strings477, 3)), "Path477: ['apple', '.', '..']");
-  rstring_free(actual); rstring_free(strings477[0]); rstring_free(strings477[1]); rstring_free(strings477[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./", (actual = rfile_join(rary)), "159");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings478[3] = { rstring_new("apple"), rstring_new("."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(strings478, 3)), "Path478: ['apple', '.', '/']");
-  rstring_free(actual); rstring_free(strings478[0]); rstring_free(strings478[1]); rstring_free(strings478[2]);
 
-  rstring* strings479[3] = { rstring_new("apple"), rstring_new("."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(strings479, 3)), "Path479: ['apple', '.', '//']");
-  rstring_free(actual); rstring_free(strings479[0]); rstring_free(strings479[1]); rstring_free(strings479[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings480[3] = { rstring_new("apple"), rstring_new("."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./good", (actual = rfile_join(strings480, 3)), "Path480: ['apple', '.', 'good']");
-  rstring_free(actual); rstring_free(strings480[0]); rstring_free(strings480[1]); rstring_free(strings480[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /./good", (actual = rfile_join(rary)), "160");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings481[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(strings481, 3)), "Path481: ['apple', '..', '']");
-  rstring_free(actual); rstring_free(strings481[0]); rstring_free(strings481[1]); rstring_free(strings481[2]);
 
-  rstring* strings482[3] = { rstring_new("apple"), rstring_new(".."), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../ ", (actual = rfile_join(strings482, 3)), "Path482: ['apple', '..', ' ']");
-  rstring_free(actual); rstring_free(strings482[0]); rstring_free(strings482[1]); rstring_free(strings482[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings483[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../  ", (actual = rfile_join(strings483, 3)), "Path483: ['apple', '..', '  ']");
-  rstring_free(actual); rstring_free(strings483[0]); rstring_free(strings483[1]); rstring_free(strings483[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(rary)), "161");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings484[3] = { rstring_new("apple"), rstring_new(".."), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../.", (actual = rfile_join(strings484, 3)), "Path484: ['apple', '..', '.']");
-  rstring_free(actual); rstring_free(strings484[0]); rstring_free(strings484[1]); rstring_free(strings484[2]);
 
-  rstring* strings485[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../..", (actual = rfile_join(strings485, 3)), "Path485: ['apple', '..', '..']");
-  rstring_free(actual); rstring_free(strings485[0]); rstring_free(strings485[1]); rstring_free(strings485[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings486[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(strings486, 3)), "Path486: ['apple', '..', '/']");
-  rstring_free(actual); rstring_free(strings486[0]); rstring_free(strings486[1]); rstring_free(strings486[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../ ", (actual = rfile_join(rary)), "162");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings487[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(strings487, 3)), "Path487: ['apple', '..', '//']");
-  rstring_free(actual); rstring_free(strings487[0]); rstring_free(strings487[1]); rstring_free(strings487[2]);
 
-  rstring* strings488[3] = { rstring_new("apple"), rstring_new(".."), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../good", (actual = rfile_join(strings488, 3)), "Path488: ['apple', '..', 'good']");
-  rstring_free(actual); rstring_free(strings488[0]); rstring_free(strings488[1]); rstring_free(strings488[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
 
-  rstring* strings489[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings489, 3)), "Path489: ['apple', '/', '']");
-  rstring_free(actual); rstring_free(strings489[0]); rstring_free(strings489[1]); rstring_free(strings489[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../  ", (actual = rfile_join(rary)), "163");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings490[3] = { rstring_new("apple"), rstring_new("/"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(strings490, 3)), "Path490: ['apple', '/', ' ']");
-  rstring_free(actual); rstring_free(strings490[0]); rstring_free(strings490[1]); rstring_free(strings490[2]);
 
-  rstring* strings491[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(strings491, 3)), "Path491: ['apple', '/', '  ']");
-  rstring_free(actual); rstring_free(strings491[0]); rstring_free(strings491[1]); rstring_free(strings491[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
 
-  rstring* strings492[3] = { rstring_new("apple"), rstring_new("/"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(strings492, 3)), "Path492: ['apple', '/', '.']");
-  rstring_free(actual); rstring_free(strings492[0]); rstring_free(strings492[1]); rstring_free(strings492[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../.", (actual = rfile_join(rary)), "164");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings493[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(strings493, 3)), "Path493: ['apple', '/', '..']");
-  rstring_free(actual); rstring_free(strings493[0]); rstring_free(strings493[1]); rstring_free(strings493[2]);
 
-  rstring* strings494[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings494, 3)), "Path494: ['apple', '/', '/']");
-  rstring_free(actual); rstring_free(strings494[0]); rstring_free(strings494[1]); rstring_free(strings494[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
 
-  rstring* strings495[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings495, 3)), "Path495: ['apple', '/', '//']");
-  rstring_free(actual); rstring_free(strings495[0]); rstring_free(strings495[1]); rstring_free(strings495[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../..", (actual = rfile_join(rary)), "165");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings496[3] = { rstring_new("apple"), rstring_new("/"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(strings496, 3)), "Path496: ['apple', '/', 'good']");
-  rstring_free(actual); rstring_free(strings496[0]); rstring_free(strings496[1]); rstring_free(strings496[2]);
 
-  rstring* strings497[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings497, 3)), "Path497: ['apple', '//', '']");
-  rstring_free(actual); rstring_free(strings497[0]); rstring_free(strings497[1]); rstring_free(strings497[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
 
-  rstring* strings498[3] = { rstring_new("apple"), rstring_new("//"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(strings498, 3)), "Path498: ['apple', '//', ' ']");
-  rstring_free(actual); rstring_free(strings498[0]); rstring_free(strings498[1]); rstring_free(strings498[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(rary)), "166");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings499[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(strings499, 3)), "Path499: ['apple', '//', '  ']");
-  rstring_free(actual); rstring_free(strings499[0]); rstring_free(strings499[1]); rstring_free(strings499[2]);
 
-  rstring* strings500[3] = { rstring_new("apple"), rstring_new("//"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(strings500, 3)), "Path500: ['apple', '//', '.']");
-  rstring_free(actual); rstring_free(strings500[0]); rstring_free(strings500[1]); rstring_free(strings500[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
 
-  rstring* strings501[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(strings501, 3)), "Path501: ['apple', '//', '..']");
-  rstring_free(actual); rstring_free(strings501[0]); rstring_free(strings501[1]); rstring_free(strings501[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../", (actual = rfile_join(rary)), "167");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings502[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings502, 3)), "Path502: ['apple', '//', '/']");
-  rstring_free(actual); rstring_free(strings502[0]); rstring_free(strings502[1]); rstring_free(strings502[2]);
 
-  rstring* strings503[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(strings503, 3)), "Path503: ['apple', '//', '//']");
-  rstring_free(actual); rstring_free(strings503[0]); rstring_free(strings503[1]); rstring_free(strings503[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
 
-  rstring* strings504[3] = { rstring_new("apple"), rstring_new("//"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(strings504, 3)), "Path504: ['apple', '//', 'good']");
-  rstring_free(actual); rstring_free(strings504[0]); rstring_free(strings504[1]); rstring_free(strings504[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /../good", (actual = rfile_join(rary)), "168");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings505[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(strings505, 3)), "Path505: ['apple', 'pie', '']");
-  rstring_free(actual); rstring_free(strings505[0]); rstring_free(strings505[1]); rstring_free(strings505[2]);
 
-  rstring* strings506[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new(" ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/ ", (actual = rfile_join(strings506, 3)), "Path506: ['apple', 'pie', ' ']");
-  rstring_free(actual); rstring_free(strings506[0]); rstring_free(strings506[1]); rstring_free(strings506[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
 
-  rstring* strings507[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("  ") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/  ", (actual = rfile_join(strings507, 3)), "Path507: ['apple', 'pie', '  ']");
-  rstring_free(actual); rstring_free(strings507[0]); rstring_free(strings507[1]); rstring_free(strings507[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "169");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings508[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new(".") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/.", (actual = rfile_join(strings508, 3)), "Path508: ['apple', 'pie', '.']");
-  rstring_free(actual); rstring_free(strings508[0]); rstring_free(strings508[1]); rstring_free(strings508[2]);
 
-  rstring* strings509[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("..") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/..", (actual = rfile_join(strings509, 3)), "Path509: ['apple', 'pie', '..']");
-  rstring_free(actual); rstring_free(strings509[0]); rstring_free(strings509[1]); rstring_free(strings509[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
 
-  rstring* strings510[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("/") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(strings510, 3)), "Path510: ['apple', 'pie', '/']");
-  rstring_free(actual); rstring_free(strings510[0]); rstring_free(strings510[1]); rstring_free(strings510[2]);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(rary)), "170");
+  rstring_free(actual); rstring_array_free(rary);
 
-  rstring* strings511[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("//") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(strings511, 3)), "Path511: ['apple', 'pie', '//']");
-  rstring_free(actual); rstring_free(strings511[0]); rstring_free(strings511[1]); rstring_free(strings511[2]);
 
-  rstring* strings512[3] = { rstring_new("apple"), rstring_new("pie"), rstring_new("good") };
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(strings512, 3)), "Path512: ['apple', 'pie', 'good']");
-  rstring_free(actual); rstring_free(strings512[0]); rstring_free(strings512[1]); rstring_free(strings512[2]);
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(rary)), "171");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(rary)), "172");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(rary)), "173");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "174");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "175");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(rary)), "176");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "177");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  / ", (actual = rfile_join(rary)), "178");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /  ", (actual = rfile_join(rary)), "179");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /.", (actual = rfile_join(rary)), "180");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /..", (actual = rfile_join(rary)), "181");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "182");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /", (actual = rfile_join(rary)), "183");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /good", (actual = rfile_join(rary)), "184");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(rary)), "185");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/ ", (actual = rfile_join(rary)), "186");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/  ", (actual = rfile_join(rary)), "187");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/.", (actual = rfile_join(rary)), "188");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/..", (actual = rfile_join(rary)), "189");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(rary)), "190");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/", (actual = rfile_join(rary)), "191");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("  /pie/good", (actual = rfile_join(rary)), "192");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "193");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(rary)), "194");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(rary)), "195");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(rary)), "196");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(rary)), "197");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "198");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "199");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(rary)), "200");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(rary)), "201");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ / ", (actual = rfile_join(rary)), "202");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /  ", (actual = rfile_join(rary)), "203");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /.", (actual = rfile_join(rary)), "204");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /..", (actual = rfile_join(rary)), "205");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(rary)), "206");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /", (actual = rfile_join(rary)), "207");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ /good", (actual = rfile_join(rary)), "208");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(rary)), "209");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  / ", (actual = rfile_join(rary)), "210");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /  ", (actual = rfile_join(rary)), "211");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /.", (actual = rfile_join(rary)), "212");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /..", (actual = rfile_join(rary)), "213");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(rary)), "214");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /", (actual = rfile_join(rary)), "215");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  /good", (actual = rfile_join(rary)), "216");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(rary)), "217");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././ ", (actual = rfile_join(rary)), "218");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././  ", (actual = rfile_join(rary)), "219");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././.", (actual = rfile_join(rary)), "220");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././..", (actual = rfile_join(rary)), "221");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(rary)), "222");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././", (actual = rfile_join(rary)), "223");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("././good", (actual = rfile_join(rary)), "224");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(rary)), "225");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../ ", (actual = rfile_join(rary)), "226");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../  ", (actual = rfile_join(rary)), "227");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../.", (actual = rfile_join(rary)), "228");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../..", (actual = rfile_join(rary)), "229");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(rary)), "230");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../", (actual = rfile_join(rary)), "231");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./../good", (actual = rfile_join(rary)), "232");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "233");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(rary)), "234");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(rary)), "235");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(rary)), "236");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(rary)), "237");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "238");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "239");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(rary)), "240");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "241");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./ ", (actual = rfile_join(rary)), "242");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./  ", (actual = rfile_join(rary)), "243");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./.", (actual = rfile_join(rary)), "244");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./..", (actual = rfile_join(rary)), "245");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "246");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./", (actual = rfile_join(rary)), "247");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./good", (actual = rfile_join(rary)), "248");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(rary)), "249");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/ ", (actual = rfile_join(rary)), "250");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/  ", (actual = rfile_join(rary)), "251");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/.", (actual = rfile_join(rary)), "252");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/..", (actual = rfile_join(rary)), "253");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(rary)), "254");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/", (actual = rfile_join(rary)), "255");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("./pie/good", (actual = rfile_join(rary)), "256");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "257");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(rary)), "258");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(rary)), "259");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(rary)), "260");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(rary)), "261");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "262");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "263");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(rary)), "264");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(rary)), "265");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ / ", (actual = rfile_join(rary)), "266");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /  ", (actual = rfile_join(rary)), "267");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /.", (actual = rfile_join(rary)), "268");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /..", (actual = rfile_join(rary)), "269");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(rary)), "270");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /", (actual = rfile_join(rary)), "271");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ /good", (actual = rfile_join(rary)), "272");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(rary)), "273");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  / ", (actual = rfile_join(rary)), "274");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /  ", (actual = rfile_join(rary)), "275");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /.", (actual = rfile_join(rary)), "276");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /..", (actual = rfile_join(rary)), "277");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(rary)), "278");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /", (actual = rfile_join(rary)), "279");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  /good", (actual = rfile_join(rary)), "280");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(rary)), "281");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././ ", (actual = rfile_join(rary)), "282");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././  ", (actual = rfile_join(rary)), "283");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././.", (actual = rfile_join(rary)), "284");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././..", (actual = rfile_join(rary)), "285");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(rary)), "286");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././", (actual = rfile_join(rary)), "287");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(".././good", (actual = rfile_join(rary)), "288");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(rary)), "289");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../ ", (actual = rfile_join(rary)), "290");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../  ", (actual = rfile_join(rary)), "291");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../.", (actual = rfile_join(rary)), "292");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../..", (actual = rfile_join(rary)), "293");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(rary)), "294");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../", (actual = rfile_join(rary)), "295");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../../good", (actual = rfile_join(rary)), "296");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "297");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(rary)), "298");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(rary)), "299");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(rary)), "300");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(rary)), "301");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "302");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "303");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(rary)), "304");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "305");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../ ", (actual = rfile_join(rary)), "306");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../  ", (actual = rfile_join(rary)), "307");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../.", (actual = rfile_join(rary)), "308");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../..", (actual = rfile_join(rary)), "309");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "310");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../", (actual = rfile_join(rary)), "311");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../good", (actual = rfile_join(rary)), "312");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(rary)), "313");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/ ", (actual = rfile_join(rary)), "314");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/  ", (actual = rfile_join(rary)), "315");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/.", (actual = rfile_join(rary)), "316");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/..", (actual = rfile_join(rary)), "317");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(rary)), "318");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/", (actual = rfile_join(rary)), "319");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("../pie/good", (actual = rfile_join(rary)), "320");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "321");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "322");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "323");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "324");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "325");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "326");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "327");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "328");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "329");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(rary)), "330");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(rary)), "331");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(rary)), "332");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(rary)), "333");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "334");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "335");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(rary)), "336");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "337");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(rary)), "338");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(rary)), "339");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(rary)), "340");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(rary)), "341");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "342");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "343");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(rary)), "344");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "345");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(rary)), "346");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(rary)), "347");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(rary)), "348");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(rary)), "349");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "350");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "351");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(rary)), "352");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "353");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(rary)), "354");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(rary)), "355");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(rary)), "356");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(rary)), "357");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "358");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "359");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(rary)), "360");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "361");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "362");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "363");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "364");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "365");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "366");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "367");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "368");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "369");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "370");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "371");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "372");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "373");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "374");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "375");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "376");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "377");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(rary)), "378");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(rary)), "379");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(rary)), "380");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(rary)), "381");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "382");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "383");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(rary)), "384");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "385");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "386");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "387");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "388");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "389");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "390");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "391");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "392");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "393");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ / ", (actual = rfile_join(rary)), "394");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /  ", (actual = rfile_join(rary)), "395");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /.", (actual = rfile_join(rary)), "396");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /..", (actual = rfile_join(rary)), "397");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "398");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /", (actual = rfile_join(rary)), "399");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ /good", (actual = rfile_join(rary)), "400");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "401");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  / ", (actual = rfile_join(rary)), "402");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /  ", (actual = rfile_join(rary)), "403");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /.", (actual = rfile_join(rary)), "404");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /..", (actual = rfile_join(rary)), "405");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "406");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /", (actual = rfile_join(rary)), "407");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  /good", (actual = rfile_join(rary)), "408");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "409");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./ ", (actual = rfile_join(rary)), "410");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./  ", (actual = rfile_join(rary)), "411");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./.", (actual = rfile_join(rary)), "412");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./..", (actual = rfile_join(rary)), "413");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "414");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./", (actual = rfile_join(rary)), "415");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/./good", (actual = rfile_join(rary)), "416");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "417");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../ ", (actual = rfile_join(rary)), "418");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../  ", (actual = rfile_join(rary)), "419");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../.", (actual = rfile_join(rary)), "420");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../..", (actual = rfile_join(rary)), "421");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "422");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../", (actual = rfile_join(rary)), "423");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/../good", (actual = rfile_join(rary)), "424");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "425");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "426");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "427");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "428");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "429");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "430");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "431");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "432");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "433");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/ ", (actual = rfile_join(rary)), "434");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/  ", (actual = rfile_join(rary)), "435");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/.", (actual = rfile_join(rary)), "436");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/..", (actual = rfile_join(rary)), "437");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "438");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/", (actual = rfile_join(rary)), "439");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/good", (actual = rfile_join(rary)), "440");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "441");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/ ", (actual = rfile_join(rary)), "442");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/  ", (actual = rfile_join(rary)), "443");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/.", (actual = rfile_join(rary)), "444");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/..", (actual = rfile_join(rary)), "445");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "446");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/", (actual = rfile_join(rary)), "447");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("/pie/good", (actual = rfile_join(rary)), "448");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "449");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(rary)), "450");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(rary)), "451");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(rary)), "452");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(rary)), "453");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "454");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "455");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(rary)), "456");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(rary)), "457");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ / ", (actual = rfile_join(rary)), "458");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /  ", (actual = rfile_join(rary)), "459");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /.", (actual = rfile_join(rary)), "460");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /..", (actual = rfile_join(rary)), "461");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(rary)), "462");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /", (actual = rfile_join(rary)), "463");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, " ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ /good", (actual = rfile_join(rary)), "464");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(rary)), "465");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  / ", (actual = rfile_join(rary)), "466");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /  ", (actual = rfile_join(rary)), "467");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /.", (actual = rfile_join(rary)), "468");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /..", (actual = rfile_join(rary)), "469");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(rary)), "470");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /", (actual = rfile_join(rary)), "471");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "  ");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  /good", (actual = rfile_join(rary)), "472");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(rary)), "473");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./ ", (actual = rfile_join(rary)), "474");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./  ", (actual = rfile_join(rary)), "475");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./.", (actual = rfile_join(rary)), "476");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./..", (actual = rfile_join(rary)), "477");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(rary)), "478");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./", (actual = rfile_join(rary)), "479");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, ".");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/./good", (actual = rfile_join(rary)), "480");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(rary)), "481");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../ ", (actual = rfile_join(rary)), "482");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../  ", (actual = rfile_join(rary)), "483");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../.", (actual = rfile_join(rary)), "484");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../..", (actual = rfile_join(rary)), "485");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(rary)), "486");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../", (actual = rfile_join(rary)), "487");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "..");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/../good", (actual = rfile_join(rary)), "488");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "489");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(rary)), "490");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(rary)), "491");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(rary)), "492");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(rary)), "493");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "494");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "495");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "/");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(rary)), "496");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "497");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/ ", (actual = rfile_join(rary)), "498");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/  ", (actual = rfile_join(rary)), "499");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/.", (actual = rfile_join(rary)), "500");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/..", (actual = rfile_join(rary)), "501");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "502");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/", (actual = rfile_join(rary)), "503");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "//");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/good", (actual = rfile_join(rary)), "504");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(rary)), "505");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, " ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/ ", (actual = rfile_join(rary)), "506");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "  ");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/  ", (actual = rfile_join(rary)), "507");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, ".");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/.", (actual = rfile_join(rary)), "508");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "..");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/..", (actual = rfile_join(rary)), "509");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "/");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(rary)), "510");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "//");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/", (actual = rfile_join(rary)), "511");
+  rstring_free(actual); rstring_array_free(rary);
+
+
+  rary = rstring_array_new();
+  rstring_array_push_cstr(rary, "apple");
+  rstring_array_push_cstr(rary, "pie");
+  rstring_array_push_cstr(rary, "good");
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(rary)), "512");
+  rstring_free(actual); rstring_array_free(rary);
 }

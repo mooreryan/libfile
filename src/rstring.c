@@ -209,7 +209,7 @@ rstring_upcase(const rstring* rstr)
 }
 
 rstring_array*
-rstring_array_new2()
+rstring_array_new()
 {
   rstring_array* rary = NULL;
 
@@ -229,6 +229,7 @@ rstring_array_push_rstr(rstring_array* rary, rstring* rstr)
   rary->qty = current_size + 1;
   rary->entry[rary->qty - 1] = rstr;
   assert(rary->qty <= rary->mlen);
+  assert(rary->qty == current_size + 1);
 
   return ROKAY;
 }
@@ -248,6 +249,7 @@ rstring_array_push_cstr(rstring_array* rary, char* cstr)
   rary->qty = current_size + 1;
   rary->entry[rary->qty - 1] = rstr;
   assert(rary->qty <= rary->mlen);
+  assert(rary->qty == current_size + 1);
 
   return ROKAY;
 }
@@ -263,44 +265,6 @@ rstring_array_get(rstring_array* rary, int index)
   if (rstr == NULL) { return NULL; }
 
   return rstr;
-}
-
-/**
- @todo Technically this should be const rstring**
-*/
-rstring_array*
-rstring_array_new(rstring** strings, int size)
-{
-  if (strings == NULL) { return NULL; }
-
-  int i = 0;
-  rstring_array* rary = NULL;
-  rstring* copy = NULL;
-
-  rary = bstrListCreate();
-  if (rary == NULL) { return NULL; }
-
-  if (size == 0) {
-    return rary;
-  }
-  else {
-    int ret_val = bstrListAlloc(rary, size);
-    if (ret_val == BSTR_ERR) { return NULL; }
-
-    assert(rary->qty == 0 && rary->mlen >= size);
-
-    for (i = 0; i < size; ++i) {
-      if (strings[i] == NULL) { return NULL; }
-
-      copy = rstring_copy(strings[i]);
-      if (copy == NULL) { return NULL; }
-
-      rary->entry[i] = copy;
-    }
-    rary->qty = size;
-
-    return rary;
-  }
 }
 
 int
