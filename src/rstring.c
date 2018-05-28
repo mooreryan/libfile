@@ -168,7 +168,7 @@ rstring_slice1(const rstring* rstr, int index)
  *
  * @retval rstring* A valid rstring containing the specified substring.
  * @retval NULL The rstring is invalid or there was an error.
- * 
+ *
  * @note There is a bit of weird behavior if the index is the length of the rstring, an empty string will be returned rather than NULL, which is the behavior of rstring_slice1.  It is this way to match the Ruby behavior.
  *
  * @warning The caller must free the result.
