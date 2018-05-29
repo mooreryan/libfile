@@ -42,7 +42,7 @@ rstring_new(const char* cstr)
  * @param rstr The rstring to copy. (Not modified.)
  *
  * @retval rstring* A valid rstring copy.
- * @retval NULL The rstring is invalid or there was an error.
+ * @retval NULL The input rstring is invalid or there was an error.
  *
  * @warning The caller must free the result.
  */
@@ -76,7 +76,7 @@ rstring_free(rstring* rstr)
  * @param rstr An rstring. (Not modified.)
  *
  * @retval rstring* A valid rstring without the last record separator.
- * @retval NULL The rstring is invalid or there was an error.
+ * @retval NULL The input rstring is invalid or there was an error.
  *
  * @warning The caller must free the result.
  */
@@ -111,7 +111,7 @@ rstring_chomp(const rstring* rstr)
  * @param rstr The rstring to downcase. (Not modified.)
  *
  * @retval rstring* A valid rstring copy of rstr with all chars lowercase.
- * @retval NULL The rstring is invalid or there was an error.
+ * @retval NULL The input rstring is invalid or there was an error.
  *
  * @warning The caller must free the result.
  */
@@ -167,7 +167,7 @@ rstring_slice1(const rstring* rstr, int index)
  * @param length The length of the substring.
  *
  * @retval rstring* A valid rstring containing the specified substring.
- * @retval NULL The rstring is invalid or there was an error.
+ * @retval NULL The input rstring is invalid or there was an error.
  *
  * @note There is a bit of weird behavior if the index is the length of the rstring, an empty string will be returned rather than NULL, which is the behavior of rstring_slice1.  It is this way to match the Ruby behavior.
  *
@@ -207,7 +207,7 @@ rstring_slice(const rstring* rstr, int index, int length)
  * @param rstr The rstring to upcase. (Not modified.)
  *
  * @retval rstring* A valid rstring copy of rstr with all chars uppercase.
- * @retval NULL The rstring is invalid or there was an error.
+ * @retval NULL The input rstring is invalid or there was an error.
  *
  * @warning The caller must free the result.
  */
@@ -240,8 +240,8 @@ rstring_upcase(const rstring* rstr)
  * @param rstr1 Not modified.
  * @param rstr2 Not modified.
  *
- * @retval 1 The rstrings are equal.
- * @retval 0 The rstrings are not equal.
+ * @retval RTRUE The rstrings are equal.
+ * @retval RFALSE The rstrings are not equal.
  * @retval RERROR The rstr1 or rstr2 is invalid or there was an error.
  *
  * @note This differs from ruby in that you can't just check for true or false, you must check for 1 or 0 as RERROR signals an error.
@@ -252,7 +252,17 @@ rstring_eql(const rstring* rstr1, const rstring* rstr2)
   if (rstring_bad(rstr1)) { return RERROR; }
   if (rstring_bad(rstr2)) { return RERROR; }
 
-  return biseq((const_bstring)rstr1, (const_bstring)rstr2);
+  int val = biseq((const_bstring)rstr1, (const_bstring)rstr2);
+
+  if (val == 1) {
+    return RTRUE;
+  }
+  else if (val == 0) {
+    return RFALSE;
+  }
+  else {
+    return RERROR;
+  }
 }
 
 /**
@@ -261,7 +271,7 @@ rstring_eql(const rstring* rstr1, const rstring* rstr2)
  * @param rstr Not modified.
  *
  * @retval length The length of the rstring.
- * @retval RERROR The rstring is invalid or there was an error.
+ * @retval RERROR The input rstring is invalid or there was an error.
  */
 int
 rstring_length(const rstring* rstr)
@@ -284,7 +294,7 @@ rstring_length(const rstring* rstr)
  * @param index Get the char at this index in rstr.
  *
  * @retval char The idx'th character of the rstring.
- * @retval RERROR If the rstring is invalid or there was an error.
+ * @retval RERROR If The input rstring is invalid or there was an error.
  */
 int
 rstring_char_at(const rstring* rstr, int idx)

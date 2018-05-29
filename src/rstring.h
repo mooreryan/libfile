@@ -11,7 +11,9 @@ typedef struct bstrList rstring_array;
 /**
  * @brief These conditions must hold for the rstring to be valid.  See the btolower function for this.
  */
-#define rstring_bad(rstr) (rstr == NULL || rstr->data == NULL || rstr->mlen < rstr->slen || rstr->slen < 0 || rstr->mlen <=0)
+#define rstring_bad(rstr) (rstr == NULL || rstr->data == NULL || rstr->mlen < rstr->slen || rstr->slen < 0 || rstr->mlen <= 0)
+
+#define rstring_array_bad(rary) (rary == NULL || rary->entry == NULL || rary->mlen < rary->qty || rary->qty < 0 || rary->mlen <= 0)
 
 /* Constructing */
 
