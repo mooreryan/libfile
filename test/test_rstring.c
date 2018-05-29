@@ -220,7 +220,7 @@ test___rstring_eql___should_TellIfStringsAreEqual(void)
   TEST_ASSERT_EQUAL(0, rstring_eql(rstr1, rstr2));
 
   rstr2->data[0] = 'a';
-  rstr2->slen = 10;
+  rstr2->slen = 2;
   TEST_ASSERT_EQUAL(0, rstring_eql(rstr1, rstr2));
   rstr2->slen = 5;
 
