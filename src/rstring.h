@@ -1,3 +1,10 @@
+/**
+ * @file
+ * @author Ryan Moore
+ * @brief Header file for rstring.c
+ * @see https://ruby-doc.org/core-2.5.0/String.html
+ */
+
 #ifndef _RSTRING_H
 #define _RSTRING_H
 
@@ -14,13 +21,44 @@ typedef struct bstrList rstring_array;
  */
 #define rstring_bad(rstr) (rstr == NULL || rstr->data == NULL || rstr->mlen < rstr->slen || rstr->slen < 0 || rstr->mlen <= 0)
 
+/**
+ * @brief Check that an rstring_array is valid.
+ */
 #define rstring_array_bad(rary) (rary == NULL || rary->entry == NULL || rary->mlen < rary->qty || rary->qty < 0 || rary->mlen <= 0)
 
 /**
+ * @brief Get the `->data` portion of the rstring (i.e., the char* part).
+ *
+ * @param rstr We will get the data of this rstring.
+ *
+ * @retval char* The char* part of the rstring.
+ * @retval NULL The rstring is NULL.
+ */
+#define rstring_data(rstr) ((rstring*)bdata((bstring)rstr))
+
+/**
+ * @brief This is like Ruby's `"apple %s" % "pie"` `%` operator.
+ *
+ * @code
+... initialization code ...
+
+rstring* rstr = rstring_new("pies");
+rstring* new_rstr = rstring_format("%d apple %s", 3, rstring_data(rstr));
+
+... cleanup code ...
+ * @endcode
+ *
+ * @param fmt This is a char* format string.
+ * @param ... A variable number of args to put into the fmt string.
+ *
+ * @retval rstring* A new rstring holding the formatted string.
+ *
  * @note This one doesn't take rstrings like all the rest, rather char* or ints, or floats or whatever.
+ * @warning If the BSTRLIB_NOVSNP macro has been set when bstrlib has been compiled the bformat function is not present.  This will NOT be checked.
+ *
  * @todo Ideally, you could put rstrings straight in to plases where you have the %s character and it would JustWork.
  */
-#define rstring_format(fmt, ...) bformat(fmt, __VA_ARGS__)
+#define rstring_format(fmt, ...) ((rstring*)bformat(fmt, __VA_ARGS__))
 
 /* Constructing */
 
@@ -54,8 +92,6 @@ int rstring_length(const rstring* rstr);
 /* Utility functions */
 
 int rstring_char_at(const rstring* rstr, int idx);
-#define rstring_data(rstr) bdata(rstr)
-
 
 /* rstring array functions */
 
