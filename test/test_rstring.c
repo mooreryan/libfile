@@ -616,6 +616,8 @@ test___rstring_gsub___should_ReturnCopyWithSubbedStuff()
   gsub_test("  ", " ", "a", "aa");
   gsub_test("  ", "  ", "a", "a");
 
+  gsub_test("apple", "apple pie", "ryan", "apple");
+
   gsub_test("apple", "p", "AP", "aAPAPle");
   gsub_test("apple", "pie", "PIE", "apple");
   gsub_test("apple", "p", "", "ale");

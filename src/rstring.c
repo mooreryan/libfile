@@ -135,6 +135,15 @@ rstring_downcase(const rstring* rstr)
 }
 
 /**
+ * @brief Return a copy of rstr withh all occurrences of pattern substituted for the value of replacement.
+ *
+ * @param rstr The rstring for replacing.
+ * @param pattern The rstring pattern to search for.
+ * @param replacement The rstring to replace with.
+ *
+ * @retval rstring* A valid rstring with the appropriate replacements.
+ * @retval NULL Any of the args are invalid or if there were errors.
+ *
  * @note It differs from ruby in that pattern must have length > 0 (i.e., be a non-empty string.  Things get pretty weird in Ruby when the pattern is an empty string....
  *
  */
