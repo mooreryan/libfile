@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.14"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Ruby-like C: src/rstring.c File Reference</title>
+<title>Ruby-like C: src/rstring.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -68,100 +68,123 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">rstring.c File Reference</div>  </div>
+<div class="title">rstring.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>File containing functions like those found in Ruby's String class.  
+<p>Header file for <a class="el" href="rstring_8c.html" title="File containing functions like those found in Ruby&#39;s String class. ">rstring.c</a>.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;assert.h&gt;</code><br />
-<code>#include &lt;stdarg.h&gt;</code><br />
-<code>#include &lt;limits.h&gt;</code><br />
-<code>#include &quot;bstrlib.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="rstring_8h_source.html">rstring.h</a>&quot;</code><br />
-<code>#include &quot;rlib.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;rlib.h&quot;</code><br />
 </div>
-<p><a href="rstring_8c_source.html">Go to the source code of this file.</a></p>
+<p><a href="rstring_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ac4cb3fc44c65dc2502a7e6e264a0dcd3"><td class="memItemLeft" align="right" valign="top"><a id="ac4cb3fc44c65dc2502a7e6e264a0dcd3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ac4cb3fc44c65dc2502a7e6e264a0dcd3">rstring_bad</a>(rstr)&#160;&#160;&#160;(rstr == NULL || rstr-&gt;data == NULL || rstr-&gt;mlen &lt; rstr-&gt;slen || rstr-&gt;slen &lt; 0 || rstr-&gt;mlen &lt;= 0)</td></tr>
+<tr class="memdesc:ac4cb3fc44c65dc2502a7e6e264a0dcd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">These conditions must hold for the rstring to be valid. See the btolower function for this. <br /></td></tr>
+<tr class="separator:ac4cb3fc44c65dc2502a7e6e264a0dcd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4678df0af869b567c70cb475596b34f"><td class="memItemLeft" align="right" valign="top"><a id="ac4678df0af869b567c70cb475596b34f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ac4678df0af869b567c70cb475596b34f">rstring_array_bad</a>(rary)&#160;&#160;&#160;(rary == NULL || rary-&gt;entry == NULL || rary-&gt;mlen &lt; rary-&gt;qty || rary-&gt;qty &lt; 0 || rary-&gt;mlen &lt;= 0)</td></tr>
+<tr class="memdesc:ac4678df0af869b567c70cb475596b34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that an rstring_array is valid. <br /></td></tr>
+<tr class="separator:ac4678df0af869b567c70cb475596b34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d3e209a626e8fb9d40108626d916ba3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a1d3e209a626e8fb9d40108626d916ba3">rstring_data</a>(rstr)&#160;&#160;&#160;((rstring*)bdata((bstring)rstr))</td></tr>
+<tr class="memdesc:a1d3e209a626e8fb9d40108626d916ba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <code>-&gt;data</code> portion of the rstring (i.e., the char* part).  <a href="#a1d3e209a626e8fb9d40108626d916ba3">More...</a><br /></td></tr>
+<tr class="separator:a1d3e209a626e8fb9d40108626d916ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab34abe7edbbc230edf9f2078fa19182c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ab34abe7edbbc230edf9f2078fa19182c">rstring_format</a>(fmt, ...)&#160;&#160;&#160;((rstring*)bformat(fmt, __VA_ARGS__))</td></tr>
+<tr class="memdesc:ab34abe7edbbc230edf9f2078fa19182c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is like Ruby's <code>"apple %s" % "pie"</code> <code>%</code> operator.  <a href="#ab34abe7edbbc230edf9f2078fa19182c">More...</a><br /></td></tr>
+<tr class="separator:ab34abe7edbbc230edf9f2078fa19182c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aa41724c9c11c8328a5a62d9fdd0a90ed"><td class="memItemLeft" align="right" valign="top"><a id="aa41724c9c11c8328a5a62d9fdd0a90ed"></a>
+typedef struct tagbstring&#160;</td><td class="memItemRight" valign="bottom"><b>rstring</b></td></tr>
+<tr class="separator:aa41724c9c11c8328a5a62d9fdd0a90ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00972fc5de441f194c809c3813239d3d"><td class="memItemLeft" align="right" valign="top"><a id="a00972fc5de441f194c809c3813239d3d"></a>
+typedef struct bstrList&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array</b></td></tr>
+<tr class="separator:a00972fc5de441f194c809c3813239d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af5be360e4bfbee194994cd2ddc3a6823"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#af5be360e4bfbee194994cd2ddc3a6823">rstring_new</a> (const char *cstr)</td></tr>
+<tr class="memitem:af5be360e4bfbee194994cd2ddc3a6823"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#af5be360e4bfbee194994cd2ddc3a6823">rstring_new</a> (const char *cstr)</td></tr>
 <tr class="memdesc:af5be360e4bfbee194994cd2ddc3a6823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a new rstring from c string.  <a href="#af5be360e4bfbee194994cd2ddc3a6823">More...</a><br /></td></tr>
 <tr class="separator:af5be360e4bfbee194994cd2ddc3a6823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a8c496bbe19bdac61b35f9445ada9f3"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a0a8c496bbe19bdac61b35f9445ada9f3">rstring_copy</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:a0a8c496bbe19bdac61b35f9445ada9f3"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a0a8c496bbe19bdac61b35f9445ada9f3">rstring_copy</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:a0a8c496bbe19bdac61b35f9445ada9f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the rstring.  <a href="#a0a8c496bbe19bdac61b35f9445ada9f3">More...</a><br /></td></tr>
 <tr class="separator:a0a8c496bbe19bdac61b35f9445ada9f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc92beb556cd031893d12de377ab1b48"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#adc92beb556cd031893d12de377ab1b48">rstring_free</a> (rstring *rstr)</td></tr>
+<tr class="memitem:adc92beb556cd031893d12de377ab1b48"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#adc92beb556cd031893d12de377ab1b48">rstring_free</a> (rstring *rstr)</td></tr>
 <tr class="memdesc:adc92beb556cd031893d12de377ab1b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the rstring.  <a href="#adc92beb556cd031893d12de377ab1b48">More...</a><br /></td></tr>
 <tr class="separator:adc92beb556cd031893d12de377ab1b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab14ac1b1e53fef56bfb4caea1790474c"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#ab14ac1b1e53fef56bfb4caea1790474c">rstring_chomp</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:ab14ac1b1e53fef56bfb4caea1790474c"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ab14ac1b1e53fef56bfb4caea1790474c">rstring_chomp</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:ab14ac1b1e53fef56bfb4caea1790474c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a new string with final trailing record separator removed.  <a href="#ab14ac1b1e53fef56bfb4caea1790474c">More...</a><br /></td></tr>
 <tr class="separator:ab14ac1b1e53fef56bfb4caea1790474c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc27769b8d621117431aedfcab6bb1ff"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#abc27769b8d621117431aedfcab6bb1ff">rstring_downcase</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:abc27769b8d621117431aedfcab6bb1ff"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#abc27769b8d621117431aedfcab6bb1ff">rstring_downcase</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:abc27769b8d621117431aedfcab6bb1ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of rstr with everything lowercase.  <a href="#abc27769b8d621117431aedfcab6bb1ff">More...</a><br /></td></tr>
 <tr class="separator:abc27769b8d621117431aedfcab6bb1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac210bf20b68003ab99fd3433cfe7b578"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#ac210bf20b68003ab99fd3433cfe7b578">rstring_gsub</a> (const rstring *rstr, const rstring *pattern, const rstring *replacement)</td></tr>
+<tr class="memitem:ac210bf20b68003ab99fd3433cfe7b578"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ac210bf20b68003ab99fd3433cfe7b578">rstring_gsub</a> (const rstring *rstr, const rstring *pattern, const rstring *replacement)</td></tr>
 <tr class="memdesc:ac210bf20b68003ab99fd3433cfe7b578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of rstr withh all occurrences of pattern substituted for the value of replacement.  <a href="#ac210bf20b68003ab99fd3433cfe7b578">More...</a><br /></td></tr>
 <tr class="separator:ac210bf20b68003ab99fd3433cfe7b578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a0ee80dadd6b16ca7664e143eebfc9a52">rstring_slice1</a> (const rstring *rstr, int index)</td></tr>
-<tr class="memdesc:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the char at index but as an rstring.  <a href="#a0ee80dadd6b16ca7664e143eebfc9a52">More...</a><br /></td></tr>
-<tr class="separator:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca8c55710516d18aa8c143c51a546049"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#aca8c55710516d18aa8c143c51a546049">rstring_slice</a> (const rstring *rstr, int index, int length)</td></tr>
-<tr class="memdesc:aca8c55710516d18aa8c143c51a546049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a substring starting at index of a given length (clamped by the end of rstr).  <a href="#aca8c55710516d18aa8c143c51a546049">More...</a><br /></td></tr>
-<tr class="separator:aca8c55710516d18aa8c143c51a546049"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b0559f8593d43f5fad6f6966589ef50"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a1b0559f8593d43f5fad6f6966589ef50">rstring_strip</a> (const rstring *rstr)</td></tr>
-<tr class="memdesc:a1b0559f8593d43f5fad6f6966589ef50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of rstr with leading and trailing whitespace removed.  <a href="#a1b0559f8593d43f5fad6f6966589ef50">More...</a><br /></td></tr>
-<tr class="separator:a1b0559f8593d43f5fad6f6966589ef50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e5dc6f5612949991811c38a4aedc77"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#ad0e5dc6f5612949991811c38a4aedc77">rstring_lstrip</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:ad0e5dc6f5612949991811c38a4aedc77"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ad0e5dc6f5612949991811c38a4aedc77">rstring_lstrip</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:ad0e5dc6f5612949991811c38a4aedc77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of rstr with leading whitespace removed.  <a href="#ad0e5dc6f5612949991811c38a4aedc77">More...</a><br /></td></tr>
 <tr class="separator:ad0e5dc6f5612949991811c38a4aedc77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a14bbefafaf87de1a4512de1c9d72a5"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a1a14bbefafaf87de1a4512de1c9d72a5">rstring_reverse</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:a1a14bbefafaf87de1a4512de1c9d72a5"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a1a14bbefafaf87de1a4512de1c9d72a5">rstring_reverse</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:a1a14bbefafaf87de1a4512de1c9d72a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new rstring with the characters from rstr in reverse order.  <a href="#a1a14bbefafaf87de1a4512de1c9d72a5">More...</a><br /></td></tr>
 <tr class="separator:a1a14bbefafaf87de1a4512de1c9d72a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae050c992c92a87574d518e6e4802e597"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#ae050c992c92a87574d518e6e4802e597">rstring_rstrip</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:ae050c992c92a87574d518e6e4802e597"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#ae050c992c92a87574d518e6e4802e597">rstring_rstrip</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:ae050c992c92a87574d518e6e4802e597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of rstr with trailing whitespace removed.  <a href="#ae050c992c92a87574d518e6e4802e597">More...</a><br /></td></tr>
 <tr class="separator:ae050c992c92a87574d518e6e4802e597"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff865d56da3ab5c03fd7884a9556b9f8"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#aff865d56da3ab5c03fd7884a9556b9f8">rstring_upcase</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a0ee80dadd6b16ca7664e143eebfc9a52">rstring_slice1</a> (const rstring *rstr, int index)</td></tr>
+<tr class="memdesc:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the char at index but as an rstring.  <a href="#a0ee80dadd6b16ca7664e143eebfc9a52">More...</a><br /></td></tr>
+<tr class="separator:a0ee80dadd6b16ca7664e143eebfc9a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca8c55710516d18aa8c143c51a546049"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#aca8c55710516d18aa8c143c51a546049">rstring_slice</a> (const rstring *rstr, int index, int length)</td></tr>
+<tr class="memdesc:aca8c55710516d18aa8c143c51a546049"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a substring starting at index of a given length (clamped by the end of rstr).  <a href="#aca8c55710516d18aa8c143c51a546049">More...</a><br /></td></tr>
+<tr class="separator:aca8c55710516d18aa8c143c51a546049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b0559f8593d43f5fad6f6966589ef50"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a1b0559f8593d43f5fad6f6966589ef50">rstring_strip</a> (const rstring *rstr)</td></tr>
+<tr class="memdesc:a1b0559f8593d43f5fad6f6966589ef50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of rstr with leading and trailing whitespace removed.  <a href="#a1b0559f8593d43f5fad6f6966589ef50">More...</a><br /></td></tr>
+<tr class="separator:a1b0559f8593d43f5fad6f6966589ef50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff865d56da3ab5c03fd7884a9556b9f8"><td class="memItemLeft" align="right" valign="top">rstring *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#aff865d56da3ab5c03fd7884a9556b9f8">rstring_upcase</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:aff865d56da3ab5c03fd7884a9556b9f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of rstr with everything uppercase.  <a href="#aff865d56da3ab5c03fd7884a9556b9f8">More...</a><br /></td></tr>
 <tr class="separator:aff865d56da3ab5c03fd7884a9556b9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19c61ed2bd531490052845a7881d7309"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a19c61ed2bd531490052845a7881d7309">rstring_eql</a> (const rstring *rstr1, const rstring *rstr2)</td></tr>
+<tr class="memitem:a19c61ed2bd531490052845a7881d7309"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a19c61ed2bd531490052845a7881d7309">rstring_eql</a> (const rstring *rstr1, const rstring *rstr2)</td></tr>
 <tr class="memdesc:a19c61ed2bd531490052845a7881d7309"><td class="mdescLeft">&#160;</td><td class="mdescRight">Two strings are equal if they have the same length and content.  <a href="#a19c61ed2bd531490052845a7881d7309">More...</a><br /></td></tr>
 <tr class="separator:a19c61ed2bd531490052845a7881d7309"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeccf16c561f161d94b4b679910d5c904"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#aeccf16c561f161d94b4b679910d5c904">rstring_eql_cstr</a> (const rstring *rstr, const char *cstr)</td></tr>
+<tr class="memitem:aeccf16c561f161d94b4b679910d5c904"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#aeccf16c561f161d94b4b679910d5c904">rstring_eql_cstr</a> (const rstring *rstr, const char *cstr)</td></tr>
 <tr class="memdesc:aeccf16c561f161d94b4b679910d5c904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Two strings are equal if they have the same length and content.  <a href="#aeccf16c561f161d94b4b679910d5c904">More...</a><br /></td></tr>
 <tr class="separator:aeccf16c561f161d94b4b679910d5c904"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb1d7d53033e1b6074081e696c1f2547"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#afb1d7d53033e1b6074081e696c1f2547">rstring_include</a> (const rstring *rstr, const rstring *substring)</td></tr>
+<tr class="memitem:afb1d7d53033e1b6074081e696c1f2547"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#afb1d7d53033e1b6074081e696c1f2547">rstring_include</a> (const rstring *rstr, const rstring *substring)</td></tr>
 <tr class="memdesc:afb1d7d53033e1b6074081e696c1f2547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells whether rstr contains the other rstring.  <a href="#afb1d7d53033e1b6074081e696c1f2547">More...</a><br /></td></tr>
 <tr class="separator:afb1d7d53033e1b6074081e696c1f2547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4552736e688b8e288e29264816c14921"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a4552736e688b8e288e29264816c14921">rstring_index</a> (const rstring *rstr, const rstring *substring)</td></tr>
+<tr class="memitem:a4552736e688b8e288e29264816c14921"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a4552736e688b8e288e29264816c14921">rstring_index</a> (const rstring *rstr, const rstring *substring)</td></tr>
 <tr class="memdesc:a4552736e688b8e288e29264816c14921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the first occurence of substring in rstr.  <a href="#a4552736e688b8e288e29264816c14921">More...</a><br /></td></tr>
 <tr class="separator:a4552736e688b8e288e29264816c14921"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a262775530bd1fa7e6568d96237bd0a10"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a262775530bd1fa7e6568d96237bd0a10">rstring_index_offset</a> (const rstring *rstr, const rstring *substring, int offset)</td></tr>
-<tr class="memdesc:a262775530bd1fa7e6568d96237bd0a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the first occurence (starting at offset) of substring in rstr.  <a href="#a262775530bd1fa7e6568d96237bd0a10">More...</a><br /></td></tr>
-<tr class="separator:a262775530bd1fa7e6568d96237bd0a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48e81cf18a8972237e862c8ac8c160f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a48e81cf18a8972237e862c8ac8c160f7">rstring_length</a> (const rstring *rstr)</td></tr>
+<tr class="memitem:a522acd0efab54081d050a84372668e1a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a522acd0efab54081d050a84372668e1a">rstring_index_offset</a> (const rstring *rstr, const rstring *substring, int start_pos)</td></tr>
+<tr class="memdesc:a522acd0efab54081d050a84372668e1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the first occurence (starting at offset) of substring in rstr.  <a href="#a522acd0efab54081d050a84372668e1a">More...</a><br /></td></tr>
+<tr class="separator:a522acd0efab54081d050a84372668e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48e81cf18a8972237e862c8ac8c160f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a48e81cf18a8972237e862c8ac8c160f7">rstring_length</a> (const rstring *rstr)</td></tr>
 <tr class="memdesc:a48e81cf18a8972237e862c8ac8c160f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the rstring.  <a href="#a48e81cf18a8972237e862c8ac8c160f7">More...</a><br /></td></tr>
 <tr class="separator:a48e81cf18a8972237e862c8ac8c160f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7162fcaec08cf423ad11dfecc279499e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8c.html#a7162fcaec08cf423ad11dfecc279499e">rstring_char_at</a> (const rstring *rstr, int idx)</td></tr>
+<tr class="memitem:a7162fcaec08cf423ad11dfecc279499e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rstring_8h.html#a7162fcaec08cf423ad11dfecc279499e">rstring_char_at</a> (const rstring *rstr, int idx)</td></tr>
 <tr class="memdesc:a7162fcaec08cf423ad11dfecc279499e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the char at given position.  <a href="#a7162fcaec08cf423ad11dfecc279499e">More...</a><br /></td></tr>
 <tr class="separator:a7162fcaec08cf423ad11dfecc279499e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad65c5f2ee79f470c50624b7efa5f6eb6"><td class="memItemLeft" align="right" valign="top"><a id="ad65c5f2ee79f470c50624b7efa5f6eb6"></a>
 rstring_array *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_new</b> ()</td></tr>
 <tr class="separator:ad65c5f2ee79f470c50624b7efa5f6eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae68a7402404742c54b15bddae3c60883"><td class="memItemLeft" align="right" valign="top"><a id="ae68a7402404742c54b15bddae3c60883"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_push_rstr</b> (rstring_array *rary, rstring *rstr)</td></tr>
-<tr class="separator:ae68a7402404742c54b15bddae3c60883"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89affbfb8b5d61fa45e5339ae3c4afd3"><td class="memItemLeft" align="right" valign="top"><a id="a89affbfb8b5d61fa45e5339ae3c4afd3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_push_cstr</b> (rstring_array *rary, char *cstr)</td></tr>
-<tr class="separator:a89affbfb8b5d61fa45e5339ae3c4afd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14a953e87a845b299d70f41f345c858a"><td class="memItemLeft" align="right" valign="top"><a id="a14a953e87a845b299d70f41f345c858a"></a>
-rstring *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_get</b> (rstring_array *rary, int index)</td></tr>
-<tr class="separator:a14a953e87a845b299d70f41f345c858a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88fb127dcde39b6a213caba1a51a641e"><td class="memItemLeft" align="right" valign="top"><a id="a88fb127dcde39b6a213caba1a51a641e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_free</b> (rstring_array *rary)</td></tr>
 <tr class="separator:a88fb127dcde39b6a213caba1a51a641e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89affbfb8b5d61fa45e5339ae3c4afd3"><td class="memItemLeft" align="right" valign="top"><a id="a89affbfb8b5d61fa45e5339ae3c4afd3"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_push_cstr</b> (rstring_array *rary, char *cstr)</td></tr>
+<tr class="separator:a89affbfb8b5d61fa45e5339ae3c4afd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae68a7402404742c54b15bddae3c60883"><td class="memItemLeft" align="right" valign="top"><a id="ae68a7402404742c54b15bddae3c60883"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_push_rstr</b> (rstring_array *rary, rstring *rstr)</td></tr>
+<tr class="separator:ae68a7402404742c54b15bddae3c60883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14a953e87a845b299d70f41f345c858a"><td class="memItemLeft" align="right" valign="top"><a id="a14a953e87a845b299d70f41f345c858a"></a>
+rstring *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_get</b> (rstring_array *rary, int index)</td></tr>
+<tr class="separator:a14a953e87a845b299d70f41f345c858a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4050dcc5f53218d2840fa16ee429984"><td class="memItemLeft" align="right" valign="top"><a id="aa4050dcc5f53218d2840fa16ee429984"></a>
 rstring *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_array_join</b> (rstring_array *rstrings, const rstring *sep)</td></tr>
 <tr class="separator:aa4050dcc5f53218d2840fa16ee429984"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,12 +193,96 @@ rstring_array *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_sp
 <tr class="separator:af6e102dc2e0e966a36455fb40860938c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>File containing functions like those found in Ruby's String class. </p>
+<div class="textblock"><p>Header file for <a class="el" href="rstring_8c.html" title="File containing functions like those found in Ruby&#39;s String class. ">rstring.c</a>. </p>
 <dl class="section author"><dt>Author</dt><dd>Ryan Moore </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://ruby-doc.org/core-2.5.0/String.html">https://ruby-doc.org/core-2.5.0/String.html</a> </dd></dl>
 
-<p class="definition">Definition in file <a class="el" href="rstring_8c_source.html">rstring.c</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
+<p class="definition">Definition in file <a class="el" href="rstring_8h_source.html">rstring.h</a>.</p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a1d3e209a626e8fb9d40108626d916ba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d3e209a626e8fb9d40108626d916ba3">&#9670;&nbsp;</a></span>rstring_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define rstring_data</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">rstr</td><td>)</td>
+          <td>&#160;&#160;&#160;((rstring*)bdata((bstring)rstr))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the <code>-&gt;data</code> portion of the rstring (i.e., the char* part). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rstr</td><td>We will get the data of this rstring.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">char*</td><td>The char* part of the rstring. </td></tr>
+    <tr><td class="paramname">NULL</td><td>The rstring is NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="rstring_8h_source.html#l00037">37</a> of file <a class="el" href="rstring_8h_source.html">rstring.h</a>.</p>
+
+</div>
+</div>
+<a id="ab34abe7edbbc230edf9f2078fa19182c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab34abe7edbbc230edf9f2078fa19182c">&#9670;&nbsp;</a></span>rstring_format</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define rstring_format</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fmt, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((rstring*)bformat(fmt, __VA_ARGS__))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is like Ruby's <code>"apple %s" % "pie"</code> <code>%</code> operator. </p>
+<div class="fragment"><div class="line">... initialization code ...</div><div class="line"></div><div class="line">rstring* rstr = <a class="code" href="rstring_8c.html#af5be360e4bfbee194994cd2ddc3a6823">rstring_new</a>(<span class="stringliteral">&quot;pies&quot;</span>);</div><div class="line">rstring* new_rstr = <a class="code" href="rstring_8h.html#ab34abe7edbbc230edf9f2078fa19182c">rstring_format</a>(<span class="stringliteral">&quot;%d apple %s&quot;</span>, 3, <a class="code" href="rstring_8h.html#a1d3e209a626e8fb9d40108626d916ba3">rstring_data</a>(rstr));</div><div class="line"></div><div class="line">... cleanup code ...</div></div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>This is a char* format string. </td></tr>
+    <tr><td class="paramname">...</td><td>A variable number of args to put into the fmt string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">rstring*</td><td>A new rstring holding the formatted string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This one doesn't take rstrings like all the rest, rather char* or ints, or floats or whatever. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>If the BSTRLIB_NOVSNP macro has been set when bstrlib has been compiled the bformat function is not present. This will NOT be checked.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Ideally, you could put rstrings straight in to plases where you have the s character and it would JustWork. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="rstring_8h_source.html#l00061">61</a> of file <a class="el" href="rstring_8h_source.html">rstring.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a7162fcaec08cf423ad11dfecc279499e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7162fcaec08cf423ad11dfecc279499e">&#9670;&nbsp;</a></span>rstring_char_at()</h2>
 
@@ -646,8 +753,8 @@ rstring_array *&#160;</td><td class="memItemRight" valign="bottom"><b>rstring_sp
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a262775530bd1fa7e6568d96237bd0a10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a262775530bd1fa7e6568d96237bd0a10">&#9670;&nbsp;</a></span>rstring_index_offset()</h2>
+<a id="a522acd0efab54081d050a84372668e1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a522acd0efab54081d050a84372668e1a">&#9670;&nbsp;</a></span>rstring_index_offset()</h2>
 
 <div class="memitem">
 <div class="memproto">
