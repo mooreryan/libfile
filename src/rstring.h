@@ -7,6 +7,7 @@ typedef struct tagbstring rstring;
 
 typedef struct bstrList rstring_array;
 
+/* Macros */
 
 /**
  * @brief These conditions must hold for the rstring to be valid.  See the btolower function for this.
@@ -14,6 +15,12 @@ typedef struct bstrList rstring_array;
 #define rstring_bad(rstr) (rstr == NULL || rstr->data == NULL || rstr->mlen < rstr->slen || rstr->slen < 0 || rstr->mlen <= 0)
 
 #define rstring_array_bad(rary) (rary == NULL || rary->entry == NULL || rary->mlen < rary->qty || rary->qty < 0 || rary->mlen <= 0)
+
+/**
+ * @note This one doesn't take rstrings like all the rest, rather char* or ints, or floats or whatever.
+ * @todo Ideally, you could put rstrings straight in to plases where you have the %s character and it would JustWork.
+ */
+#define rstring_format(fmt, ...) bformat(fmt, __VA_ARGS__)
 
 /* Constructing */
 
@@ -47,6 +54,7 @@ int rstring_length(const rstring* rstr);
 /* Utility functions */
 
 int rstring_char_at(const rstring* rstr, int idx);
+#define rstring_data(rstr) bdata(rstr)
 
 
 /* rstring array functions */

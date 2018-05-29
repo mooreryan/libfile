@@ -37,6 +37,21 @@ test___rstring_free___should_FreeRstring(void)
   TEST_ASSERT_EQUAL(ROKAY, ret);
 }
 
+void
+test___rstring_format___should_ProduceNewStringLikesprintf(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  TEST_ASSERT_NULL(rstring_format(NULL, "apple"));
+
+  rstr = rstring_new("pies");
+  actual = rstring_format("%d apple %s", 3, rstring_data(rstr));
+  TEST_ASSERT_EQUAL_RSTRING("3 apple pies", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
 void test___rstring_length___should_ReturnTheLength(void)
 {
   int len = 0;
