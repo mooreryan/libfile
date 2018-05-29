@@ -137,6 +137,19 @@ rstring_downcase(const rstring* rstr)
 /**
  * @brief Return a copy of rstr withh all occurrences of pattern substituted for the value of replacement.
  *
+ * @code
+rstring* rstr = rstring_new("aabaAb");
+rstring* pattern = rstring_new("a");
+rstring* replacement = rstring_new("aa");
+rstring* expected = rstring_new("aaaabaaAb")
+
+rstring* actual = rstring_gsub(rstr, pattern, replacement);
+
+assert(rstring_eql(expected, actual) == RTRUE);
+
+... code to free variables here ...
+ * @endcode
+ *
  * @param rstr The rstring for replacing.
  * @param pattern The rstring pattern to search for.
  * @param replacement The rstring to replace with.
