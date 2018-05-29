@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "unity.h"
 #include "rstring.h"
 #include "helper.h"
@@ -229,6 +231,152 @@ test___rstring_eql___should_TellIfStringsAreEqual(void)
 }
 
 void
+test___rstring_eql_cstr___should_TellIfStringsAreEqual(void)
+{
+  rstring* rstr1 = NULL;
+  char* cstr2 = NULL;
+
+  rstr1 = rstring_new("apple");
+  cstr2 = "apple";
+
+  TEST_ASSERT_EQUAL(1, rstring_eql_cstr(rstr1, cstr2));
+
+  cstr2 = "pie";
+
+  TEST_ASSERT_EQUAL(0, rstring_eql_cstr(rstr1, cstr2));
+
+  rstring_free(rstr1);
+}
+
+void
+test___rstring_include___should_TellIfSubstringIsPresent(void)
+{
+  rstring* rstr = NULL;
+  rstring* substring = NULL;
+
+  rstr = rstring_new("apple pie");
+  substring = rstring_new("apple pie");
+  TEST_ASSERT_EQUAL(RTRUE, rstring_include(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("le p");
+  TEST_ASSERT_EQUAL(RTRUE, rstring_include(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("");
+  TEST_ASSERT_EQUAL(RTRUE, rstring_include(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("pie ");
+  TEST_ASSERT_EQUAL(RFALSE, rstring_include(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("el");
+  TEST_ASSERT_EQUAL(RFALSE, rstring_include(rstr, substring));
+  rstring_free(substring);
+
+  rstring_free(rstr);
+}
+
+void
+test___rstring_index___should_TellGiveTheIndexOfSubstring(void)
+{
+  rstring* rstr = NULL;
+  rstring* substring = NULL;
+
+  rstr = rstring_new("apple pie");
+  substring = rstring_new("apple pie");
+  TEST_ASSERT_EQUAL(0, rstring_index(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("le p");
+  TEST_ASSERT_EQUAL(3, rstring_index(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("");
+  TEST_ASSERT_EQUAL(0, rstring_index(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("pie ");
+  TEST_ASSERT_EQUAL(RERROR, rstring_index(rstr, substring));
+  rstring_free(substring);
+
+  substring = rstring_new("el");
+  TEST_ASSERT_EQUAL(RERROR, rstring_index(rstr, substring));
+  rstring_free(substring);
+
+  rstring_free(rstr);
+}
+
+/* Here */
+void
+test___rstring_index_offset___should_TellGiveTheIndexOfSubstring(void)
+{
+  rstring* rstr = NULL;
+  rstring* substring = NULL;
+
+  rstr = rstring_new("apple pie");
+  substring = rstring_new("apple pie");
+  TEST_ASSERT_EQUAL(0, rstring_index_offset(rstr, substring, 0));
+  rstring_free(substring);
+
+  substring = rstring_new("apple pie");
+  TEST_ASSERT_EQUAL(RERROR, rstring_index_offset(rstr, substring, 1));
+  rstring_free(substring);
+
+  substring = rstring_new("le p");
+  TEST_ASSERT_EQUAL(3, rstring_index_offset(rstr, substring, 1));
+  rstring_free(substring);
+
+  substring = rstring_new("");
+  TEST_ASSERT_EQUAL(0, rstring_index_offset(rstr, substring, 0));
+  rstring_free(substring);
+
+  /* Possibly weird Ruby behavior. */
+  substring = rstring_new("");
+  TEST_ASSERT_EQUAL(1, rstring_index_offset(rstr, substring, 1));
+  rstring_free(substring);
+
+  substring = rstring_new("pie ");
+  TEST_ASSERT_EQUAL(RERROR, rstring_index_offset(rstr, substring, 0));
+  rstring_free(substring);
+
+  substring = rstring_new("el");
+  TEST_ASSERT_EQUAL(RERROR, rstring_index_offset(rstr, substring, 0));
+  rstring_free(substring);
+
+  rstring_free(rstr);
+}
+
+void
+test___rstring_reverse___should_ReturnReversedCopy(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  TEST_ASSERT_NULL(rstring_reverse(NULL));
+
+  rstr = rstring_new("");
+  actual = rstring_reverse(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("1");
+  actual = rstring_reverse(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("1", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("123");
+  actual = rstring_reverse(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("321", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
+
+void
 test___rstring_downcase___should_ReturnALowcaseString(void)
 {
   rstring* rstr = NULL;
@@ -290,6 +438,188 @@ test___rstring_upcase___should_ReturnAnUppercaseString(void)
   TEST_ASSERT_EQUAL_RSTRING("", (actual = rstring_upcase(rstr)));
   rstring_free(rstr);
   rstring_free(actual);
+}
+
+void
+test___rstring_strip___should_StripWhitespace(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  TEST_ASSERT_NULL(rstring_strip(NULL));
+
+  rstr = rstring_new("");
+  actual = rstring_strip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \r \n \t\t\r\n   ");
+  actual = rstring_strip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple");
+  actual = rstring_strip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("   apple   ");
+  actual = rstring_strip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \n\r\t   apple   \t\r\n\n    ");
+  actual = rstring_strip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
+void
+test___rstring_lstrip___should_StripWhitespace(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  TEST_ASSERT_NULL(rstring_lstrip(NULL));
+
+  rstr = rstring_new("");
+  actual = rstring_lstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \r \n \t\t\r\n   ");
+  actual = rstring_lstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple");
+  actual = rstring_lstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("   apple   ");
+  actual = rstring_lstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple   ", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \n\r\t   apple   \t\r\n\n    ");
+  actual = rstring_lstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple   \t\r\n\n    ", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
+void
+test___rstring_rstrip___should_StripWhitespace(void)
+{
+  rstring* rstr = NULL;
+  rstring* actual = NULL;
+
+  TEST_ASSERT_NULL(rstring_rstrip(NULL));
+
+  rstr = rstring_new("");
+  actual = rstring_rstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \r \n \t\t\r\n   ");
+  actual = rstring_rstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("apple");
+  actual = rstring_rstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new("   apple   ");
+  actual = rstring_rstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING("   apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  rstr = rstring_new(" \n\r\t   apple   \t\r\n\n    ");
+  actual = rstring_rstrip(rstr);
+  TEST_ASSERT_EQUAL_RSTRING(" \n\r\t   apple", actual);
+  rstring_free(rstr);
+  rstring_free(actual);
+}
+
+void
+gsub_test (char* cstr,
+           char* cpattern,
+           char* creplacement,
+           char* cexpected)
+{
+  rstring* rstr = rstring_new(cstr);
+  rstring* pattern = rstring_new(cpattern);
+  rstring* replacement = rstring_new(creplacement);
+  rstring* actual = rstring_gsub(rstr, pattern, replacement);
+
+  char* msg = malloc(sizeof(char) * 10000);
+  snprintf(msg,
+           9999,
+           "cstr: '%s', pattern: '%s', replacement: '%s', Expected: '%s', actual: '%s'\n",
+           cstr,
+           cpattern,
+           creplacement,
+           cexpected,
+           actual->data);
+
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE(cexpected, actual, msg);
+
+  free(msg);
+  rstring_free(rstr);
+  rstring_free(pattern);
+  rstring_free(replacement);
+  rstring_free(actual);
+}
+
+void
+gsub_test_be_null (char* cstr,
+                   char* cpattern,
+                   char* creplacement)
+{
+  rstring* rstr = rstring_new(cstr);
+  rstring* pattern = rstring_new(cpattern);
+  rstring* replacement = rstring_new(creplacement);
+  rstring* actual = rstring_gsub(rstr, pattern, replacement);
+
+  TEST_ASSERT_NULL(actual);
+
+  rstring_free(rstr);
+  rstring_free(pattern);
+  rstring_free(replacement);
+  rstring_free(actual);
+}
+
+void
+test___rstring_gsub___should_ReturnCopyWithSubbedStuff()
+{
+  /* Pattern must have length > 0. */
+  gsub_test_be_null("", "", "");
+  gsub_test("", "apple", "", "");
+  gsub_test("apple", "apple", "", "");
+
+  gsub_test("  ", " ", "a", "aa");
+  gsub_test("  ", "  ", "a", "a");
+
+  gsub_test("apple", "p", "AP", "aAPAPle");
+  gsub_test("apple", "pie", "PIE", "apple");
+  gsub_test("apple", "p", "", "ale");
+  gsub_test("aabaAb", "a", "aa", "aaaabaaAb");
 }
 
 void

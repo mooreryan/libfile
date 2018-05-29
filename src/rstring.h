@@ -26,13 +26,22 @@ int rstring_free(rstring* rstr);
 
 rstring* rstring_chomp(const rstring* rstr);
 rstring* rstring_downcase(const rstring* rstr);
+rstring* rstring_gsub(const rstring* rstr, const rstring* pattern, const rstring* replacement);
+rstring* rstring_lstrip(const rstring* rstr);
+rstring* rstring_reverse(const rstring* rstr);
+rstring* rstring_rstrip(const rstring* rstr);
 rstring* rstring_slice1(const rstring* rstr, int index);
 rstring* rstring_slice(const rstring* rstr, int index, int length);
+rstring* rstring_strip(const rstring* rstr);
 rstring* rstring_upcase(const rstring* rstr);
 
 /* Get info about rstrings */
 
 int rstring_eql(const rstring* rstr1, const rstring* rstr2);
+int rstring_eql_cstr(const rstring* rstr, const char* cstr);
+int rstring_include(const rstring* rstr, const rstring* substring);
+int rstring_index(const rstring* rstr, const rstring* substring);
+int rstring_index_offset(const rstring* rstr, const rstring* substring, int start_pos);
 int rstring_length(const rstring* rstr);
 
 /* Utility functions */

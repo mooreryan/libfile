@@ -134,6 +134,33 @@ rstring_downcase(const rstring* rstr)
   return new_rstr;
 }
 
+/**
+ * @note It differs from ruby in that pattern must have length > 0 (i.e., be a non-empty string.  Things get pretty weird in Ruby when the pattern is an empty string....
+ *
+ */
+rstring*
+rstring_gsub(const rstring* rstr,
+             const rstring* pattern,
+             const rstring* replacement)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+  if (rstring_bad(pattern)) { return NULL; }
+  if (rstring_bad(replacement)) { return NULL; }
+
+  rstring* copy = rstring_copy(rstr);
+  if (rstring_bad(copy)) { return NULL; }
+
+  int start_pos = 0;
+  int val = bfindreplace((bstring)copy,
+                         (const_bstring)pattern,
+                         (const_bstring)replacement,
+                         start_pos);
+
+  if (val == BSTR_ERR) { rstring_free(copy); return NULL; }
+
+  return copy;
+}
+
 
 /**
  * @brief Gives the char at index but as an rstring.
@@ -200,6 +227,136 @@ rstring_slice(const rstring* rstr, int index, int length)
   return (rstring*)bmidstr((bstring)rstr, index, length);
 }
 
+/**
+ * @brief Returns a copy of rstr with leading and trailing whitespace removed.
+ *
+ * @param rstr The rstring to strip.
+ *
+ * @retval rstring* A valid copy of rstr with whitespace stripped.
+ * @retval NULL The input rstring is invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ *
+ * @todo Lots of code duplication with strip(), lstrip(), and rstrip().
+ */
+rstring*
+rstring_strip(const rstring* rstr)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+
+  int len = rstring_length(rstr);
+  if (len == RERROR) { return NULL; }
+
+  if (len == 0) { return rstring_new(""); }
+
+  rstring* copy = rstring_copy(rstr);
+  if (rstring_bad(copy)) { return NULL; }
+
+  int val = btrimws(copy);
+  if (val == BSTR_ERR) { rstring_free(copy); return NULL; }
+
+  return copy;
+}
+
+/**
+ * @brief Returns a copy of rstr with leading whitespace removed.
+ *
+ * @param rstr The rstring to strip.
+ *
+ * @retval rstring* A valid copy of rstr with leading whitespace stripped.
+ * @retval NULL The input rstring is invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ *
+ * @todo Lots of code duplication with strip(), lstrip(), and rstrip().
+ */
+rstring*
+rstring_lstrip(const rstring* rstr)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+
+  int len = rstring_length(rstr);
+  if (len == RERROR) { return NULL; }
+
+  if (len == 0) { return rstring_new(""); }
+
+  rstring* copy = rstring_copy(rstr);
+  if (rstring_bad(copy)) { return NULL; }
+
+  int val = bltrimws(copy);
+  if (val == BSTR_ERR) { rstring_free(copy); return NULL; }
+
+  return copy;
+}
+
+/**
+ * @brief Returns a new rstring with the characters from rstr in reverse order.
+ *
+ * @param rstr The rstring for reversing.
+ *
+ * @retval rstring* A valid rstring copy of rstr with chars reversed.
+ * @retval NULL The input rstring was invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ */
+rstring*
+rstring_reverse(const rstring* rstr)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+
+  rstring* copy = rstring_copy(rstr);
+  if (rstring_bad(copy)) { return NULL; }
+
+  /* From bstraux.c */
+  int i, n, m;
+  unsigned char t;
+  n = copy->slen;
+  if (2 <= n) {
+    m = ((unsigned)n) >> 1;
+    n--;
+    for (i=0; i < m; i++) {
+      t = copy->data[n - i];
+      copy->data[n - i] = copy->data[i];
+      copy->data[i] = t;
+    }
+  }
+
+  return copy;
+}
+
+
+/**
+ * @brief Returns a copy of rstr with trailing whitespace removed.
+ *
+ * @param rstr The rstring to strip.
+ *
+ * @retval rstring* A valid copy of rstr with trailing whitespace stripped.
+ * @retval NULL The input rstring is invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ *
+ * @todo Lots of code duplication with strip(), lstrip(), and rstrip().
+ */
+rstring*
+rstring_rstrip(const rstring* rstr)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+
+  int len = rstring_length(rstr);
+  if (len == RERROR) { return NULL; }
+
+  if (len == 0) { return rstring_new(""); }
+
+  rstring* copy = rstring_copy(rstr);
+  if (rstring_bad(copy)) { return NULL; }
+
+  int val = brtrimws(copy);
+  if (val == BSTR_ERR) { rstring_free(copy); return NULL; }
+
+  return copy;
+}
+
+
 
 /**
  * @brief Return a copy of rstr with everything uppercase.
@@ -262,6 +419,123 @@ rstring_eql(const rstring* rstr1, const rstring* rstr2)
   }
   else {
     return RERROR;
+  }
+}
+
+/**
+ * @brief Two strings are equal if they have the same length and content.
+ *
+ * @param rstr Not modified.
+ * @param cstr Not modified.
+ *
+ * @retval RTRUE The strings are equal.
+ * @retval RFALSE The strings are not equal.
+ * @retval RERROR The rstr or cstring is invalid or there was an error.
+ *
+ * @note This differs from ruby in that you can't just check for true or false, you must check for 1 or 0 as RERROR signals an error.
+ */
+int
+rstring_eql_cstr(const rstring* rstr, const char* cstr)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (cstr == NULL) { return RERROR; }
+
+  int val = biseqcstr((const_bstring)rstr, cstr);
+
+  if (val == 1) {
+    return RTRUE;
+  }
+  else if (val == 0) {
+    return RFALSE;
+  }
+  else {
+    return RERROR;
+  }
+}
+
+/**
+ * @brief Tells whether rstr contains the other rstring.
+ *
+ * @param rstr The rstring to search in.
+ * @param substring The rstring to search for.
+ *
+ * @retval RTRUE The substring is present.
+ * @retval RFALSE The substring is not present.
+ * @retval RERROR Either input rstring is invalid.
+ */
+int
+rstring_include(const rstring* rstr, const rstring* substring)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (rstring_bad(substring)) { return RERROR; }
+
+  int start_pos = 0;
+  int val = binstr(rstr, start_pos, substring);
+
+  if (val == BSTR_ERR) {
+    /* It wasn't found. */
+    return RFALSE;
+  }
+  else {
+    return RTRUE;
+  }
+}
+
+/**
+ * @brief Tells the first occurence of substring in rstr.
+ *
+ * @param rstr The rstring to search in.
+ * @param substring The rstring to search for.
+ *
+ * @retval index The index of the first occurence of substring in rstr.
+ * @retval RERROR Either input rstrings are invalid or the substring was not found.
+ *
+ * @todo Need a better way to handle errors as not found and error would be the same thing for this function.
+ */
+int
+rstring_index(const rstring* rstr, const rstring* substring)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (rstring_bad(substring)) { return RERROR; }
+
+  int start_pos = 0;
+  int val = binstr(rstr, start_pos, substring);
+
+  if (val == BSTR_ERR) {
+    /* It wasn't found. */
+    return RERROR;
+  }
+  else {
+    return val;
+  }
+}
+
+/**
+ * @brief Tells the first occurence (starting at offset) of substring in rstr.
+ *
+ * @param rstr The rstring to search in.
+ * @param substring The rstring to search for.
+ * @param offset The index in rstr to start the search from.
+ *
+ * @retval index The index of the first occurence (>= index) of substring in rstr.
+ * @retval RERROR Either input rstrings are invalid or the substring was not found in the string after the offset/index.
+ *
+ * @todo Need a better way to handle errors as not found and error would be the same thing for this function.
+ */
+int
+rstring_index_offset(const rstring* rstr, const rstring* substring, int offset)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (rstring_bad(substring)) { return RERROR; }
+
+  int val = binstr(rstr, offset, substring);
+
+  if (val == BSTR_ERR) {
+    /* It wasn't found. */
+    return RERROR;
+  }
+  else {
+    return val;
   }
 }
 
