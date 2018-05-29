@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['readme',['README',['../index.html',1,'']]],
   ['rfile_2ec',['rfile.c',['../rfile_8c.html',1,'']]],
   ['rfile_5fbasename',['rfile_basename',['../rfile_8c.html#adeabc016ec0c86ad397565af546391e1',1,'rfile.c']]],
   ['rfile_5fdirname',['rfile_dirname',['../rfile_8c.html#a0c0183d77333551e1a7d87af8bffacaf',1,'rfile.c']]],
