@@ -4687,6 +4687,17 @@ rfile_basename2(const rstring* fname, const rstring* extname)
   return new_basename;
 }
 
+/**
+ * @brief Return the basename of a file, with the extname stripped off.  It's like rfile_basename2() but takes a char* for the extname.
+ *
+ * @param fname An rstring with the file name.
+ * @param extname A char* with the extension to strip off.
+ *
+ * @retval rstring* A valid rstring containing the basename of the file, without the extension.
+ * @retval NULL The input rstring is invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ */
 rstring*
 rfile_basename2_cstr(const rstring* fname, const char* extname)
 {
