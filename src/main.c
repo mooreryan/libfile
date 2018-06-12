@@ -1,25 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "file.h"
 #include "err_codes.h"
+
+#include "rstring.h"
+#include "rfile.h"
 
 int main(int argc, char* argv[])
 {
-  char* filename = "/apple/pie.txt";
 
-  char* basename = file_basename(filename);
-  PANIC_MEM(stderr, basename);
+  rstring* str = rstring_new("apple");
+  PANIC_MEM(stderr, str);
 
-  char* extname = file_extname(filename);
-  PANIC_MEM(stderr, extname);
+  puts(rstring_data(str));
 
-  printf("filename: '%s'\n", filename);
-  printf("basename: '%s'\n", basename);
-  printf("extname:  '%s'\n", extname);
+  rstring* str2 = rstring_format("%s pie is %s", rstring_data(str), "good");
+  PANIC_MEM(stderr, str2);
 
-  free(basename);
-  free(extname);
+  puts(rstring_data(str2));
 
   return 0;
 }

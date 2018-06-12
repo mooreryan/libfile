@@ -8,6 +8,7 @@
 #ifndef _RSTRING_H
 #define _RSTRING_H
 
+#include "bstrlib.h"
 #include "rlib.h"
 
 typedef struct tagbstring rstring;
@@ -34,7 +35,7 @@ typedef struct bstrList rstring_array;
  * @retval char* The char* part of the rstring.
  * @retval NULL The rstring is NULL.
  */
-#define rstring_data(rstr) ((rstring*)bdata((bstring)rstr))
+#define rstring_data(rstr) (bdata((bstring)rstr))
 
 /**
  * @brief This is like Ruby's `"apple %s" % "pie"` `%` operator.
