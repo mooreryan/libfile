@@ -34,7 +34,7 @@
   :support:
     - test/support
   :include:
-    - vendor/bstrlib/**
+#    - vendor/bstrlib/**
 
 :defines:
   # in order to add common defines:

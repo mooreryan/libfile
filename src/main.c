@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "err_codes.h"
-
-#include "rstring.h"
-#include "rfile.h"
+#include "rlib.h"
 
 int main(int argc, char* argv[])
 {

@@ -1,12 +1,10 @@
 #include <stdlib.h>
 
 #include "unity.h"
-#include "rstring.h"
 #include "helper.h"
+#include "rlib.h"
 
-/* Also need to include bstrlib.h in the test file so Ceedling knows
-   about it. */
-#include "bstrlib.h"
+
 
 void setUp(void)
 {

@@ -1,3 +1,0 @@
-[submodule "vendor/bstrlib"]
-	path = vendor/bstrlib
-	url = https://github.com/mooreryan/bstrlib

@@ -13,12 +13,7 @@
 
 #include "unity.h"
 #include "helper.h"
-#include "rfile.h"
-
-/* Need this for the tests to compile. */
-#include "bstrlib.h"
 #include "rlib.h"
-#include "rstring.h"
 
 void setUp(void)
 {
