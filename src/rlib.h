@@ -4556,8 +4556,6 @@ rfile_is_file(const rstring* fname)
  * @retval NULL The input rstring is invalid or there was an error.
  *
  * @warning The caller must free the result.
- *
- * @todo Ruby's also takes an optional second param for extname to strip.
  */
 rstring*
 rfile_basename(const rstring* fname)
@@ -4618,6 +4616,17 @@ rfile_basename(const rstring* fname)
   return basename;
 }
 
+/**
+ * @brief Return the basename of a file, with the extname stripped off.
+ *
+ * @param fname An rstring with the file name.
+ * @param extname An rstring with the extension to strip off.
+ *
+ * @retval rstring* A valid rstring containing the basename of the file, without the extension.
+ * @retval NULL The input rstring is invalid or there was an error.
+ *
+ * @warning The caller must free the result.
+ */
 rstring*
 rfile_basename2(const rstring* fname, const rstring* extname)
 {
