@@ -11,3 +11,5 @@ bin
 src/*.o
 
 sandbox
+
+src/obj
