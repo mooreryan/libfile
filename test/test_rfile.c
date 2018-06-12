@@ -194,6 +194,84 @@ test___rfile_basename___should_ReturnTheBaseName(void)
 }
 
 void
+test___rfile_basename2___should_ReturnBasenameWithoutExt(void)
+{
+  rstring* actual = NULL;
+  rstring* rstr = NULL;
+  rstring* ext = NULL;
+
+  /* If the ext is empty, it is the same as rfile_basename() */
+  ext = rstring_new("");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.txt", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  ext = rstring_new("txt");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  ext = rstring_new(".txt");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  ext = rstring_new("ie.txt");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.p", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  ext = rstring_new(".pie.txt");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  /* When the ext isn't actually in the fname, it doesn't strip anything off */
+  ext = rstring_new(".pie.txtarstoien");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.txt", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  /* If the ext is in the filename but not at the end, it doesn't
+     strip anything. */
+  ext = rstring_new(".pie");
+  rstr = rstring_new("/home/moorer/apple.pie.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.txt", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+  /* If it has two extensions, only the first is removed. */
+  ext = rstring_new(".txt");
+  rstr = rstring_new("/home/moorer/apple.pie.txt.txt");
+  actual = rfile_basename2(rstr, ext);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.txt", actual);
+  rstring_free(ext);
+  rstring_free(rstr);
+  rstring_free(actual);
+
+}
+
+void
 test___rfile_dirname___should_ReturnTheDirName(void)
 {
   TEST_ASSERT_NULL(rfile_dirname(NULL));
@@ -258,7 +336,7 @@ test___rfile_join___should_JoinStringsWithFileSep(void)
   assert(rstring_array_push_cstr(rary, "pie") == ROKAY);
   assert(rstring_array_push_cstr(rary, "good") == ROKAY);
 
-  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(rary)), actual->data);
+  TEST_ASSERT_EQUAL_RSTRING_MESSAGE("apple/pie/good", (actual = rfile_join(rary)), rstring_data(actual));
   rstring_free(actual);
   rstring_array_free(rary);
 

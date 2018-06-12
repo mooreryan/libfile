@@ -4397,6 +4397,7 @@ int rfile_is_file(const rstring* fname);
 
 /* Parts of paths */
 rstring* rfile_basename(const rstring* fname);
+rstring* rfile_basename2(const rstring* fname, const rstring* extname);
 rstring* rfile_dirname(const rstring* fname);
 rstring* rfile_extname(const rstring* fname);
 
@@ -4617,6 +4618,64 @@ rfile_basename(const rstring* fname)
   return basename;
 }
 
+rstring*
+rfile_basename2(const rstring* fname, const rstring* extname)
+{
+  if (rstring_bad(fname)) { return NULL; }
+  if (rstring_bad(extname)) { return NULL; }
+
+  rstring* basename = rfile_basename(fname);
+  if (rstring_bad(basename)) { return NULL; }
+
+  int retval = 0;
+  int i = 0;
+  int j = 0;
+  char extchar = 0;
+  char basechar = 0;
+
+  /* If it is empty, just return the basename */
+  retval = rstring_eql_cstr(extname, "");
+  if (retval == RTRUE) {
+    return basename;
+  }
+  else if (retval == RERROR) {
+    return NULL;
+  }
+
+  /* Now we need to strip off the extname */
+
+  /* First, check if the ext is actually present. */
+  int basename_len = rstring_length(basename);
+  if (basename_len == RERROR) { return NULL; }
+
+  int extname_len = rstring_length(extname);
+  if (extname_len == RERROR) { return NULL; }
+
+  for (i = 0; i < extname_len; ++i) {
+    /* The corresponding index in the basename */
+    j = basename_len - extname_len + i;
+
+    extchar = rstring_char_at(extname, i);
+    if (extchar == RERROR) { return NULL; }
+
+    basechar = rstring_char_at(basename, j);
+    if (basechar == RERROR) { return NULL; }
+
+    if (extchar != basechar) {
+      /* The extname is not present in the fname */
+      return basename;
+    }
+  }
+
+  /* If we've gotten here, then you can strip off extname. */
+  rstring* new_basename = rstring_slice(basename,
+                                        0,
+                                        basename_len - extname_len);
+  if (rstring_bad(new_basename)) { return NULL; }
+  rstring_free(basename);
+
+  return new_basename;
+}
 
 /**
  * @brief Return the dirname of a file.
