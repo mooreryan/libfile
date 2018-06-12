@@ -200,6 +200,17 @@ test___rfile_basename2___should_ReturnBasenameWithoutExt(void)
   rstring* rstr = NULL;
   rstring* ext = NULL;
 
+  TEST_ASSERT_NULL(rfile_basename2(rstr, ext));
+
+  rstr = rstring_new("apple");
+  TEST_ASSERT_NULL(rfile_basename2(rstr, ext));
+  rstring_free(rstr);
+
+  rstr = NULL;
+  ext = rstring_new("apple");
+  TEST_ASSERT_NULL(rfile_basename2(rstr, ext));
+  rstring_free(ext);
+
   /* If the ext is empty, it is the same as rfile_basename() */
   ext = rstring_new("");
   rstr = rstring_new("/home/moorer/apple.pie.txt");
@@ -270,6 +281,43 @@ test___rfile_basename2___should_ReturnBasenameWithoutExt(void)
   rstring_free(actual);
 
 }
+
+void
+test___rfile_basename2_cstr___should_ReturnBasenameWithoutExt(void)
+{
+
+  rstring* actual = NULL;
+  rstring* fname = NULL;
+  char* extname = NULL;
+
+  TEST_ASSERT_NULL(rfile_basename2_cstr(fname, extname));
+
+  fname = rstring_new("apple.pie");
+  TEST_ASSERT_NULL(rfile_basename2_cstr(fname, extname));
+  rstring_free(fname);
+
+  fname = NULL;
+  extname = "pie";
+  TEST_ASSERT_NULL(rfile_basename2_cstr(fname, extname));
+
+  /* It's just a wrapper for rfile_basename() so just do one or two
+     basic tests. */
+  fname = rstring_new("/home/moorer/apple.pie.txt");
+  extname = ".txt";
+  actual = rfile_basename2_cstr(fname, extname);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie", actual);
+  rstring_free(actual);
+  rstring_free(fname);
+
+  fname = rstring_new("/home/moorer/apple.pie.txt");
+  extname = ".ttt";
+  actual = rfile_basename2_cstr(fname, extname);
+  TEST_ASSERT_EQUAL_RSTRING("apple.pie.txt", actual);
+  rstring_free(actual);
+  rstring_free(fname);
+}
+
+
 
 void
 test___rfile_dirname___should_ReturnTheDirName(void)

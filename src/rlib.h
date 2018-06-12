@@ -4398,6 +4398,7 @@ int rfile_is_file(const rstring* fname);
 /* Parts of paths */
 rstring* rfile_basename(const rstring* fname);
 rstring* rfile_basename2(const rstring* fname, const rstring* extname);
+rstring* rfile_basename2_cstr(const rstring* fname, const char* extname);
 rstring* rfile_dirname(const rstring* fname);
 rstring* rfile_extname(const rstring* fname);
 
@@ -4684,6 +4685,23 @@ rfile_basename2(const rstring* fname, const rstring* extname)
   rstring_free(basename);
 
   return new_basename;
+}
+
+rstring*
+rfile_basename2_cstr(const rstring* fname, const char* extname)
+{
+  if (rstring_bad(fname)) { return NULL; }
+  if (extname == NULL) { return NULL; }
+
+  rstring* ext = rstring_new(extname);
+  if (rstring_bad(ext)) { return NULL; }
+
+  rstring* base = rfile_basename2(fname, ext);
+  if (rstring_bad(base)) { return NULL; }
+
+  rstring_free(ext);
+
+  return base;
 }
 
 /**
