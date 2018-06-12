@@ -1,6 +1,8 @@
 var searchData=
 [
   ['rfile_5fbasename',['rfile_basename',['../rlib_8h.html#a63b8594c8d73e53c769b8ef5c3175070',1,'rlib.h']]],
+  ['rfile_5fbasename2',['rfile_basename2',['../rlib_8h.html#ac65448464e75a6af41f9c97e955e559f',1,'rlib.h']]],
+  ['rfile_5fbasename2_5fcstr',['rfile_basename2_cstr',['../rlib_8h.html#a4b4bba32e04e68d2a4265e9d140bfdb0',1,'rlib.h']]],
   ['rfile_5fdirname',['rfile_dirname',['../rlib_8h.html#a80ef77eda4f8c1e3b9f2aa1fca48be42',1,'rlib.h']]],
   ['rfile_5fexist',['rfile_exist',['../rlib_8h.html#a9f8f09ed81e27bb5fd0a8d5f12108bcf',1,'rlib.h']]],
   ['rfile_5fextname',['rfile_extname',['../rlib_8h.html#aadfc643cd1a927e4fc970878597711f4',1,'rlib.h']]],
