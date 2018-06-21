@@ -3670,6 +3670,8 @@ int rstring_free(rstring* rstr);
 rstring* rstring_chomp(const rstring* rstr);
 rstring* rstring_downcase(const rstring* rstr);
 rstring* rstring_gsub(const rstring* rstr, const rstring* pattern, const rstring* replacement);
+rstring* rstring_gsub_cstr(const rstring* rstr, const char* pattern, const char* replacement);
+
 rstring* rstring_lstrip(const rstring* rstr);
 rstring* rstring_reverse(const rstring* rstr);
 rstring* rstring_rstrip(const rstring* rstr);
@@ -3683,8 +3685,14 @@ rstring* rstring_upcase(const rstring* rstr);
 int rstring_eql(const rstring* rstr1, const rstring* rstr2);
 int rstring_eql_cstr(const rstring* rstr, const char* cstr);
 int rstring_include(const rstring* rstr, const rstring* substring);
+int rstring_include_cstr(const rstring* rstr, const char* substring);
+
 int rstring_index(const rstring* rstr, const rstring* substring);
+int rstring_index_cstr(const rstring* rstr, const char* substring);
+
 int rstring_index_offset(const rstring* rstr, const rstring* substring, int start_pos);
+int rstring_index_offset_cstr(const rstring* rstr, const char* substring, int start_pos);
+
 int rstring_length(const rstring* rstr);
 
 /* Utility functions */
@@ -3699,7 +3707,10 @@ int rstring_array_push_cstr(rstring_array* rary, char* cstr);
 int rstring_array_push_rstr(rstring_array* rary, rstring* rstr);
 rstring* rstring_array_get(rstring_array* rary, int index);
 rstring* rstring_array_join(rstring_array* rstrings, const rstring* sep);
+rstring* rstring_array_join_cstr(rstring_array* rstrings, const char* sep);
+
 rstring_array* rstring_split(rstring* rstr, const rstring* sep);
+rstring_array* rstring_split_cstr(rstring* rstr, const char* sep);
 
 /**
  * @brief Make a new rstring from c string.
@@ -3822,7 +3833,7 @@ rstring_downcase(const rstring* rstr)
 }
 
 /**
- * @brief Return a copy of rstr withh all occurrences of pattern substituted for the value of replacement.
+ * @brief Return a copy of rstr with all occurrences of pattern substituted for the value of replacement.
  *
  * @code
 rstring* rstr = rstring_new("aabaAb");
@@ -3868,6 +3879,42 @@ rstring_gsub(const rstring* rstr,
   if (val == BSTR_ERR) { rstring_free(copy); return NULL; }
 
   return copy;
+}
+
+/**
+ * @brief Wraps rstring_gsub() but takes char* for pattern and replacement.
+ */
+rstring*
+rstring_gsub_cstr(const rstring* rstr,
+                  const char* pattern,
+                  const char* replacement)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+  if (pattern == NULL) { return NULL; }
+  if (replacement == NULL) { return NULL; }
+
+  rstring* rpattern = rstring_new(pattern);
+  if (rstring_bad(rpattern)) { return NULL; }
+
+  rstring* rreplacement = rstring_new(replacement);
+  if (rstring_bad(rreplacement)) {
+    rstring_free(rpattern);
+
+    return NULL;
+  }
+
+  rstring* new_rstr = rstring_gsub(rstr, rpattern, rreplacement);
+  if (rstring_bad(new_rstr)) {
+    rstring_free(rpattern);
+    rstring_free(rreplacement);
+
+    return NULL;
+  }
+
+  rstring_free(rpattern);
+  rstring_free(rreplacement);
+
+  return new_rstr;
 }
 
 
@@ -4191,6 +4238,26 @@ rstring_include(const rstring* rstr, const rstring* substring)
 }
 
 /**
+ * @brief Wraps rstring_include() but takes char* for substring.
+ */
+int
+rstring_include_cstr(const rstring* rstr, const char* substring)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (substring == NULL) { return RERROR; }
+
+  rstring* rsubstring = rstring_new(substring);
+  if (rstring_bad(rsubstring)) { return RERROR; }
+
+  int val = rstring_include(rstr, rsubstring);
+
+  rstring_free(rsubstring);
+
+  return val;
+}
+
+
+/**
  * @brief Tells the first occurence of substring in rstr.
  *
  * @param rstr The rstring to search in.
@@ -4220,6 +4287,26 @@ rstring_index(const rstring* rstr, const rstring* substring)
 }
 
 /**
+ * @brief Wraps rstring_index() but takes char* for substring
+ */
+int
+rstring_index_cstr(const rstring* rstr, const char* substring)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (substring == NULL) { return RERROR; }
+
+  rstring* rsubstring = rstring_new(substring);
+  if (rstring_bad(rsubstring)) { return RERROR; }
+
+  int val = rstring_index(rstr, rsubstring);
+
+  rstring_free(rsubstring);
+
+  return val;
+}
+
+
+/**
  * @brief Tells the first occurence (starting at offset) of substring in rstr.
  *
  * @param rstr The rstring to search in.
@@ -4247,6 +4334,26 @@ rstring_index_offset(const rstring* rstr, const rstring* substring, int offset)
     return val;
   }
 }
+
+/**
+ * @brief Wraps rstring_index_offset() but takes char* for substring
+ */
+int
+rstring_index_offset_cstr(const rstring* rstr, const char* substring, int start_pos)
+{
+  if (rstring_bad(rstr)) { return RERROR; }
+  if (substring == NULL) { return RERROR; }
+
+  rstring* rsubstring = rstring_new(substring);
+  if (rstring_bad(rsubstring)) { return RERROR; }
+
+  int val = rstring_index_offset(rstr, rsubstring, start_pos);
+
+  rstring_free(rsubstring);
+
+  return val;
+}
+
 
 /**
  * @brief Returns the length of the rstring.
@@ -4364,10 +4471,59 @@ rstring_array_join(rstring_array* rstrings, const rstring* sep)
   return bjoin((const struct bstrList*)rstrings, (const_bstring)sep);
 }
 
+/**
+ * @brief Wraps rstring_array_join() but takes char* for sep
+ */
+rstring*
+rstring_array_join_cstr(rstring_array* rstrings, const char* sep)
+{
+  if (rstrings == NULL || sep == NULL) { return NULL; }
+  if (rstrings->qty == 0) {
+    return rstring_new("");
+  }
+
+  rstring* rsep = rstring_new(sep);
+  if (rstring_bad(rsep)) { return NULL; }
+
+  rstring* new_rstr = bjoin((const struct bstrList*)rstrings, (const_bstring)rsep);
+  if (rstring_bad(new_rstr)) {
+    rstring_free(rsep);
+    return NULL;
+  }
+
+  rstring_free(rsep);
+
+  return new_rstr;
+}
+
 rstring_array*
 rstring_split(rstring* rstr, const rstring* sep)
 {
   return bsplitstr((bstring)rstr, (const_bstring)sep);
+}
+
+/**
+ * @brief Wraps rstring_split() but takes char* for sep
+ */
+rstring_array*
+rstring_split_cstr(rstring* rstr, const char* sep)
+{
+  if (rstring_bad(rstr)) { return NULL; }
+  if (sep == NULL) { return NULL; }
+
+  rstring* rsep = rstring_new(sep);
+  if (rstring_bad(rsep)) { return NULL; }
+
+  rstring_array* ary = bsplitstr((bstring)rstr, (const_bstring)rsep);
+
+  if (ary == NULL) {
+    rstring_free(rsep);
+    return NULL;
+  }
+
+  rstring_free(rsep);
+
+  return ary;
 }
 
 /* END OF RSTRING */
